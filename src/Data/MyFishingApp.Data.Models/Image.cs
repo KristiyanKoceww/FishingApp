@@ -21,9 +21,9 @@
 
         public virtual Fish Fish { get; set; }
 
-        public string DamId { get; set; }
+        public string ReservoirId { get; set; }
 
-        public virtual Reservoir Dam { get; set; }
+        public virtual Reservoir Reservoir { get; set; }
 
         public string ApplicationUserId { get; set; }
 

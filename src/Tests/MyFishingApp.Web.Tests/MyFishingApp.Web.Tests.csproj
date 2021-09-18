@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MyFishingApp.Web1\MyFishingApp.Web.csproj" />
+    <ProjectReference Include="..\..\MyFishingApp.Web\MyFishingApp.Web.csproj" />
   </ItemGroup>
 
 </Project>
