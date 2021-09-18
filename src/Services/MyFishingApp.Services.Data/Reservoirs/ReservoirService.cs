@@ -1,10 +1,10 @@
 ﻿namespace MyFishingApp.Services.Data.Dam
-
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
@@ -24,7 +24,7 @@
             this.imageRepository = imageRepository;
         }
 
-        public void CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
+        public async Task CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
         {
             var reservoir = new Reservoir()
             {
@@ -54,66 +54,50 @@
                 };
 
                 reservoir.Images.Add(dbImage);
-                this.imageRepository.AddAsync(dbImage);
+                await this.imageRepository.AddAsync(dbImage);
+                await this.reservoirRepository.AddAsync(reservoir);
+                await this.reservoirRepository.SaveChangesAsync();
 
                 // IMPORT CLOUDINARY TO SAVE THE IMAGES ON CLOUD SERVER
             }
         }
 
-        public void DeleteReservoir(string reservoirId)
+        public async Task DeleteReservoir(string reservoirId)
         {
-            throw new System.NotImplementedException();
+            var reservoir = this.GetById(reservoirId);
+            this.reservoirRepository.Delete(reservoir);
+            await this.reservoirRepository.SaveChangesAsync();
         }
 
-        public IEnumerable<Reservoir> GetAllDams()
+        public IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12)
         {
-            //var dams = this.reservoirRepository.All().Select(x => new Reservoir
-            //{
-            //    x.Name,
-            //    x.Type,
-            //    x.Description,
-            //    x.Latitude,
-            //    x.Longitude,
-            //}).ToArray();
+            var reservoirs = this.reservoirRepository.AllAsNoTracking().ToList();
+                //.OrderByDescending(x => x.Id)
+                //.Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
+                //.ToList();
 
-            var dam = new Reservoir()
-            {
-                Name = "Dqkovo",
-                Type = "golqm",
-                Description = "Dqkovo",
-                Latitude = 13513513,
-                Longitude = 1535325,
-            };
-
-            var dam2 = new Reservoir()
-            {
-                Name = "Dqkovo2222",
-                Type = "golqm",
-                Description = "Dqkovo",
-                Latitude = 135525353513,
-                Longitude = 15355235235325,
-            };
-
-            var dam3 = new Reservoir()
-            {
-                Name = "Oslome",
-                Type = "Edar",
-                Description = "Oslome is the best",
-                Latitude = 123,
-                Longitude = 321,
-            };
-
-            var list = new List<Reservoir>();
-            list.Add(dam);
-            list.Add(dam2);
-            list.Add(dam3);
-
-            return list;
+            return reservoirs;
         }
 
-        public void UpdateReservoir(string reservoirId)
+        public Reservoir GetById(string reservoirId)
         {
-            throw new System.NotImplementedException();
+            var reservoir = this.reservoirRepository.All().Where(x => x.Id == reservoirId).FirstOrDefault();
+
+            return reservoir;
+        }
+
+        public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel, string reservoirId)
+        {
+            var reservoir = this.GetById(reservoirId);
+
+            reservoir.Name = updateReservoirInputModel.Name;
+            reservoir.Type = updateReservoirInputModel.Type;
+            reservoir.Description = updateReservoirInputModel.Description;
+            reservoir.Latitude = updateReservoirInputModel.Latitude;
+            reservoir.Longitude = updateReservoirInputModel.Longitude;
+
+            this.reservoirRepository.Update(reservoir);
+            await this.reservoirRepository.SaveChangesAsync();
         }
     }
 }

@@ -1,18 +1,21 @@
 ﻿namespace MyFishingApp.Services.Data
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
 
     public interface IReservoirService
     {
-        void CreateReservoir(CreateReservoirInputModel createReservoirInputModel);
+        Task CreateReservoir(CreateReservoirInputModel createReservoirInputModel);
 
-        void DeleteReservoir(string reservoirId);
+        Task DeleteReservoir(string reservoirId);
 
-        void UpdateReservoir(string reservoirId);
+        Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel, string reservoirId);
 
-        IEnumerable<Reservoir> GetAllDams();
+        Reservoir GetById(string reservoirId);
+
+        IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12);
     }
 }

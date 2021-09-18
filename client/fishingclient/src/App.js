@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import {Reservoir} from './Reservoir';
+import {CreateReservoir} from './CreateReservoir';
 import {BrowserRouter, Route, Switch,NavLink} from 'react-router-dom';
 
 function App() {
@@ -15,7 +16,11 @@ function App() {
         <ul className="navbar-nav">
           <li className="nav-item- m-1">
             <NavLink className="btn btn-light btn-outline-primary" to="/Reservoir">
-              Dam
+            All Reservoir
+            </NavLink>
+            
+            <NavLink className="btn btn-light btn-outline-primary" to="/Create">
+            Create Reservoir
             </NavLink>
           </li>
         </ul>
@@ -23,6 +28,7 @@ function App() {
 
       <Switch>
         <Route path='/Reservoir' component={Reservoir}/>
+        <Route path='/Create' component={CreateReservoir}/>
       </Switch>
     </div>
     </BrowserRouter>
