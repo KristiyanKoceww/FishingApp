@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="React.AspNet" Version="5.2.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data\MyFishingApp.Data.Models\MyFishingApp.Data.Models.csproj" />
+    <ProjectReference Include="..\Data\MyFishingApp.Data\MyFishingApp.Data.csproj" />
+    <ProjectReference Include="..\Services\MyFishingApp.Services.Data\MyFishingApp.Services.Data.csproj" />
+    <ProjectReference Include="..\Web\MyFishingApp.Web.ViewModels\MyFishingApp.Web.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>
