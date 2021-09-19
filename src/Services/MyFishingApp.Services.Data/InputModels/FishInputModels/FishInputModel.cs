@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+
     using Microsoft.AspNetCore.Http;
-    using MyFishingApp.Data.Models;
 
     public class FishInputModel
     {
