@@ -4,7 +4,7 @@
 
     public interface ICommentsService
     {
-        Task Create(int postId, string fishUserId, string content, int? parentId = null);
+        Task Create(int postId, string userId, string content, int? parentId = null);
 
         Task Delete(int commentId);
 

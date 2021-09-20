@@ -22,10 +22,10 @@
             return votes;
         }
 
-        public async Task VoteAsync(int postId, string fishUserId, bool isUpVote)
+        public async Task VoteAsync(int postId, string userId, bool isUpVote)
         {
             var vote = this.votesRepository.All()
-                .FirstOrDefault(x => x.PostId == postId && x.FishUserId == fishUserId);
+                .FirstOrDefault(x => x.PostId == postId && x.UserId == userId);
             if (vote != null)
             {
                 vote.Type = isUpVote ? VoteType.UpVote : VoteType.DownVote;
@@ -35,7 +35,7 @@
                 vote = new Vote
                 {
                     PostId = postId,
-                    FishUserId = fishUserId,
+                    UserId = userId,
                     Type = isUpVote ? VoteType.UpVote : VoteType.DownVote,
                 };
 

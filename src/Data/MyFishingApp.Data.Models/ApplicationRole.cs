@@ -3,9 +3,8 @@ namespace MyFishingApp.Data.Models
 {
     using System;
 
-    using MyFishingApp.Data.Common.Models;
-
     using Microsoft.AspNetCore.Identity;
+    using MyFishingApp.Data.Common.Models;
 
     public class ApplicationRole : IdentityRole, IAuditInfo, IDeletableEntity
     {

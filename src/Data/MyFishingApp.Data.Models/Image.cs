@@ -25,8 +25,6 @@
 
         public virtual Reservoir Reservoir { get; set; }
 
-        public string FishUserId { get; set; }
-
-        public virtual FishUser FishUser { get; set; }
+        
     }
 }

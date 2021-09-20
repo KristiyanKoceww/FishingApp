@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Text;
 
     using MyFishingApp.Data.Common.Models;
@@ -13,10 +14,13 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public virtual Country Country { get; set; }
 
         public string CountryName { get; set; }

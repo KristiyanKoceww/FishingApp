@@ -8,14 +8,14 @@
 
     public interface IKnotService
     {
-        Task CreateReservoir(KnotInputModel knotInputModel);
+        Task CreateKnot(KnotInputModel knotInputModel);
 
-        Task DeleteReservoir(string reservoirId);
+        Task DeleteKnot(string knotId);
 
-        Task UpdateReservoir(KnotInputModel knotInputModel, string knotId);
+        Task UpdateKnot(KnotInputModel knotInputModel, string knotId);
 
-        Knot GetById(string reservoirId);
+        Knot GetById(string knotId);
 
-        IEnumerable<Knot> GetAllReservoirs(int page, int itemsPerPage = 12);
+        IEnumerable<Knot> GetAllKnots(int page, int itemsPerPage = 12);
     }
 }

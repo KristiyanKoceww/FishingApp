@@ -3,7 +3,7 @@ namespace MyFishingApp.Data.Models
 {
     using System;
     using System.Collections.Generic;
-
+    using System.ComponentModel.DataAnnotations;
     using Microsoft.AspNetCore.Identity;
     using MyFishingApp.Data.Common.Models;
 
@@ -15,7 +15,26 @@ namespace MyFishingApp.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
+            this.Images = new HashSet<Image>();
+            this.Posts = new HashSet<Post>();
         }
+
+        [Required]
+        public string FirstName { get; set; }
+
+        [Required]
+        public string MiddleName { get; set; }
+
+        [Required]
+        public string LastName { get; set; }
+
+        public int Age { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
+
+        [Required]
+        public Gender Gender { get; set; }
 
         // Audit info
         public DateTime CreatedOn { get; set; }
@@ -26,6 +45,10 @@ namespace MyFishingApp.Data.Models
         public bool IsDeleted { get; set; }
 
         public DateTime? DeletedOn { get; set; }
+
+        public virtual ICollection<Image> Images { get; set; }
+
+        public virtual ICollection<Post> Posts { get; set; }
 
         public virtual ICollection<IdentityUserRole<string>> Roles { get; set; }
 

@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Text;
 
     using MyFishingApp.Data.Common.Models;
@@ -13,6 +14,7 @@
             this.Id = Guid.NewGuid().ToString();
         }
 
+        [Required]
         public string Name { get; set; }
     }
 }

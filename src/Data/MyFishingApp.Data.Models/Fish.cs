@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
     using MyFishingApp.Data.Common.Models;
 
@@ -13,18 +14,23 @@
             this.Images = new HashSet<Image>();
         }
 
+        [Required]
         public string Name { get; set; }
 
         public double Weight { get; set; }
 
         public double Lenght { get; set; }
 
+        [Required]
         public string Habittat { get; set; }
 
+        [Required]
         public string Nutrition { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public string Tips { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }

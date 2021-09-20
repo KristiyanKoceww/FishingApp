@@ -9,7 +9,7 @@
 
     public interface IPostsService
     {
-        Task<int> CreateAsync(string title, string content, string fishUserId);
+        Task<int> CreateAsync(string title, string content, string userId);
 
         Task DeleteAsync(int postId);
 

@@ -19,14 +19,14 @@
             this.commentsRepository = commentsRepository;
         }
 
-        public async Task Create(int postId, string fishUserId, string content, int? parentId = null)
+        public async Task Create(int postId, string userId, string content, int? parentId = null)
         {
             var comment = new Comment
             {
                 Content = content,
                 ParentId = parentId,
                 PostId = postId,
-                FishUserId = fishUserId,
+                UserId = userId,
             };
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();

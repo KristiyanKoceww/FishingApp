@@ -18,13 +18,13 @@
             this.postsRepository = postsRepository;
         }
 
-        public async Task<int> CreateAsync(string title, string content, string fishUserId)
+        public async Task<int> CreateAsync(string title, string content, string userId)
         {
             var post = new Post
             {
                 Content = content,
                 Title = title,
-                FishUserId = fishUserId,
+                UserId = userId,
             };
 
             await this.postsRepository.AddAsync(post);

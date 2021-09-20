@@ -37,8 +37,6 @@
 
         public DbSet<Knot> Knots { get; set; }
 
-        public DbSet<FishUser> FishUsers { get; set; }
-
         public DbSet<Post> Posts { get; set; }
 
         public DbSet<Comment> Comments { get; set; }

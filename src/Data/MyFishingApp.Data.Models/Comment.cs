@@ -18,8 +18,8 @@
 
         public string Content { get; set; }
 
-        public string FishUserId { get; set; }
+        public string UserId { get; set; }
 
-        public virtual FishUser FishUser { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }
