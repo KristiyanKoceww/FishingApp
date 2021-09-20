@@ -37,6 +37,14 @@
 
         public DbSet<Knot> Knots { get; set; }
 
+        public DbSet<FishUser> FishUsers { get; set; }
+
+        public DbSet<Post> Posts { get; set; }
+
+        public DbSet<Comment> Comments { get; set; }
+
+        public DbSet<Vote> Votes { get; set; }
+
         public override int SaveChanges() => this.SaveChanges(true);
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
