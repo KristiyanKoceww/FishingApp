@@ -1,7 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MyFishingApp.Services.Data.InputModels
+﻿namespace MyFishingApp.Services.Data.InputModels
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
+    using MyFishingApp.Data.Models;
+
     public class UpdateReservoirInputModel
     {
         [Required]
@@ -28,5 +31,8 @@ namespace MyFishingApp.Services.Data.InputModels
         [MinLength(3)]
         [MaxLength(20)]
         public double Longitude { get; set; }
+
+        [Required]
+        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
     }
 }

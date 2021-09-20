@@ -14,6 +14,7 @@
             this.Id = Guid.NewGuid().ToString();
             this.Fishs = new HashSet<Fish>();
             this.Images = new HashSet<Image>();
+            this.ImageUrls = new HashSet<ImageUrls>();
         }
 
         [Required]
@@ -39,5 +40,7 @@
         public virtual ICollection<Fish> Fishs { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }
+
+        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
     }
 }

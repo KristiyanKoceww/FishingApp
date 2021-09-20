@@ -31,6 +31,7 @@
                 Name = knotInputModel.Name,
                 Type = knotInputModel.Type,
                 Description = knotInputModel.Description,
+                ImageUrls = knotInputModel.ImageUrls,
             };
 
             if (knotInputModel.VideoUrl is not null)
@@ -78,6 +79,7 @@
                 Type = x.Type,
                 Description = x.Description,
                 Images = x.Images,
+                ImageUrls = x.ImageUrls,
             }).ToList();
 
             return knots;
@@ -98,6 +100,7 @@
                 knot.Name = knotInputModel.Name;
                 knot.Type = knotInputModel.Type;
                 knot.Description = knotInputModel.Description;
+                knot.ImageUrls = knotInputModel.ImageUrls;
 
                 this.knotRepository.Update(knot);
                 await this.knotRepository.SaveChangesAsync();

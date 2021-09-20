@@ -17,14 +17,8 @@
 
         public string RemoteImageUrl { get; set; }
 
-        public string FishId { get; set; }
+        public string AddedByUserId { get; set; }
 
-        public virtual Fish Fish { get; set; }
-
-        public string ReservoirId { get; set; }
-
-        public virtual Reservoir Reservoir { get; set; }
-
-        
+        public ApplicationUser AddedByUser { get; set; }
     }
 }

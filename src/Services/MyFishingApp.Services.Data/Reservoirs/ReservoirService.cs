@@ -35,6 +35,7 @@
                 Latitude = createReservoirInputModel.Latitude,
                 Longitude = createReservoirInputModel.Longitude,
                 Fishs = createReservoirInputModel.Fish,
+                ImageUrls = createReservoirInputModel.ImageUrls,
             };
 
             foreach (var image in createReservoirInputModel.Images)
@@ -47,8 +48,6 @@
 
                 var dbImage = new Image
                 {
-                    Reservoir = reservoir,
-                    ReservoirId = reservoir.Id,
                     Extension = extension,
                     RemoteImageUrl = createReservoirInputModel.ImageUrl,
                 };
@@ -95,6 +94,7 @@
             reservoir.Description = updateReservoirInputModel.Description;
             reservoir.Latitude = updateReservoirInputModel.Latitude;
             reservoir.Longitude = updateReservoirInputModel.Longitude;
+            reservoir.ImageUrls = updateReservoirInputModel.ImageUrls;
 
             this.reservoirRepository.Update(reservoir);
             await this.reservoirRepository.SaveChangesAsync();

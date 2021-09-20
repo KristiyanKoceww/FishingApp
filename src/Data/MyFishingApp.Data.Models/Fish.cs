@@ -12,6 +12,7 @@
         {
             this.Id = Guid.NewGuid().ToString();
             this.Images = new HashSet<Image>();
+            this.ImageUrls = new HashSet<ImageUrls>();
         }
 
         [Required]
@@ -32,6 +33,8 @@
 
         [Required]
         public string Tips { get; set; }
+
+        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
 
         public virtual ICollection<Image> Images { get; set; }
     }

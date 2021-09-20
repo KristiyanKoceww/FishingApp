@@ -36,6 +36,7 @@
                 Nutrition = fishInputModel.Nutrition,
                 Description = fishInputModel.Description,
                 Tips = fishInputModel.Tips,
+                ImageUrls = fishInputModel.ImageUrls,
             };
 
             foreach (var image in fishInputModel.Images)
@@ -48,8 +49,6 @@
 
                 var dbImage = new Image
                 {
-                    FishId = fish.Id,
-                    Fish = fish,
                     Extension = extension,
                     RemoteImageUrl = fishInputModel.ImageUrl,
                 };
@@ -82,6 +81,7 @@
                 Description = x.Description,
                 Tips = x.Tips,
                 Images = x.Images,
+                ImageUrls = x.ImageUrls,
             }).ToList();
 
             return fish;
@@ -103,6 +103,7 @@
             fish.Nutrition = fishInputModel.Nutrition;
             fish.Description = fishInputModel.Description;
             fish.Tips = fishInputModel.Tips;
+            fish.ImageUrls = fishInputModel.ImageUrls;
 
             this.fishRepository.Update(fish);
             await this.fishRepository.SaveChangesAsync();

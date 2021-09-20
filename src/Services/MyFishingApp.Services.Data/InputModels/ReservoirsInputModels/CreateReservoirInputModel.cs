@@ -40,6 +40,9 @@
         public ICollection<Fish> Fish { get; set; }
 
         [Required]
+        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
+
+        [Required]
         public string ImageUrl { get; set; }
 
         [Required]
