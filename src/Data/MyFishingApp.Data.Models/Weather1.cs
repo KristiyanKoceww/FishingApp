@@ -4,9 +4,9 @@
 
     using MyFishingApp.Data.Common.Models;
 
-    public class Weather : BaseDeletableModel<string>
+    public class Weather1 : BaseDeletableModel<string>
     {
-        public Weather()
+        public Weather1()
         {
             this.Id = Guid.NewGuid().ToString();
         }

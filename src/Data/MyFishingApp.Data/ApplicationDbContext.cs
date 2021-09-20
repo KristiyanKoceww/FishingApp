@@ -33,7 +33,7 @@
 
         public DbSet<Reservoir> Reservoirs { get; set; }
 
-        public DbSet<Weather> Weather { get; set; }
+        public DbSet<Weather1> Weather { get; set; }
 
         public DbSet<Knot> Knots { get; set; }
 

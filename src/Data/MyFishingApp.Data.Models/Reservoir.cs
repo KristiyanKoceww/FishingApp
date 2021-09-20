@@ -32,7 +32,7 @@
         [Required]
         public double Longitude { get; set; }
 
-        public virtual Weather Weather { get; set; }
+        public virtual Weather1 Weather { get; set; }
 
         [Required]
         public virtual City City { get; set; }
