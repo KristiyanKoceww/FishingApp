@@ -17,7 +17,7 @@
             this.countryRepository = countryRepository;
         }
 
-        public async Task Create(CountryInputModel countryInputModel)
+        public async Task CreateAsync(CountryInputModel countryInputModel)
         {
             var country = new Country()
             {

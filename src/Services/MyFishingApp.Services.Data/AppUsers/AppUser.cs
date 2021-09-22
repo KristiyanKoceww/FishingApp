@@ -68,7 +68,14 @@
 
         public ApplicationUser GetById(string userId)
         {
-            return this.appUserRepository.All().Where(x => x.Id == userId).FirstOrDefault();
+            var user = this.appUserRepository.All().Where(x => x.Id == userId).FirstOrDefault();
+
+            if (user is not null)
+            {
+                return user;
+            }
+
+            return null;
         }
 
         public async Task UpdateUserAsync(UserInputModel userInputModel, string userId)

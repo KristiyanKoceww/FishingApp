@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data.AppUsers;
 using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,21 +23,36 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public void CreateUser(UserInputModel userInputModel)
+        public async Task<IActionResult> CreateUser(UserInputModel userInputModel)
         {
-            this.userService.CreateAsync(userInputModel);
+           await this.userService.CreateAsync(userInputModel);
+
+            return Ok();
         }
 
         [HttpPost("delete")]
-        public void DeleteUser(string userId)
+        public async Task<IActionResult> DeleteUser(string userId)
         {
-            this.userService.DeleteAsync(userId);
+            await this.userService.DeleteAsync(userId);
+
+            return Ok();
         }
 
         [HttpPost("update")]
-        public void UpdateUser(UserInputModel userInputModel, string userId)
+        public async Task<IActionResult> UpdateUser(UserInputModel userInputModel, string userId)
         {
-            this.userService.UpdateUserAsync(userInputModel,userId);
+            await this.userService.UpdateUserAsync(userInputModel,userId);
+            return Ok();
+        }
+
+        [HttpGet("getUser/id")]
+        public string GetUserById(string userId)
+        {
+            var user =  this.userService.GetById(userId);
+
+            var json = JsonConvert.SerializeObject(user);
+
+            return json;
         }
     }
 }

@@ -8,14 +8,14 @@
 
     public interface IKnotService
     {
-        Task CreateKnot(KnotInputModel knotInputModel);
+        Task CreateKnotAsync(KnotInputModel knotInputModel);
 
-        Task DeleteKnot(string knotId);
+        Task DeleteKnotAsync(string knotId);
 
-        Task UpdateKnot(KnotInputModel knotInputModel, string knotId);
+        Task UpdateKnotAsync(KnotInputModel knotInputModel, string knotId);
 
         Knot GetById(string knotId);
 
-        IEnumerable<Knot> GetAllKnots(int page, int itemsPerPage = 12);
+        IEnumerable<Knot> GetAllKnots();
     }
 }

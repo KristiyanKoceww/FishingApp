@@ -2,12 +2,13 @@
 {
     using System.Collections.Generic;
     using System.Threading.Tasks;
+
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
 
     public interface ICountryService
     {
-        Task Create(CountryInputModel countryInputModel);
+        Task CreateAsync(CountryInputModel countryInputModel);
 
         IEnumerable<Country> GetAll();
 

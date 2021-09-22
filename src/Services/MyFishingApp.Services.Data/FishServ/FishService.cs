@@ -39,28 +39,30 @@
                 ImageUrls = fishInputModel.ImageUrls,
             };
 
-            foreach (var image in fishInputModel.Images)
-            {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
-                {
-                    throw new Exception($"Invalid image extension {extension}");
-                }
+            await this.fishRepository.AddAsync(fish);
+            await this.fishRepository.SaveChangesAsync();
+            //foreach (var image in fishInputModel.Images)
+            //{
+            //    var extension = Path.GetExtension(image.FileName).TrimStart('.');
+            //    if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
+            //    {
+            //        throw new Exception($"Invalid image extension {extension}");
+            //    }
 
-                var dbImage = new Image
-                {
-                    Extension = extension,
-                    RemoteImageUrl = fishInputModel.ImageUrl,
-                };
+            //    var dbImage = new Image
+            //    {
+            //        Extension = extension,
+            //        RemoteImageUrl = fishInputModel.ImageUrl,
+            //    };
 
-                fish.Images.Add(dbImage);
-                await this.imageRepository.AddAsync(dbImage);
-                await this.fishRepository.AddAsync(fish);
-                await this.fishRepository.SaveChangesAsync();
+            //    fish.Images.Add(dbImage);
+            //    await this.imageRepository.AddAsync(dbImage);
+            //    await this.fishRepository.AddAsync(fish);
+            //    await this.fishRepository.SaveChangesAsync();
 
-                // IMPORT CLOUDINARY TO SAVE THE IMAGES ON CLOUD SERVER
-            }
+            // IMPORT CLOUDINARY TO SAVE THE IMAGES ON CLOUD SERVER
         }
+   
 
         public async Task DeleteFish(string fishId)
         {

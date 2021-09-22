@@ -2,11 +2,13 @@
 {
     using System.Threading.Tasks;
 
+    using MyFishingApp.Services.Data.InputModels.CommentsInputModels;
+
     public interface ICommentsService
     {
-        Task Create(int postId, string userId, string content, int? parentId = null);
+        Task CreateAsync(CommentsInputModel commentsInputModel);
 
-        Task Delete(int commentId);
+        Task DeleteAsync(int commentId);
 
         bool IsInPostId(int commentId, int postId);
     }

@@ -8,6 +8,7 @@
 
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
+    using MyFishingApp.Services.Data.InputModels.CommentsInputModels;
 
     public class CommentsService : ICommentsService
     {
@@ -19,20 +20,20 @@
             this.commentsRepository = commentsRepository;
         }
 
-        public async Task Create(int postId, string userId, string content, int? parentId = null)
+        public async Task CreateAsync(CommentsInputModel commentsInputModel)
         {
             var comment = new Comment
             {
-                Content = content,
-                ParentId = parentId,
-                PostId = postId,
-                UserId = userId,
+                Content = commentsInputModel.Content,
+                ParentId = commentsInputModel.ParentId,
+                PostId = commentsInputModel.PostId,
+                UserId = commentsInputModel.UserId,
             };
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
         }
 
-        public async Task Delete(int commentId)
+        public async Task DeleteAsync(int commentId)
         {
             var comment = this.commentsRepository.All().Where(x => x.Id == commentId).FirstOrDefault();
             if (comment is not null)

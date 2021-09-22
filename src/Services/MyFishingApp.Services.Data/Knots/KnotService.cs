@@ -24,7 +24,7 @@
             this.imageRepository = imageRepository;
         }
 
-        public async Task CreateKnot(KnotInputModel knotInputModel)
+        public async Task CreateKnotAsync(KnotInputModel knotInputModel)
         {
             var knot = new Knot()
             {
@@ -61,7 +61,7 @@
             await this.knotRepository.SaveChangesAsync();
         }
 
-        public async Task DeleteKnot(string knotId)
+        public async Task DeleteKnotAsync(string knotId)
         {
             var knot = this.GetById(knotId);
             if (knot != null)
@@ -71,7 +71,7 @@
             }
         }
 
-        public IEnumerable<Knot> GetAllKnots(int page, int itemsPerPage = 12)
+        public IEnumerable<Knot> GetAllKnots()
         {
             var knots = this.knotRepository.AllAsNoTracking().Select(x => new Knot
             {
@@ -91,7 +91,7 @@
             return knot;
         }
 
-        public async Task UpdateKnot(KnotInputModel knotInputModel, string knotId)
+        public async Task UpdateKnotAsync(KnotInputModel knotInputModel, string knotId)
         {
             // Update images and Images URL
             var knot = this.GetById(knotId);
