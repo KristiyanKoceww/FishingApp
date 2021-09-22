@@ -17,9 +17,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 using System.Reflection;
-using MyFishingApp.Services.Mapping;
+
 using MyFishingApp.Data.Seeding;
-using MyFishingApp.Web.ViewModels;
+
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MyFishingApp.Services.Data;
@@ -33,6 +33,7 @@ using MyFishingApp.Services.Data.Posts;
 using MyFishingApp.Services.Data.Votes;
 using MyFishingApp.Services.Data.Weather;
 using MyFishingApp.Services.Data.AppUsers;
+
 
 namespace MyFishingApp.Web1
 {
@@ -109,8 +110,6 @@ namespace MyFishingApp.Web1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            AutoMapperConfig.RegisterMappings(typeof(ErrorViewModel).GetTypeInfo().Assembly);
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())

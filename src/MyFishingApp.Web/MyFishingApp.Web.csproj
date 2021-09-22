@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -18,7 +18,6 @@
     <ProjectReference Include="..\Data\MyFishingApp.Data.Models\MyFishingApp.Data.Models.csproj" />
     <ProjectReference Include="..\Data\MyFishingApp.Data\MyFishingApp.Data.csproj" />
     <ProjectReference Include="..\Services\MyFishingApp.Services.Data\MyFishingApp.Services.Data.csproj" />
-    <ProjectReference Include="..\Web\MyFishingApp.Web.ViewModels\MyFishingApp.Web.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>
