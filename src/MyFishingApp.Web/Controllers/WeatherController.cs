@@ -23,6 +23,7 @@ namespace MyFishingApp.Web.Controllers
             this.weatherService = weatherService;
         }
 
+        [HttpGet]
         public String WeatherDetail(string City)
         {
 
@@ -63,4 +64,4 @@ namespace MyFishingApp.Web.Controllers
 
     }
 }
-}
+

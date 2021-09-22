@@ -23,6 +23,16 @@ using MyFishingApp.Web.ViewModels;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MyFishingApp.Services.Data;
+using MyFishingApp.Services.Data.Cities;
+using AirportSystem.Services.Data.CitiesAndCountries;
+using MyFishingApp.Services.Data.Comments;
+using MyFishingApp.Services.Data.Countries;
+using MyFishingApp.Services.Data.FishServ;
+using MyFishingApp.Services.Data.Knots;
+using MyFishingApp.Services.Data.Posts;
+using MyFishingApp.Services.Data.Votes;
+using MyFishingApp.Services.Data.Weather;
+using MyFishingApp.Services.Data.AppUsers;
 
 namespace MyFishingApp.Web1
 {
@@ -63,10 +73,20 @@ namespace MyFishingApp.Web1
 
 
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
-            //services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-            //services.AddScoped<IDbQueryRunner, DbQueryRunner>();
+            services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+            services.AddScoped<IDbQueryRunner, DbQueryRunner>();
 
             services.AddTransient<IReservoirService, ReservoirService>();
+            services.AddTransient<ICityService, CityService>();
+            services.AddTransient<ICommentsService, CommentsService>();
+            services.AddTransient<ICountryService, CountryService>();
+            services.AddTransient<IFishService, FishService>();
+            services.AddTransient<IKnotService, KnotService>();
+            services.AddTransient<IPostsService, PostsService>();
+            services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IWeatherService, WeatherService>();
+            services.AddTransient<IAppUser, AppUser>();
+            
 
             services.AddCors(c =>
             {
@@ -82,7 +102,7 @@ namespace MyFishingApp.Web1
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyFishingApp.Web1", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyFishingApp.Web", Version = "v1" });
             });
         }
 
@@ -104,7 +124,7 @@ namespace MyFishingApp.Web1
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyFishingApp.Web1 v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyFishingApp.Web v1"));
             }
 
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
