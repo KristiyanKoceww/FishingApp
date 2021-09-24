@@ -1,8 +1,8 @@
 ﻿namespace MyFishingApp.Data.Configurations
 {
-    using MyFishingApp.Data.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using MyFishingApp.Data.Models;
 
     public class ApplicationUserConfiguration : IEntityTypeConfiguration<ApplicationUser>
     {

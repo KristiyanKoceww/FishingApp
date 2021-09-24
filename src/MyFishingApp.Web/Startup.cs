@@ -33,7 +33,7 @@ using MyFishingApp.Services.Data.Posts;
 using MyFishingApp.Services.Data.Votes;
 using MyFishingApp.Services.Data.Weather;
 using MyFishingApp.Services.Data.AppUsers;
-
+using CloudinaryDotNet;
 
 namespace MyFishingApp.Web1
 {
@@ -87,6 +87,8 @@ namespace MyFishingApp.Web1
             services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<IWeatherService, WeatherService>();
             services.AddTransient<IAppUser, AppUser>();
+            services.AddTransient<IVotesService, VotesService>();
+            services.AddTransient<IPostsService, PostsService>();
             
 
             services.AddCors(c =>
@@ -110,6 +112,9 @@ namespace MyFishingApp.Web1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            CloudinaryConfiguration.CloudName = this.configuration.GetSection("Cloudinary")["CloundName"];
+            CloudinaryConfiguration.ApiKey = this.configuration.GetSection("Cloudinary")["CloudApiKey"];
+            CloudinaryConfiguration.ApiSecret = this.configuration.GetSection("Cloudinary")["CloudApiSecret"];
 
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())

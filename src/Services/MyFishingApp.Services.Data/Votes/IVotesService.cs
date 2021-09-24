@@ -1,5 +1,6 @@
 ﻿namespace MyFishingApp.Services.Data.Votes
 {
+    using MyFishingApp.Services.Data.InputModels.VoteInputModels;
     using System.Threading.Tasks;
 
     public interface IVotesService
@@ -10,7 +11,7 @@
         /// <param name="userId"></param>
         /// <param name="isUpVote">If true - up vote, else - down vote.</param>
         /// <returns></returns>
-        Task VoteAsync(int postId, string userId, bool isUpVote);
+        Task VoteAsync(VoteInputModel voteInputModel);
 
         int GetVotes(int postId);
     }

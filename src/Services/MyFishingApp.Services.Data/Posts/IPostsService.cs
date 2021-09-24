@@ -6,10 +6,11 @@
     using System.Threading.Tasks;
 
     using MyFishingApp.Data.Models;
+    using MyFishingApp.Services.Data.InputModels.PostInputModels;
 
     public interface IPostsService
     {
-        Task<int> CreateAsync(string title, string content, string userId);
+        Task<int> CreateAsync(CreatePostInputModel createPostInputModel);
 
         Task DeleteAsync(int postId);
 

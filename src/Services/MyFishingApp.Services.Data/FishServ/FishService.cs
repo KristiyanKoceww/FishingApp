@@ -1,12 +1,11 @@
 ﻿namespace MyFishingApp.Services.Data.FishServ
 {
-    using System;
     using System.Collections.Generic;
-    using System.IO;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.FishInputModels;
@@ -15,7 +14,6 @@
     {
         private readonly IDeletableEntityRepository<Fish> fishRepository;
         private readonly IDeletableEntityRepository<Image> imageRepository;
-        private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif" };
 
         public FishService(
             IDeletableEntityRepository<Fish> fishRepository,
@@ -41,28 +39,31 @@
 
             await this.fishRepository.AddAsync(fish);
             await this.fishRepository.SaveChangesAsync();
-            //foreach (var image in fishInputModel.Images)
-            //{
-            //    var extension = Path.GetExtension(image.FileName).TrimStart('.');
-            //    if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
-            //    {
-            //        throw new Exception($"Invalid image extension {extension}");
-            //    }
 
-            //    var dbImage = new Image
-            //    {
-            //        Extension = extension,
-            //        RemoteImageUrl = fishInputModel.ImageUrl,
-            //    };
+            Account account = new Account();
 
-            //    fish.Images.Add(dbImage);
-            //    await this.imageRepository.AddAsync(dbImage);
-            //    await this.fishRepository.AddAsync(fish);
-            //    await this.fishRepository.SaveChangesAsync();
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
 
-            // IMPORT CLOUDINARY TO SAVE THE IMAGES ON CLOUD SERVER
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription($"{fishInputModel.ImageUrl}"),
+                PublicId = fish.Id,
+                Folder = "FishApp/FishImages/",
+            };
+
+            var uploadResult = cloudinary.Upload(uploadParams);
+
+            var url = uploadResult.Url.ToString();
+
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
+
+            fish.ImageUrls.Add(imageUrl);
+            await this.fishRepository.SaveChangesAsync();
         }
-   
 
         public async Task DeleteFish(string fishId)
         {

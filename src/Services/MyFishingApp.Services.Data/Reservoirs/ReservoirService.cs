@@ -5,7 +5,8 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
@@ -38,27 +39,32 @@
                 ImageUrls = createReservoirInputModel.ImageUrls,
             };
 
-            foreach (var image in createReservoirInputModel.Images)
+            await this.reservoirRepository.AddAsync(reservoir);
+            await this.reservoirRepository.SaveChangesAsync();
+
+            Account account = new Account();
+
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
+
+            var uploadParams = new ImageUploadParams()
             {
-                var extension = Path.GetExtension(image.FileName).TrimStart('.');
-                if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
-                {
-                    throw new Exception($"Invalid image extension {extension}");
-                }
+                File = new FileDescription($"{createReservoirInputModel.ImageUrl}"),
+                PublicId = reservoir.Id,
+                Folder = "FishApp/ReservoirImages/",
+            };
 
-                var dbImage = new Image
-                {
-                    Extension = extension,
-                    RemoteImageUrl = createReservoirInputModel.ImageUrl,
-                };
+            var uploadResult = cloudinary.Upload(uploadParams);
 
-                reservoir.Images.Add(dbImage);
-                await this.imageRepository.AddAsync(dbImage);
-                await this.reservoirRepository.AddAsync(reservoir);
-                await this.reservoirRepository.SaveChangesAsync();
+            var url = uploadResult.Url.ToString();
 
-                // IMPORT CLOUDINARY TO SAVE THE IMAGES ON CLOUD SERVER
-            }
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
+
+            reservoir.ImageUrls.Add(imageUrl);
+            await this.reservoirRepository.SaveChangesAsync();
         }
 
         public async Task DeleteReservoir(string reservoirId)
@@ -71,9 +77,9 @@
         public IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12)
         {
             var reservoirs = this.reservoirRepository.AllAsNoTracking().ToList();
-                //.OrderByDescending(x => x.Id)
-                //.Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
-                //.ToList();
+            //.OrderByDescending(x => x.Id)
+            //.Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
+            //.ToList();
 
             return reservoirs;
         }

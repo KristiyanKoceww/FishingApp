@@ -4,7 +4,8 @@
     using System.Security.Cryptography;
     using System.Text;
     using System.Threading.Tasks;
-
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
@@ -53,6 +54,30 @@
             };
 
             await this.appUserRepository.AddAsync(user);
+            await this.appUserRepository.SaveChangesAsync();
+
+            Account account = new Account();
+
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
+
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription($"{userInputModel.MainImageUrl}"),
+                PublicId = user.Id,
+                Folder = "FishApp/UserImages/",
+            };
+
+            var uploadResult = cloudinary.Upload(uploadParams);
+
+            var url = uploadResult.Url.ToString();
+
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
+
+            user.MainImageUrl = url;
             await this.appUserRepository.SaveChangesAsync();
         }
 

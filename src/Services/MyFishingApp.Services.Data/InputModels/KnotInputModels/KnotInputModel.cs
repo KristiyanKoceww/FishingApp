@@ -30,5 +30,7 @@
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }
 
         public string VideoUrl { get; set; }
+
+        public string ImageUrl { get; set; }
     }
 }

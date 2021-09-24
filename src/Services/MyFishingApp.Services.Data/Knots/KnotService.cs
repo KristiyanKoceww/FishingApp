@@ -5,7 +5,8 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
-
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
@@ -39,25 +40,31 @@
                 knot.VideoUrl = knotInputModel.VideoUrl;
             }
 
-            //foreach (var image in knotInputModel.Images)
-            //{
-            //    var extension = Path.GetExtension(image.FileName).TrimStart('.');
-            //    if (!this.allowedExtensions.Any(x => extension.EndsWith(x)))
-            //    {
-            //        throw new Exception($"Invalid image extension {extension}");
-            //    }
-
-            //    var dbImage = new Image
-            //    {
-
-            //        Extension = extension,
-            //        RemoteImageUrl = knotInputModel.ImageUrl,
-            //    };
-
-            //    // IMPORT CLOUDINARY TO SAVE THE IMAGES ON CLOUD SERVER
-            //}
-
             await this.knotRepository.AddAsync(knot);
+            await this.knotRepository.SaveChangesAsync();
+
+            Account account = new Account();
+
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
+
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription($"{knotInputModel.ImageUrl}"),
+                PublicId = knot.Id,
+                Folder = "FishApp/KnotImages/",
+            };
+
+            var uploadResult = cloudinary.Upload(uploadParams);
+
+            var url = uploadResult.Url.ToString();
+
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
+
+            knot.ImageUrls.Add(imageUrl);
             await this.knotRepository.SaveChangesAsync();
         }
 
