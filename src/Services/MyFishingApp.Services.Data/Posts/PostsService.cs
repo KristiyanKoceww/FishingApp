@@ -8,6 +8,7 @@
 
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
+    using MyFishingApp.Services.Data.InputModels.PostInputModels;
 
     public class PostsService : IPostsService
     {
@@ -18,13 +19,13 @@
             this.postsRepository = postsRepository;
         }
 
-        public async Task<int> CreateAsync(string title, string content, string userId)
+        public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel)
         {
             var post = new Post
             {
-                Content = content,
-                Title = title,
-                UserId = userId,
+                Content = createPostInputModel.Content,
+                Title = createPostInputModel.Title,
+                UserId = createPostInputModel.UserId,
             };
 
             await this.postsRepository.AddAsync(post);

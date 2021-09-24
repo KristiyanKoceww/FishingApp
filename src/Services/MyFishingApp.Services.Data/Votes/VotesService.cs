@@ -5,6 +5,7 @@
 
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
+    using MyFishingApp.Services.Data.InputModels.VoteInputModels;
 
     public class VotesService : IVotesService
     {
@@ -22,21 +23,21 @@
             return votes;
         }
 
-        public async Task VoteAsync(int postId, string userId, bool isUpVote)
+        public async Task VoteAsync(VoteInputModel voteInputModel)
         {
             var vote = this.votesRepository.All()
-                .FirstOrDefault(x => x.PostId == postId && x.UserId == userId);
+                .FirstOrDefault(x => x.PostId == voteInputModel.PostId && x.UserId == voteInputModel.UserId);
             if (vote != null)
             {
-                vote.Type = isUpVote ? VoteType.UpVote : VoteType.DownVote;
+                vote.Type = voteInputModel.IsUpVote ? VoteType.UpVote : VoteType.DownVote;
             }
             else
             {
                 vote = new Vote
                 {
-                    PostId = postId,
-                    UserId = userId,
-                    Type = isUpVote ? VoteType.UpVote : VoteType.DownVote,
+                    PostId = voteInputModel.PostId,
+                    UserId = voteInputModel.UserId,
+                    Type = voteInputModel.IsUpVote ? VoteType.UpVote : VoteType.DownVote,
                 };
 
                 await this.votesRepository.AddAsync(vote);
