@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MyFishingApp.Data\MyFishingApp.Data.csproj" />
     <ProjectReference Include="..\..\Services\MyFishingApp.Services.Data\MyFishingApp.Services.Data.csproj" />
+    <ProjectReference Include="..\..\Services\MyFishingApp.Services.Mapping\MyFishingApp.Services.Mapping.csproj" />
   </ItemGroup>
 
 </Project>

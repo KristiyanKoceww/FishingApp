@@ -42,28 +42,28 @@
             await this.reservoirRepository.AddAsync(reservoir);
             await this.reservoirRepository.SaveChangesAsync();
 
-            Account account = new Account();
+            //Account account = new Account();
 
-            Cloudinary cloudinary = new Cloudinary(account);
-            cloudinary.Api.Secure = true;
+            //Cloudinary cloudinary = new Cloudinary(account);
+            //cloudinary.Api.Secure = true;
 
-            var uploadParams = new ImageUploadParams()
-            {
-                File = new FileDescription($"{createReservoirInputModel.ImageUrl}"),
-                PublicId = reservoir.Id,
-                Folder = "FishApp/ReservoirImages/",
-            };
+            //var uploadParams = new ImageUploadParams()
+            //{
+            //    File = new FileDescription($"{createReservoirInputModel.ImageUrl}"),
+            //    PublicId = reservoir.Id,
+            //    Folder = "FishApp/ReservoirImages/",
+            //};
 
-            var uploadResult = cloudinary.Upload(uploadParams);
+            //var uploadResult = cloudinary.Upload(uploadParams);
 
-            var url = uploadResult.Url.ToString();
+            //var url = uploadResult.Url.ToString();
 
-            var imageUrl = new ImageUrls()
-            {
-                ImageUrl = url,
-            };
+            //var imageUrl = new ImageUrls()
+            //{
+            //    ImageUrl = url,
+            //};
 
-            reservoir.ImageUrls.Add(imageUrl);
+            //reservoir.ImageUrls.Add(imageUrl);
             await this.reservoirRepository.SaveChangesAsync();
         }
 
@@ -95,15 +95,18 @@
         {
             var reservoir = this.GetById(reservoirId);
 
-            reservoir.Name = updateReservoirInputModel.Name;
-            reservoir.Type = updateReservoirInputModel.Type;
-            reservoir.Description = updateReservoirInputModel.Description;
-            reservoir.Latitude = updateReservoirInputModel.Latitude;
-            reservoir.Longitude = updateReservoirInputModel.Longitude;
-            reservoir.ImageUrls = updateReservoirInputModel.ImageUrls;
+            if (reservoir is not null)
+            {
+                reservoir.Name = updateReservoirInputModel.Name;
+                reservoir.Type = updateReservoirInputModel.Type;
+                reservoir.Description = updateReservoirInputModel.Description;
+                reservoir.Latitude = updateReservoirInputModel.Latitude;
+                reservoir.Longitude = updateReservoirInputModel.Longitude;
+                reservoir.ImageUrls = updateReservoirInputModel.ImageUrls;
 
-            this.reservoirRepository.Update(reservoir);
-            await this.reservoirRepository.SaveChangesAsync();
+                this.reservoirRepository.Update(reservoir);
+                await this.reservoirRepository.SaveChangesAsync();
+            }
         }
     }
 }

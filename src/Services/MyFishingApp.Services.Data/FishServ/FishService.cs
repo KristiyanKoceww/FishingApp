@@ -1,5 +1,6 @@
 ﻿namespace MyFishingApp.Services.Data.FishServ
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -25,6 +26,12 @@
 
         public async Task CreateAsync(FishInputModel fishInputModel)
         {
+            var fishExists = this.fishRepository.All().Where(x => x.Name == fishInputModel.Name).FirstOrDefault();
+            if (fishExists is not null)
+            {
+                throw new Exception("This fish already exists");
+            }
+
             var fish = new Fish()
             {
                 Name = fishInputModel.Name,
@@ -40,36 +47,39 @@
             await this.fishRepository.AddAsync(fish);
             await this.fishRepository.SaveChangesAsync();
 
-            Account account = new Account();
+            //Account account = new Account();
 
-            Cloudinary cloudinary = new Cloudinary(account);
-            cloudinary.Api.Secure = true;
+            //Cloudinary cloudinary = new Cloudinary(account);
+            //cloudinary.Api.Secure = true;
 
-            var uploadParams = new ImageUploadParams()
-            {
-                File = new FileDescription($"{fishInputModel.ImageUrl}"),
-                PublicId = fish.Id,
-                Folder = "FishApp/FishImages/",
-            };
+            //var uploadParams = new ImageUploadParams()
+            //{
+            //    File = new FileDescription($"{fishInputModel.ImageUrl}"),
+            //    PublicId = fish.Id,
+            //    Folder = "FishApp/FishImages/",
+            //};
 
-            var uploadResult = cloudinary.Upload(uploadParams);
+            //var uploadResult = cloudinary.Upload(uploadParams);
 
-            var url = uploadResult.Url.ToString();
+            //var url = uploadResult.Url.ToString();
 
-            var imageUrl = new ImageUrls()
-            {
-                ImageUrl = url,
-            };
+            //var imageUrl = new ImageUrls()
+            //{
+            //    ImageUrl = url,
+            //};
 
-            fish.ImageUrls.Add(imageUrl);
-            await this.fishRepository.SaveChangesAsync();
+            //fish.ImageUrls.Add(imageUrl);
+            //await this.fishRepository.SaveChangesAsync();
         }
 
         public async Task DeleteFish(string fishId)
         {
             var fish = this.GetById(fishId);
-            this.fishRepository.Delete(fish);
-            await this.fishRepository.SaveChangesAsync();
+            if (fish is not null)
+            {
+                this.fishRepository.Delete(fish);
+                await this.fishRepository.SaveChangesAsync();
+            }
         }
 
         public IEnumerable<Fish> GetAllFish()
@@ -99,17 +109,21 @@
         public async Task UpdateFish(FishInputModel fishInputModel, string fishId)
         {
             var fish = this.fishRepository.All().Where(x => x.Id == fishId).FirstOrDefault();
-            fish.Name = fishInputModel.Name;
-            fish.Weight = fishInputModel.Weight;
-            fish.Lenght = fishInputModel.Lenght;
-            fish.Habittat = fishInputModel.Habittat;
-            fish.Nutrition = fishInputModel.Nutrition;
-            fish.Description = fishInputModel.Description;
-            fish.Tips = fishInputModel.Tips;
-            fish.ImageUrls = fishInputModel.ImageUrls;
 
-            this.fishRepository.Update(fish);
-            await this.fishRepository.SaveChangesAsync();
+            if (fish is not null)
+            {
+                fish.Name = fishInputModel.Name;
+                fish.Weight = fishInputModel.Weight;
+                fish.Lenght = fishInputModel.Lenght;
+                fish.Habittat = fishInputModel.Habittat;
+                fish.Nutrition = fishInputModel.Nutrition;
+                fish.Description = fishInputModel.Description;
+                fish.Tips = fishInputModel.Tips;
+                fish.ImageUrls = fishInputModel.ImageUrls;
+
+                this.fishRepository.Update(fish);
+                await this.fishRepository.SaveChangesAsync();
+            }
         }
     }
 }
