@@ -34,7 +34,7 @@
         }
 
         [Fact]
-        public void GetPostByIdShouldReturnNullIfPostDoesntExists()
+        public void GetPostByIdShouldThrowsExcepitonIfPostDoesntExists()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -42,9 +42,7 @@
             var repository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
             var postService = new PostsService(repository);
 
-            var post = postService.GetById(1);
-
-            Assert.Null(post);
+            Assert.Throws<Exception>(() => postService.GetById(1));
         }
 
         [Fact]
@@ -115,6 +113,20 @@
             await postService.DeleteAsync(1);
 
             Assert.Equal(1, repository.All().Count());
+        }
+
+        [Fact]
+        public async Task TestDeletePostShouldThrowsExceptionWhenNoPostFound()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
+
+            await repository.SaveChangesAsync();
+            var postService = new PostsService(repository);
+
+            await Assert.ThrowsAsync<Exception>(() => postService.DeleteAsync(1));
         }
 
         public class MyTestPost : IMapFrom<Post>

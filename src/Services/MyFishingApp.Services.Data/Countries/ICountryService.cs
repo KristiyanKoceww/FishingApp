@@ -13,5 +13,7 @@
         IEnumerable<Country> GetAll();
 
         Country FindCountryById(string countryId);
+
+        Task DeleteCountryAsync(string countryId);
     }
 }

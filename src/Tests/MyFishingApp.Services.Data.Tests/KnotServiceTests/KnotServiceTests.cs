@@ -43,7 +43,7 @@
         }
 
         [Fact]
-        public async Task TestCreate2KnotsWithSameNames()
+        public async Task TestCreate2KnotsWithSameNamesShouldThrowException()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -55,24 +55,14 @@
 
             var model = new KnotInputModel
             {
-                Name = "8",
-                Type = "Simple",
-                Description = "Simple knot",
-            };
-
-            var model2 = new KnotInputModel
-            {
-                Name = "8",
+                Name = "Knot",
                 Type = "Simple",
                 Description = "Simple knot",
             };
 
             await knotService.CreateKnotAsync(model);
-            await knotService.CreateKnotAsync(model2);
 
-            var result = repository.All().Count();
-
-            Assert.Equal(2, result);
+            await Assert.ThrowsAsync<Exception>(() => knotService.CreateKnotAsync(model));
         }
 
         [Fact]
@@ -110,7 +100,7 @@
         }
 
         [Fact]
-        public void GetKnotByIdShouldReturnNullIfDoesntExists()
+        public void GetKnotByIdShouldThrowExceptionIfDoesntExists()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -120,9 +110,7 @@
 
             var knotService = new KnotService(repository, imageRepository);
 
-            var res = knotService.GetById("1");
-
-            Assert.Null(res);
+            Assert.Throws<Exception>(() => knotService.GetById("1"));
         }
 
         [Fact]
@@ -155,7 +143,7 @@
         }
 
         [Fact]
-        public void GetAllKnotsShouldReturnZero()
+        public void GetAllKnotsShouldThrowExceptionIfNoKnotsFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -165,9 +153,7 @@
 
             var knotService = new KnotService(repository, imageRepository);
 
-            var res = knotService.GetAllKnots();
-
-            Assert.Empty(res);
+            Assert.Throws<Exception>(() => knotService.GetAllKnots());
         }
 
         [Fact]
@@ -202,7 +188,7 @@
         }
 
         [Fact]
-        public async Task TestDeleteKnotShouldDoNothingWhenIsNotFound()
+        public async Task TestDeleteKnotShouldThrowExceptionWhenIsNotFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -221,9 +207,7 @@
 
             var knotService = new KnotService(repository, imageRepository);
 
-            var res = knotService.DeleteKnotAsync("2");
-
-            Assert.Equal(1, repository.All().Count());
+            await Assert.ThrowsAsync<Exception>(() => knotService.DeleteKnotAsync("2"));
         }
 
         [Fact]
@@ -283,11 +267,7 @@
                 Name = "Simple Knot",
             };
 
-            await knotService.UpdateKnotAsync(model, "2");
-
-            var res = repository.All().FirstOrDefault();
-
-            Assert.Equal("8", res.Name);
+            await Assert.ThrowsAsync<Exception>(() => knotService.UpdateKnotAsync(model, "2"));
         }
     }
 }

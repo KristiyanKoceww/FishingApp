@@ -39,16 +39,26 @@
 
             if (post is not null)
             {
-               this.postsRepository.Delete(post);
-               await this.postsRepository.SaveChangesAsync();
+                this.postsRepository.Delete(post);
+                await this.postsRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No post found by this id");
             }
         }
 
         public Post GetById(int id)
         {
             var post = this.postsRepository.All().Where(x => x.Id == id).FirstOrDefault();
-
-            return post;
+            if (post is not null)
+            {
+                return post;
+            }
+            else
+            {
+                throw new Exception("No knot found by this id");
+            }
         }
     }
 }

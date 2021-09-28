@@ -1,5 +1,6 @@
 ﻿namespace MyFishingApp.Services.Data.Countries
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -19,6 +20,12 @@
 
         public async Task CreateAsync(CountryInputModel countryInputModel)
         {
+            var countryExists = this.countryRepository.All().Where(x => x.Name == countryInputModel.Name).FirstOrDefault();
+            if (countryExists is not null)
+            {
+                throw new Exception("This country already exists");
+            }
+
             var country = new Country()
             {
                 Name = countryInputModel.Name,
@@ -28,10 +35,31 @@
             await this.countryRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteCountryAsync(string countryId)
+        {
+            var country = this.FindCountryById(countryId);
+            if (country is not null)
+            {
+                this.countryRepository.Delete(country);
+                await this.countryRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No country found  by this id");
+            }
+        }
+
         public Country FindCountryById(string countryId)
         {
             var country = this.countryRepository.All().Where(x => x.Id == countryId).FirstOrDefault();
-            return country;
+            if (country is not null)
+            {
+                return country;
+            }
+            else
+            {
+                throw new Exception("No country found  by this id");
+            }
         }
 
         public IEnumerable<Country> GetAll()
@@ -43,7 +71,15 @@
                 CreatedOn = x.CreatedOn,
             }).ToList();
 
-            return countries;
+            if (countries.Count > 0)
+            {
+
+                return countries;
+            }
+            else
+            {
+                throw new Exception("No countries found");
+            }
         }
     }
 }

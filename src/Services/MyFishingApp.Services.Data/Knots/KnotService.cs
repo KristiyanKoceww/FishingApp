@@ -27,6 +27,12 @@
 
         public async Task CreateKnotAsync(KnotInputModel knotInputModel)
         {
+            var knotExists = this.knotRepository.All().Where(x => x.Name == knotInputModel.Name).FirstOrDefault();
+            if (knotExists is not null)
+            {
+                throw new Exception("This knot already exists");
+            }
+
             var knot = new Knot()
             {
                 Name = knotInputModel.Name,
@@ -71,10 +77,14 @@
         public async Task DeleteKnotAsync(string knotId)
         {
             var knot = this.GetById(knotId);
-            if (knot != null)
+            if (knot is not null)
             {
                 this.knotRepository.Delete(knot);
                 await this.knotRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No knot found by this id");
             }
         }
 
@@ -89,20 +99,35 @@
                 ImageUrls = x.ImageUrls,
             }).ToList();
 
-            return knots;
+            if (knots.Count > 0)
+            {
+                return knots;
+            }
+            else
+            {
+                throw new Exception("No knots found");
+            }
+
         }
 
         public Knot GetById(string knotId)
         {
             var knot = this.knotRepository.All().Where(x => x.Id == knotId).FirstOrDefault();
-            return knot;
+            if (knot is not null)
+            {
+                return knot;
+            }
+            else
+            {
+                throw new Exception("No knot found by this id");
+            }
         }
 
         public async Task UpdateKnotAsync(KnotInputModel knotInputModel, string knotId)
         {
             // Update images and Images URL
             var knot = this.GetById(knotId);
-            if (knot != null)
+            if (knot is not null)
             {
                 knot.Name = knotInputModel.Name;
                 knot.Type = knotInputModel.Type;
@@ -111,6 +136,10 @@
 
                 this.knotRepository.Update(knot);
                 await this.knotRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No knot found by this id");
             }
         }
     }

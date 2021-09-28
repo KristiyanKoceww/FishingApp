@@ -80,6 +80,10 @@
                 this.fishRepository.Delete(fish);
                 await this.fishRepository.SaveChangesAsync();
             }
+            else
+            {
+                throw new Exception("There is no fish found by this id");
+            }
         }
 
         public IEnumerable<Fish> GetAllFish()
@@ -97,13 +101,28 @@
                 ImageUrls = x.ImageUrls,
             }).ToList();
 
-            return fish;
+            if (fish.Count > 0)
+            {
+                return fish;
+            }
+            else
+            {
+                throw new Exception("There is no fish found by this id");
+            }
         }
 
         public Fish GetById(string fishId)
         {
             var fish = this.fishRepository.All().Where(x => x.Id == fishId).FirstOrDefault();
-            return fish;
+
+            if (fish is not null)
+            {
+                return fish;
+            }
+            else
+            {
+                throw new Exception("There is no fish found by this id");
+            }
         }
 
         public async Task UpdateFish(FishInputModel fishInputModel, string fishId)
@@ -123,6 +142,10 @@
 
                 this.fishRepository.Update(fish);
                 await this.fishRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("There is no fish found by this id");
             }
         }
     }

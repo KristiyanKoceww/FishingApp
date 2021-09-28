@@ -1,5 +1,6 @@
 ﻿namespace MyFishingApp.Services.Data.AppUsers
 {
+    using System;
     using System.Linq;
     using System.Security.Cryptography;
     using System.Text;
@@ -89,6 +90,10 @@
                 this.appUserRepository.Delete(user);
                 await this.appUserRepository.SaveChangesAsync();
             }
+            else
+            {
+                throw new Exception("No user found  by this id");
+            }
         }
 
         public ApplicationUser GetById(string userId)
@@ -99,8 +104,10 @@
             {
                 return user;
             }
-
-            return null;
+            else
+            {
+                throw new Exception("No user found  by this id");
+            }
         }
 
         public async Task UpdateUserAsync(UserInputModel userInputModel, string userId)
@@ -121,6 +128,10 @@
 
                 this.appUserRepository.Update(user);
                 await this.appUserRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No user found  by this id");
             }
         }
     }

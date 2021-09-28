@@ -1,5 +1,6 @@
 ﻿namespace AirportSystem.Services.Data.CitiesAndCountries
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -20,6 +21,12 @@
 
         public async Task CreateAsync(CitiesInputModel citiesInputModel)
         {
+            var cityExists = this.cityRepository.All().Where(x => x.Name == citiesInputModel.Name).FirstOrDefault();
+            if (cityExists is not null)
+            {
+                throw new Exception("This city already exists");
+            }
+
             var city = new City()
             {
                 Name = citiesInputModel.Name,
@@ -37,13 +44,27 @@
         {
             var city = this.cityRepository.All().Where(x => x.Id == cityId).FirstOrDefault();
 
-            return city;
+            if (city is not null)
+            {
+                return city;
+            }
+            else
+            {
+                throw new Exception("No city found  by this id");
+            }
         }
 
         public City FindCityByName(string cityName)
         {
             var city = this.cityRepository.All().Where(x => x.Name == cityName).FirstOrDefault();
-            return city;
+            if (city is not null)
+            {
+                return city;
+            }
+            else
+            {
+                throw new Exception("No city found  by this id");
+            }
         }
 
         public IEnumerable<City> GetAllCities()
@@ -55,7 +76,14 @@
                 CountryId = x.CountryId,
             }).ToList();
 
-            return cities;
+            if (cities.Count > 0)
+            {
+                return cities;
+            }
+            else
+            {
+                throw new Exception("No cities found");
+            }
         }
     }
 }

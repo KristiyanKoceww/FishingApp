@@ -57,7 +57,7 @@
         }
 
         [Fact]
-        public async Task TestCreate2ReservoirWithSameNames()
+        public async Task TestCreate2ReservoirWithSameNamesShouldThrowsException()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -78,11 +78,7 @@
             };
 
             await reservoirService.CreateReservoir(model);
-            await reservoirService.CreateReservoir(model2);
-
-            var result = repository.All().Count();
-
-            Assert.Equal(2, result);
+            await Assert.ThrowsAsync<Exception>(() => reservoirService.CreateReservoir(model2));
         }
 
         [Fact]
@@ -94,8 +90,8 @@
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
             var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            repository.AddAsync(new Reservoir { Id = "1",  Name = "Iskar" }).GetAwaiter().GetResult();
-            repository.AddAsync(new Reservoir { Id = "2",  Name = "Dunav" }).GetAwaiter().GetResult();
+            repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
+            repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
             var reservoirService = new ReservoirService(repository, imageRepository);
@@ -108,7 +104,7 @@
         }
 
         [Fact]
-        public void GetReservoirByIdShouldReturnNullIfDoesntExists()
+        public void GetReservoirByIdShouldThrowsExceptionIfDoesntExists()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -118,9 +114,7 @@
 
             var reservoirService = new ReservoirService(repository, imageRepository);
 
-            var res = reservoirService.GetById("1");
-
-            Assert.Null(res);
+            Assert.Throws<Exception>(() => reservoirService.GetById("1"));
         }
 
         [Fact]
@@ -144,7 +138,7 @@
         }
 
         [Fact]
-        public void GetAllReservoirsShouldReturnZero()
+        public void GetAllReservoirsShouldThrowsExceptionWhenThereAreNoReservoirsFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -154,9 +148,7 @@
 
             var reservoirService = new ReservoirService(repository, imageRepository);
 
-            var res = reservoirService.GetAllReservoirs(1, 12);
-
-            Assert.Empty(res);
+            Assert.Throws<Exception>(() => reservoirService.GetAllReservoirs(1, 2));
         }
 
         [Fact]
@@ -180,7 +172,7 @@
         }
 
         [Fact]
-        public async Task TestDeleteReservoirShouldDoNothingWhenIsNotFound()
+        public async Task TestDeleteReservoirThrowsExceptionWhenIsNotFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -194,9 +186,7 @@
 
             var reservoirService = new ReservoirService(repository, imageRepository);
 
-            var res = reservoirService.DeleteReservoir("3");
-
-            Assert.Equal(2, repository.All().Count());
+            await Assert.ThrowsAsync<Exception>(() => reservoirService.DeleteReservoir("3"));
         }
 
         [Fact]
@@ -221,7 +211,7 @@
             await reservoirService.UpdateReservoir(model, "1");
             var res = repository.All().FirstOrDefault();
 
-            Assert.Equal("Dunav",res.Name);
+            Assert.Equal("Dunav", res.Name);
         }
 
         [Fact]
@@ -243,10 +233,7 @@
                 Name = "Dunav",
             };
 
-            await reservoirService.UpdateReservoir(model, "2");
-            var res = repository.All().FirstOrDefault();
-
-            Assert.Equal("Iskar", res.Name);
+            await Assert.ThrowsAsync<Exception>(() => reservoirService.UpdateReservoir(model, "3"));
         }
     }
 }

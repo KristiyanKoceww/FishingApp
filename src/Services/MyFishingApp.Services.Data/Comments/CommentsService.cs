@@ -41,6 +41,10 @@
                 this.commentsRepository.Delete(comment);
                 await this.commentsRepository.SaveChangesAsync();
             }
+            else
+            {
+                throw new Exception("No comment found  by this id");
+            }
         }
 
         public bool IsInPostId(int commentId, int postId)

@@ -25,7 +25,6 @@
 
             var fishService = new FishService(repository, imageRepository);
 
-
             var model = new FishInputModel
             {
                 Name = "Carp",
@@ -114,7 +113,7 @@
         }
 
         [Fact]
-        public async Task TestDeleteFishShouldDoNothingIfNotFound()
+        public async Task TestDeleteFishShouldThrowExceptionIfNotFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -137,8 +136,7 @@
 
             await fishService.CreateAsync(model);
 
-            await fishService.DeleteFish("2");
-
+            await Assert.ThrowsAsync<Exception>(() => fishService.DeleteFish("2"));
             Assert.Equal(1, repository.All().Count());
         }
 
@@ -183,7 +181,7 @@
         }
 
         [Fact]
-        public void TestGetAllFishShouldReturnZeroWhenCollectionIsEmpty()
+        public void TestGetAllFishShouldThrowsExceptionWhenCollectionIsEmpty()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -193,9 +191,7 @@
 
             var fishService = new FishService(repository, imageRepository);
 
-            var fish = fishService.GetAllFish();
-
-            Assert.Empty(fish);
+            Assert.Throws<Exception>(() => fishService.GetAllFish());
         }
 
         [Fact]
@@ -243,7 +239,7 @@
         }
 
         [Fact]
-        public async Task TestGetFishByIdShouldReturnNullWhenNoMatch()
+        public async Task TestGetFishByIdShouldThrowExceptionWhenNoMatch()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -278,12 +274,7 @@
             });
 
             await repository.SaveChangesAsync();
-
-            var fish1 = fishService.GetById("3");
-            var fish2 = fishService.GetById("4");
-
-            Assert.Null(fish2);
-            Assert.Null(fish1);
+            Assert.Throws<Exception>(() => fishService.GetById("3"));
         }
 
         [Fact]
@@ -331,7 +322,7 @@
         }
 
         [Fact]
-        public async Task TestUpdateFishShouldDoNothingIfNotFishFound()
+        public async Task TestUpdateFishShouldThrowsExceptionIfNotFishFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -366,12 +357,7 @@
                 Tips = "Very hard to catch",
             };
 
-            await fishService.UpdateFish(model, "2");
-
-            var fish = repository.All().FirstOrDefault();
-
-            Assert.Equal("Carp", fish.Name);
-            Assert.Equal(100, fish.Lenght);
+            await Assert.ThrowsAsync<Exception>(() => fishService.UpdateFish(model, "2"));
         }
     }
 }

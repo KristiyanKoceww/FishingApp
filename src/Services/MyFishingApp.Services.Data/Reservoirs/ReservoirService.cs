@@ -27,6 +27,12 @@
 
         public async Task CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
         {
+            var reservoirExists = this.reservoirRepository.All().Where(x => x.Name == createReservoirInputModel.Name).FirstOrDefault();
+            if (reservoirExists is not null)
+            {
+                throw new Exception("This reservoir already exists");
+            }
+
             var reservoir = new Reservoir()
             {
                 Name = createReservoirInputModel.Name,
@@ -70,8 +76,15 @@
         public async Task DeleteReservoir(string reservoirId)
         {
             var reservoir = this.GetById(reservoirId);
-            this.reservoirRepository.Delete(reservoir);
-            await this.reservoirRepository.SaveChangesAsync();
+            if (reservoir is not null)
+            {
+                this.reservoirRepository.Delete(reservoir);
+                await this.reservoirRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No reservoir found by this id");
+            }
         }
 
         public IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12)
@@ -81,14 +94,27 @@
             //.Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
             //.ToList();
 
-            return reservoirs;
+            if (reservoirs.Count > 0)
+            {
+                return reservoirs;
+            }
+            else
+            {
+                throw new Exception("No reservoirs found");
+            }
         }
 
         public Reservoir GetById(string reservoirId)
         {
             var reservoir = this.reservoirRepository.All().Where(x => x.Id == reservoirId).FirstOrDefault();
-
-            return reservoir;
+            if (reservoir is not null)
+            {
+                return reservoir;
+            }
+            else
+            {
+                throw new Exception("No reservoir found by this id");
+            }
         }
 
         public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel, string reservoirId)
@@ -106,6 +132,10 @@
 
                 this.reservoirRepository.Update(reservoir);
                 await this.reservoirRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No reservoir found by this id");
             }
         }
     }
