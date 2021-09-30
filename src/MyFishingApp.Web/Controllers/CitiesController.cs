@@ -22,7 +22,7 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser(CitiesInputModel citiesInputModel )
+        public async Task<IActionResult> CreateCity(CitiesInputModel citiesInputModel )
         {
             await this.cityService.CreateAsync(citiesInputModel);
 

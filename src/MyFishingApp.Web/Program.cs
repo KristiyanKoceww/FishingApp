@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyFishingApp.Web1
+namespace MyFishingApp.Web
 {
     public class Program
     {

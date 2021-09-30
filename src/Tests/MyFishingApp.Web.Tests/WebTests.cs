@@ -4,7 +4,7 @@
     using System.Threading.Tasks;
 
     using Microsoft.AspNetCore.Mvc.Testing;
-    using MyFishingApp.Web1;
+    using MyFishingApp.Web;
     using Xunit;
 
     public class WebTests : IClassFixture<WebApplicationFactory<Startup>>

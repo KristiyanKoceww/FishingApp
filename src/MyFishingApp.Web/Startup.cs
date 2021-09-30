@@ -35,7 +35,7 @@ using MyFishingApp.Services.Data.Weather;
 using MyFishingApp.Services.Data.AppUsers;
 using CloudinaryDotNet;
 
-namespace MyFishingApp.Web1
+namespace MyFishingApp.Web
 {
     public class Startup
     {
