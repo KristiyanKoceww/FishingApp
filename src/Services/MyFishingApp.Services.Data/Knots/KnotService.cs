@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
@@ -14,15 +15,11 @@
     public class KnotService : IKnotService
     {
         private readonly IDeletableEntityRepository<Knot> knotRepository;
-        private readonly IDeletableEntityRepository<Image> imageRepository;
-        private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif" };
 
         public KnotService(
-            IDeletableEntityRepository<Knot> knotRepository,
-            IDeletableEntityRepository<Image> imageRepository)
+            IDeletableEntityRepository<Knot> knotRepository)
         {
             this.knotRepository = knotRepository;
-            this.imageRepository = imageRepository;
         }
 
         public async Task CreateKnotAsync(KnotInputModel knotInputModel)
@@ -49,29 +46,31 @@
             await this.knotRepository.AddAsync(knot);
             await this.knotRepository.SaveChangesAsync();
 
-            //Account account = new Account();
+            Account account = new Account();
+            account.ApiKey = "342347788652393";
+            account.ApiSecret = "vekpkVY3cf729mldgq5aBrJmdbY";
+            account.Cloud = "kocewwcloud";
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
 
-            //Cloudinary cloudinary = new Cloudinary(account);
-            //cloudinary.Api.Secure = true;
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription($"{knotInputModel.ImageUrl}"),
+                PublicId = knot.Id,
+                Folder = "FishApp/KnotImages/",
+            };
 
-            //var uploadParams = new ImageUploadParams()
-            //{
-            //    File = new FileDescription($"{knotInputModel.ImageUrl}"),
-            //    PublicId = knot.Id,
-            //    Folder = "FishApp/KnotImages/",
-            //};
+            var uploadResult = cloudinary.Upload(uploadParams);
 
-            //var uploadResult = cloudinary.Upload(uploadParams);
+            var url = uploadResult.Url.ToString();
 
-            //var url = uploadResult.Url.ToString();
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
 
-            //var imageUrl = new ImageUrls()
-            //{
-            //    ImageUrl = url,
-            //};
-
-            //knot.ImageUrls.Add(imageUrl);
-            //await this.knotRepository.SaveChangesAsync();
+            knot.ImageUrls.Add(imageUrl);
+            await this.knotRepository.SaveChangesAsync();
         }
 
         public async Task DeleteKnotAsync(string knotId)
@@ -95,7 +94,6 @@
                 Name = x.Name,
                 Type = x.Type,
                 Description = x.Description,
-                Images = x.Images,
                 ImageUrls = x.ImageUrls,
             }).ToList();
 

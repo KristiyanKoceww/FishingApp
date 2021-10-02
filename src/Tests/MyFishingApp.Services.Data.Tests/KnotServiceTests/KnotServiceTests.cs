@@ -23,9 +23,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+            
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
 
             var model = new KnotInputModel
@@ -49,9 +49,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+            
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             var model = new KnotInputModel
             {
@@ -72,7 +72,7 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+            
 
             repository.AddAsync(new Knot
             {
@@ -90,7 +90,7 @@
             }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             var res = knotService.GetById("1");
             var res2 = knotService.GetById("2");
@@ -106,9 +106,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+           
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             Assert.Throws<Exception>(() => knotService.GetById("1"));
         }
@@ -120,7 +120,6 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
             repository.AddAsync(new Knot
             {
@@ -136,7 +135,7 @@
             }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
             var res = knotService.GetAllKnots();
 
             Assert.Equal(2, res.Count());
@@ -149,9 +148,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+            
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             Assert.Throws<Exception>(() => knotService.GetAllKnots());
         }
@@ -162,7 +161,7 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+            
 
             repository.AddAsync(new Knot
             {
@@ -180,7 +179,7 @@
             }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             var res = knotService.DeleteKnotAsync("1");
 
@@ -193,7 +192,7 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+           
 
             repository.AddAsync(new Knot
             {
@@ -205,7 +204,7 @@
 
             await repository.SaveChangesAsync();
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             await Assert.ThrowsAsync<Exception>(() => knotService.DeleteKnotAsync("2"));
         }
@@ -216,7 +215,7 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+           
 
             repository.AddAsync(new Knot
             {
@@ -228,7 +227,7 @@
 
             await repository.SaveChangesAsync();
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             var model = new KnotInputModel
             {
@@ -248,7 +247,7 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
+           
 
             repository.AddAsync(new Knot
             {
@@ -260,7 +259,7 @@
 
             await repository.SaveChangesAsync();
 
-            var knotService = new KnotService(repository, imageRepository);
+            var knotService = new KnotService(repository);
 
             var model = new KnotInputModel
             {

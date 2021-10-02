@@ -21,9 +21,8 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+            var fishService = new FishService(repository);
 
             var model = new FishInputModel
             {
@@ -50,9 +49,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             var model = new FishInputModel
             {
@@ -88,9 +87,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             var model = new FishInputModel
             {
@@ -119,9 +118,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             var model = new FishInputModel
             {
@@ -147,9 +146,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             await repository.AddAsync(new Fish()
             {
@@ -187,9 +186,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             Assert.Throws<Exception>(() => fishService.GetAllFish());
         }
@@ -201,9 +200,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             await repository.AddAsync(new Fish()
             {
@@ -245,9 +244,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             await repository.AddAsync(new Fish()
             {
@@ -284,9 +283,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+
+            var fishService = new FishService(repository);
 
             await repository.AddAsync(new Fish()
             {
@@ -328,9 +327,8 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var fishService = new FishService(repository, imageRepository);
+            var fishService = new FishService(repository);
 
             await repository.AddAsync(new Fish()
             {

@@ -14,14 +14,11 @@
     public class FishService : IFishService
     {
         private readonly IDeletableEntityRepository<Fish> fishRepository;
-        private readonly IDeletableEntityRepository<Image> imageRepository;
 
         public FishService(
-            IDeletableEntityRepository<Fish> fishRepository,
-            IDeletableEntityRepository<Image> imageRepository)
+            IDeletableEntityRepository<Fish> fishRepository)
         {
             this.fishRepository = fishRepository;
-            this.imageRepository = imageRepository;
         }
 
         public async Task CreateAsync(FishInputModel fishInputModel)
@@ -47,29 +44,32 @@
             await this.fishRepository.AddAsync(fish);
             await this.fishRepository.SaveChangesAsync();
 
-            //Account account = new Account();
+            Account account = new Account();
+            account.ApiKey = "342347788652393";
+            account.ApiSecret = "vekpkVY3cf729mldgq5aBrJmdbY";
+            account.Cloud = "kocewwcloud";
 
-            //Cloudinary cloudinary = new Cloudinary(account);
-            //cloudinary.Api.Secure = true;
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
 
-            //var uploadParams = new ImageUploadParams()
-            //{
-            //    File = new FileDescription($"{fishInputModel.ImageUrl}"),
-            //    PublicId = fish.Id,
-            //    Folder = "FishApp/FishImages/",
-            //};
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription($"{fishInputModel.ImageUrl}"),
+                PublicId = fish.Id,
+                Folder = "FishApp/FishImages/",
+            };
 
-            //var uploadResult = cloudinary.Upload(uploadParams);
+            var uploadResult = cloudinary.Upload(uploadParams);
 
-            //var url = uploadResult.Url.ToString();
+            var url = uploadResult.Url.ToString();
 
-            //var imageUrl = new ImageUrls()
-            //{
-            //    ImageUrl = url,
-            //};
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
 
-            //fish.ImageUrls.Add(imageUrl);
-            //await this.fishRepository.SaveChangesAsync();
+            fish.ImageUrls.Add(imageUrl);
+            await this.fishRepository.SaveChangesAsync();
         }
 
         public async Task DeleteFish(string fishId)
@@ -97,7 +97,6 @@
                 Nutrition = x.Nutrition,
                 Description = x.Description,
                 Tips = x.Tips,
-                Images = x.Images,
                 ImageUrls = x.ImageUrls,
             }).ToList();
 

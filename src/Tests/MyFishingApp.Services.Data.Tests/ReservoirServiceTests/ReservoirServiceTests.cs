@@ -21,9 +21,8 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var country = new Country()
             {
@@ -63,9 +62,8 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var model = new CreateReservoirInputModel
             {
@@ -88,13 +86,11 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
-
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var res = reservoirService.GetById("1");
             var res2 = reservoirService.GetById("2");
@@ -110,9 +106,9 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+
+            var reservoirService = new ReservoirService(repository);
 
             Assert.Throws<Exception>(() => reservoirService.GetById("1"));
         }
@@ -124,13 +120,12 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var res = reservoirService.GetAllReservoirs(1, 12);
 
@@ -144,9 +139,8 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             Assert.Throws<Exception>(() => reservoirService.GetAllReservoirs(1, 2));
         }
@@ -158,13 +152,12 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var res = reservoirService.DeleteReservoir("1");
 
@@ -178,13 +171,12 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             await Assert.ThrowsAsync<Exception>(() => reservoirService.DeleteReservoir("3"));
         }
@@ -196,12 +188,10 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
-
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var model = new UpdateReservoirInputModel
             {
@@ -221,12 +211,11 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var imageRepository = new EfDeletableEntityRepository<Image>(new ApplicationDbContext(options.Options));
 
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository, imageRepository);
+            var reservoirService = new ReservoirService(repository);
 
             var model = new UpdateReservoirInputModel
             {

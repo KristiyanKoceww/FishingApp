@@ -5,6 +5,7 @@
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
+
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
@@ -14,15 +15,11 @@
     public class ReservoirService : IReservoirService
     {
         private readonly IDeletableEntityRepository<Reservoir> reservoirRepository;
-        private readonly IDeletableEntityRepository<Image> imageRepository;
-        private readonly string[] allowedExtensions = new[] { "jpg", "png", "gif" };
 
         public ReservoirService(
-            IDeletableEntityRepository<Reservoir> reservoirRepository,
-            IDeletableEntityRepository<Image> imageRepository)
+            IDeletableEntityRepository<Reservoir> reservoirRepository)
         {
             this.reservoirRepository = reservoirRepository;
-            this.imageRepository = imageRepository;
         }
 
         public async Task CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
@@ -48,28 +45,30 @@
             await this.reservoirRepository.AddAsync(reservoir);
             await this.reservoirRepository.SaveChangesAsync();
 
-            //Account account = new Account();
+            Account account = new Account();
+            account.ApiKey = "342347788652393";
+            account.ApiSecret = "vekpkVY3cf729mldgq5aBrJmdbY";
+            account.Cloud = "kocewwcloud";
+            Cloudinary cloudinary = new Cloudinary(account);
+            cloudinary.Api.Secure = true;
 
-            //Cloudinary cloudinary = new Cloudinary(account);
-            //cloudinary.Api.Secure = true;
+            var uploadParams = new ImageUploadParams()
+            {
+                File = new FileDescription($"{createReservoirInputModel.ImageUrl}"),
+                PublicId = reservoir.Id,
+                Folder = "FishApp/ReservoirImages/",
+            };
 
-            //var uploadParams = new ImageUploadParams()
-            //{
-            //    File = new FileDescription($"{createReservoirInputModel.ImageUrl}"),
-            //    PublicId = reservoir.Id,
-            //    Folder = "FishApp/ReservoirImages/",
-            //};
+            var uploadResult = cloudinary.Upload(uploadParams);
 
-            //var uploadResult = cloudinary.Upload(uploadParams);
+            var url = uploadResult.Url.ToString();
 
-            //var url = uploadResult.Url.ToString();
+            var imageUrl = new ImageUrls()
+            {
+                ImageUrl = url,
+            };
 
-            //var imageUrl = new ImageUrls()
-            //{
-            //    ImageUrl = url,
-            //};
-
-            //reservoir.ImageUrls.Add(imageUrl);
+            reservoir.ImageUrls.Add(imageUrl);
             await this.reservoirRepository.SaveChangesAsync();
         }
 

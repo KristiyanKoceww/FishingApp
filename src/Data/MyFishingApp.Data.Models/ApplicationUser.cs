@@ -16,7 +16,6 @@ namespace MyFishingApp.Data.Models
             this.Roles = new HashSet<IdentityUserRole<string>>();
             this.Claims = new HashSet<IdentityUserClaim<string>>();
             this.Logins = new HashSet<IdentityUserLogin<string>>();
-            this.Images = new HashSet<Image>();
             this.Posts = new HashSet<Post>();
             this.ImageUrls = new HashSet<ImageUrls>();
         }
@@ -51,8 +50,6 @@ namespace MyFishingApp.Data.Models
         public DateTime? DeletedOn { get; set; }
 
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }
-
-        public virtual ICollection<Image> Images { get; set; }
 
         public virtual ICollection<Post> Posts { get; set; }
 

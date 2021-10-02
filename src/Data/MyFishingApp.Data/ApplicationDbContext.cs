@@ -29,11 +29,7 @@
 
         public DbSet<Country> Countries { get; set; }
 
-        public DbSet<Image> Images { get; set; }
-
         public DbSet<Reservoir> Reservoirs { get; set; }
-
-        public DbSet<Weather1> Weather { get; set; }
 
         public DbSet<Knot> Knots { get; set; }
 

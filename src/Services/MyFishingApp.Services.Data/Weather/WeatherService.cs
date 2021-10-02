@@ -10,14 +10,11 @@
 
     public class WeatherService : IWeatherService
     {
-        private readonly IDeletableEntityRepository<Weather1> weatherRepository;
         private readonly IDeletableEntityRepository<WeatherForecast> weatherForecastRepository;
 
         public WeatherService(
-            IDeletableEntityRepository<Weather1> weatherRepository,
             IDeletableEntityRepository<WeatherForecast> weatherForecastRepository)
         {
-            this.weatherRepository = weatherRepository;
             this.weatherForecastRepository = weatherForecastRepository;
         }
 
@@ -68,9 +65,6 @@
             await this.weatherForecastRepository.SaveChangesAsync();
 
 
-
-
-
             //var weather = new Weather1()
             //{
             //    Temperature = weatherInputModel.Temperature,
@@ -95,26 +89,26 @@
 
         public async Task UpdateWeather(WeatherInputModel weatherInputModel, string weatherId)
         {
-            var weather = this.weatherRepository.All().Where(x => x.Id == weatherId).FirstOrDefault();
-            if (weather is not null)
-            {
-                weather.Temperature = weatherInputModel.Temperature;
-                weather.Main = weatherInputModel.Main;
-                weather.Latitude = weatherInputModel.Latitude;
-                weather.Longitude = weatherInputModel.Longitude;
-                weather.CityName = weatherInputModel.CityName;
-                weather.Wind = weatherInputModel.Wind;
-                weather.Cloudy = weatherInputModel.Cloudy;
-                weather.Humitity = weatherInputModel.Humitity;
-            }
+            //var weather = this.weatherForecastRepository.All().Where(x => x.Id == weatherId).FirstOrDefault();
+            //if (weather is not null)
+            //{
+            //    weather.Temperature = weatherInputModel.Temperature;
+            //    weather.Main = weatherInputModel.Main;
+            //    weather.Latitude = weatherInputModel.Latitude;
+            //    weather.Longitude = weatherInputModel.Longitude;
+            //    weather.CityName = weatherInputModel.CityName;
+            //    weather.Wind = weatherInputModel.Wind;
+            //    weather.Cloudy = weatherInputModel.Cloudy;
+            //    weather.Humitity = weatherInputModel.Humitity;
+            //}
 
-            if (weatherInputModel.Pressure is not null)
-            {
-                weather.Pressure = weatherInputModel.Pressure;
-            }
+            //if (weatherInputModel.Pressure is not null)
+            //{
+            //    weather.Pressure = weatherInputModel.Pressure;
+            //}
 
-            this.weatherRepository.Update(weather);
-            await this.weatherRepository.SaveChangesAsync();
+            //this.weatherRepository.Update(weather);
+            //await this.weatherRepository.SaveChangesAsync();
         }
     }
 }

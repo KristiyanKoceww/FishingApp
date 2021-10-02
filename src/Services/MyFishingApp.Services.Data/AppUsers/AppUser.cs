@@ -58,7 +58,9 @@
             await this.appUserRepository.SaveChangesAsync();
 
             Account account = new Account();
-
+            account.ApiKey = "342347788652393";
+            account.ApiSecret = "vekpkVY3cf729mldgq5aBrJmdbY";
+            account.Cloud = "kocewwcloud";
             Cloudinary cloudinary = new Cloudinary(account);
             cloudinary.Api.Secure = true;
 
