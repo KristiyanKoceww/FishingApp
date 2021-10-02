@@ -45,9 +45,6 @@
         public string ImageUrl { get; set; }
 
         [Required]
-        public virtual IEnumerable<IFormFile> Images { get; set; }
-
-        [Required]
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }
     }
 }

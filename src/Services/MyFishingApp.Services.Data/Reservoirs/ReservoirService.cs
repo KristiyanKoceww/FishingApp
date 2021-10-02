@@ -46,29 +46,30 @@
             await this.reservoirRepository.SaveChangesAsync();
 
             Account account = new Account();
-            account.ApiKey = "342347788652393";
-            account.ApiSecret = "vekpkVY3cf729mldgq5aBrJmdbY";
-            account.Cloud = "kocewwcloud";
             Cloudinary cloudinary = new Cloudinary(account);
             cloudinary.Api.Secure = true;
-
-            var uploadParams = new ImageUploadParams()
+            var count = 0;
+            foreach (var image in createReservoirInputModel.ImageUrls)
             {
-                File = new FileDescription($"{createReservoirInputModel.ImageUrl}"),
-                PublicId = reservoir.Id,
-                Folder = "FishApp/ReservoirImages/",
-            };
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription($"{image.ImageUrl}"),
+                    PublicId = reservoir.Id + count,
+                    Folder = "FishApp/ReservoirImages/",
+                };
 
-            var uploadResult = cloudinary.Upload(uploadParams);
+                var uploadResult = cloudinary.Upload(uploadParams);
+                count++;
+            }
 
-            var url = uploadResult.Url.ToString();
+            //var url = uploadResult.Url.ToString();
 
-            var imageUrl = new ImageUrls()
-            {
-                ImageUrl = url,
-            };
+            //var imageUrl = new ImageUrls()
+            //{
+            //    ImageUrl = url,
+            //};
 
-            reservoir.ImageUrls.Add(imageUrl);
+            //reservoir.ImageUrls.Add(imageUrl);
             await this.reservoirRepository.SaveChangesAsync();
         }
 

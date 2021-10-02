@@ -24,17 +24,10 @@
         public string Description { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(20)]
         public double Latitude { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(20)]
         public double Longitude { get; set; }
-
-        [Required]
-        public IEnumerable<IFormFile> Images { get; set; }
 
         [Required]
         public ICollection<Fish> Fish { get; set; }
@@ -44,9 +37,6 @@
 
         [Required]
         public string ImageUrl { get; set; }
-
-        [Required]
-        public string ImageOriginalUrl { get; set; }
 
         [Required]
         public virtual City City { get; set; }

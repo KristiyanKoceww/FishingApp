@@ -24,13 +24,11 @@
         public string Description { get; set; }
 
         [Required]
-        public virtual ICollection<IFormFile> Images { get; set; }
-
-        [Required]
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }
 
         public string VideoUrl { get; set; }
 
+        [Required]
         public string ImageUrl { get; set; }
     }
 }
