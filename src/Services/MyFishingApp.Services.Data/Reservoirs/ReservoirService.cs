@@ -45,8 +45,8 @@
             await this.reservoirRepository.AddAsync(reservoir);
             await this.reservoirRepository.SaveChangesAsync();
 
-            Account account = new Account();
-            Cloudinary cloudinary = new Cloudinary(account);
+            Account account = new();
+            Cloudinary cloudinary = new(account);
             cloudinary.Api.Secure = true;
             var count = 0;
             foreach (var image in createReservoirInputModel.ImageUrls)
@@ -62,14 +62,14 @@
                 count++;
             }
 
-            //var url = uploadResult.Url.ToString();
+            // var url = uploadResult.Url.ToString();
 
-            //var imageUrl = new ImageUrls()
-            //{
+            // var imageUrl = new ImageUrls()
+            // {
             //    ImageUrl = url,
-            //};
+            // };
 
-            //reservoir.ImageUrls.Add(imageUrl);
+            // reservoir.ImageUrls.Add(imageUrl);
             await this.reservoirRepository.SaveChangesAsync();
         }
 
@@ -90,10 +90,10 @@
         public IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12)
         {
             var reservoirs = this.reservoirRepository.AllAsNoTracking().ToList();
-            //.OrderByDescending(x => x.Id)
-            //.Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
-            //.ToList();
 
+             // .OrderByDescending(x => x.Id)
+            // .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
+            // .ToList();
             if (reservoirs.Count > 0)
             {
                 return reservoirs;

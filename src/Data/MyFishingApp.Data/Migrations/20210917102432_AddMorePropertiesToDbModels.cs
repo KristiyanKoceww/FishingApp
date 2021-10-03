@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace MyFishingApp.Data.Migrations
+﻿namespace MyFishingApp.Data.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddMorePropertiesToDbModels : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

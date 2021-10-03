@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# SA1122: Use string.Empty for empty strings
+dotnet_diagnostic.SA1122.severity = silent

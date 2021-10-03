@@ -2,9 +2,8 @@
 {
     using System.Linq;
 
-    using MyFishingApp.Data.Common.Models;
-
     using Microsoft.EntityFrameworkCore;
+    using MyFishingApp.Data.Common.Models;
 
     internal static class EntityIndexesConfiguration
     {

@@ -189,7 +189,7 @@
         }
 
         [Fact]
-        public async Task TestGetAllCitiesShouldThrowExceptionWhenNoCitiesAreFound()
+        public void TestGetAllCitiesShouldThrowExceptionWhenNoCitiesAreFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());

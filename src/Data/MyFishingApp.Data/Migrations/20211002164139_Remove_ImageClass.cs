@@ -80,7 +80,7 @@
                     KnotId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     RemoteImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ReservoirId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    ReservoirId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                 },
                 constraints: table =>
                 {
@@ -130,7 +130,7 @@
                     ModifiedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Pressure = table.Column<double>(type: "float", nullable: true),
                     Temperature = table.Column<double>(type: "float", nullable: false),
-                    Wind = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Wind = table.Column<string>(type: "nvarchar(max)", nullable: true),
                 },
                 constraints: table =>
                 {

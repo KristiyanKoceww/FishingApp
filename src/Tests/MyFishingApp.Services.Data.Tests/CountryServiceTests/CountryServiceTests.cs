@@ -79,18 +79,17 @@
 
             var repository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
 
-            //await repository.AddAsync(new Country()
-            //{
-            //    Id = "1",
-            //    Name = "Bulgaria",
-            //});
-            //await repository.AddAsync(new Country()
-            //{
-            //    Id = "2",
-            //    Name = "Germany",
-            //});
-            //await repository.SaveChangesAsync();
-
+            // await repository.AddAsync(new Country()
+            // {
+            //     Id = "1",
+            //     Name = "Bulgaria",
+            // });
+            // await repository.AddAsync(new Country()
+            // {
+            //     Id = "2",
+            //     Name = "Germany",
+            // });
+            // await repository.SaveChangesAsync();
             var countryService = new CountryService(repository);
             var model = new CountryInputModel
             {
@@ -180,7 +179,7 @@
         }
 
         [Fact]
-        public async Task TestGetAllCountriesShouldThrowExceptionWhenNoCountriesFound()
+        public void TestGetAllCountriesShouldThrowExceptionWhenNoCountriesFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());

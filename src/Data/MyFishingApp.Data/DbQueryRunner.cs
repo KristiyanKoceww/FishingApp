@@ -3,9 +3,8 @@
     using System;
     using System.Threading.Tasks;
 
-    using MyFishingApp.Data.Common;
-
     using Microsoft.EntityFrameworkCore;
+    using MyFishingApp.Data.Common;
 
     public class DbQueryRunner : IDbQueryRunner
     {

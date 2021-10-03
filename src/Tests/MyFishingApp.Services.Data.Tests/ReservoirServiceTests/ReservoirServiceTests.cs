@@ -106,8 +106,6 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-
-
             var reservoirService = new ReservoirService(repository);
 
             Assert.Throws<Exception>(() => reservoirService.GetById("1"));
@@ -139,7 +137,6 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-
             var reservoirService = new ReservoirService(repository);
 
             Assert.Throws<Exception>(() => reservoirService.GetAllReservoirs(1, 2));
@@ -159,7 +156,7 @@
 
             var reservoirService = new ReservoirService(repository);
 
-            var res = reservoirService.DeleteReservoir("1");
+            await reservoirService.DeleteReservoir("1");
 
             Assert.Equal(1, repository.All().Count());
         }

@@ -44,9 +44,9 @@
             await this.fishRepository.AddAsync(fish);
             await this.fishRepository.SaveChangesAsync();
 
-            Account account = new Account();
+            Account account = new();
 
-            Cloudinary cloudinary = new Cloudinary(account);
+            Cloudinary cloudinary = new(account);
             cloudinary.Api.Secure = true;
             var count = 0;
             foreach (var image in fishInputModel.ImageUrls)
@@ -61,14 +61,7 @@
                 var uploadResult = cloudinary.Upload(uploadParams);
                 count++;
             }
-            //var url = uploadResult.Url.ToString();
 
-            //var imageUrl = new ImageUrls()
-            //{
-            //    ImageUrl = url,
-            //};
-
-            //fish.ImageUrls.Add(imageUrl);
             await this.fishRepository.SaveChangesAsync();
         }
 

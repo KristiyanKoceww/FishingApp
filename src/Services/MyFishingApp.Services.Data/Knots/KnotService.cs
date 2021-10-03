@@ -46,8 +46,8 @@
             await this.knotRepository.AddAsync(knot);
             await this.knotRepository.SaveChangesAsync();
 
-            Account account = new Account();
-            Cloudinary cloudinary = new Cloudinary(account);
+            Account account = new();
+            Cloudinary cloudinary = new(account);
             cloudinary.Api.Secure = true;
             var count = 0;
             foreach (var image in knotInputModel.ImageUrls)
@@ -62,14 +62,7 @@
                 var uploadResult = cloudinary.Upload(uploadParams);
                 count++;
             }
-            //var url = uploadResult.Url.ToString();
 
-            //var imageUrl = new ImageUrls()
-            //{
-            //    ImageUrl = url,
-            //};
-
-            //knot.ImageUrls.Add(imageUrl);
             await this.knotRepository.SaveChangesAsync();
         }
 
@@ -105,7 +98,6 @@
             {
                 throw new Exception("No knots found");
             }
-
         }
 
         public Knot GetById(string knotId)

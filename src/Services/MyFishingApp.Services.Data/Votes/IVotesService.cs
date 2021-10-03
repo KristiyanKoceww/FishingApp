@@ -1,7 +1,8 @@
 ﻿namespace MyFishingApp.Services.Data.Votes
 {
-    using MyFishingApp.Services.Data.InputModels.VoteInputModels;
     using System.Threading.Tasks;
+
+    using MyFishingApp.Services.Data.InputModels.VoteInputModels;
 
     public interface IVotesService
     {

@@ -10,7 +10,6 @@
     public class CityControllerTests
     {
         // https://github.com/ivaylokenov/MyTested.AspNetCore.Mvc/tree/development/samples/Blog/Blog.Test
-
         [Fact]
         public void GetAllCitiesShouldReturnJson()
             => MyController<CitiesController>
@@ -44,7 +43,6 @@
             .Ok();
 
         // Check if that test method fails to see what  does with.Empty
-
         [Fact]
         public void CreateCityShouldReturnJson()
            => MyController<CitiesController>
@@ -54,7 +52,7 @@
            .Ok();
 
         [Fact]
-        public void a()
+        public void A()
             => MyController<CitiesController>
             .Instance()
             .Calling(c => c.GetAllCities())

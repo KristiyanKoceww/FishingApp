@@ -64,51 +64,46 @@
             await this.weatherForecastRepository.AddAsync(weatherForecast);
             await this.weatherForecastRepository.SaveChangesAsync();
 
-
-            //var weather = new Weather1()
-            //{
-            //    Temperature = weatherInputModel.Temperature,
-            //    Main = weatherInputModel.Main,
-            //    Latitude = weatherInputModel.Latitude,
-            //    Longitude = weatherInputModel.Longitude,
-            //    CityName = weatherInputModel.CityName,
-            //    Wind = weatherInputModel.Wind,
-            //    Cloudy = weatherInputModel.Cloudy,
-            //    Humitity = weatherInputModel.Humitity,
-            //};
-
-            //if (weatherInputModel.Pressure is not null)
-            //{
-            //    weather.Pressure = weatherInputModel.Pressure;
-            //}
-
-            //// THINK IF THIS IS THE MOST USEFUL WAY TO DO IT
-            //await this.weatherRepository.AddAsync(weather);
-            //await this.weatherRepository.SaveChangesAsync();
+            // var weather = new Weather1()
+            // {
+            //     Temperature = weatherInputModel.Temperature,
+            //     Main = weatherInputModel.Main,
+            //     Latitude = weatherInputModel.Latitude,
+            //     Longitude = weatherInputModel.Longitude,
+            //     CityName = weatherInputModel.CityName,
+            //     Wind = weatherInputModel.Wind,
+            //     Cloudy = weatherInputModel.Cloudy,
+            //     Humitity = weatherInputModel.Humitity,
+            // };
+            // if (weatherInputModel.Pressure is not null)
+            // {
+            //     weather.Pressure = weatherInputModel.Pressure;
+            // }
+            // // THINK IF THIS IS THE MOST USEFUL WAY TO DO IT
+            // await this.weatherRepository.AddAsync(weather);
+            // await this.weatherRepository.SaveChangesAsync();
         }
 
         public async Task UpdateWeather(WeatherInputModel weatherInputModel, string weatherId)
         {
-            //var weather = this.weatherForecastRepository.All().Where(x => x.Id == weatherId).FirstOrDefault();
-            //if (weather is not null)
-            //{
-            //    weather.Temperature = weatherInputModel.Temperature;
-            //    weather.Main = weatherInputModel.Main;
-            //    weather.Latitude = weatherInputModel.Latitude;
-            //    weather.Longitude = weatherInputModel.Longitude;
-            //    weather.CityName = weatherInputModel.CityName;
-            //    weather.Wind = weatherInputModel.Wind;
-            //    weather.Cloudy = weatherInputModel.Cloudy;
-            //    weather.Humitity = weatherInputModel.Humitity;
-            //}
-
-            //if (weatherInputModel.Pressure is not null)
-            //{
-            //    weather.Pressure = weatherInputModel.Pressure;
-            //}
-
-            //this.weatherRepository.Update(weather);
-            //await this.weatherRepository.SaveChangesAsync();
+            // var weather = this.weatherForecastRepository.All().Where(x => x.Id == weatherId).FirstOrDefault();
+            // if (weather is not null)
+            // {
+            //     weather.Temperature = weatherInputModel.Temperature;
+            //     weather.Main = weatherInputModel.Main;
+            //     weather.Latitude = weatherInputModel.Latitude;
+            //     weather.Longitude = weatherInputModel.Longitude;
+            //     weather.CityName = weatherInputModel.CityName;
+            //     weather.Wind = weatherInputModel.Wind;
+            //     weather.Cloudy = weatherInputModel.Cloudy;
+            //     weather.Humitity = weatherInputModel.Humitity;
+            // }
+            // if (weatherInputModel.Pressure is not null)
+            // {
+            //     weather.Pressure = weatherInputModel.Pressure;
+            // }
+            // this.weatherRepository.Update(weather);
+            // await this.weatherRepository.SaveChangesAsync();
         }
     }
 }

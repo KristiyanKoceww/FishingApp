@@ -2,6 +2,7 @@
 {
     using System;
     using System.Linq;
+
     using MyFishingApp.Web;
     using OpenQA.Selenium;
     using OpenQA.Selenium.Chrome;
