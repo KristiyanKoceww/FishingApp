@@ -10,6 +10,10 @@
     {
         Task CreateAsync(CitiesInputModel citiesInputModel);
 
+        Task UpdateAsync(string cityId, CitiesInputModel citiesInputModel);
+
+        Task DeleteAsync(string cityId);
+
         IEnumerable<City> GetAllCities();
 
         City FindCityById(string cityId);

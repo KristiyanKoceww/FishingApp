@@ -10,6 +10,8 @@
     {
         Task CreateAsync(CountryInputModel countryInputModel);
 
+        Task UpdateAsync(string countryId, string countryName);
+
         IEnumerable<Country> GetAll();
 
         Country FindCountryById(string countryId);

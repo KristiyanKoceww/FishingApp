@@ -3,9 +3,12 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Security.Claims;
     using System.Text;
     using System.Threading.Tasks;
 
+    using CloudinaryDotNet;
+    using CloudinaryDotNet.Actions;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.PostInputModels;
@@ -28,6 +31,28 @@
                 UserId = createPostInputModel.UserId,
             };
 
+            if (createPostInputModel.ImageUrls.Count > 0)
+            {
+                post.ImageUrls = createPostInputModel.ImageUrls;
+
+                Account account = new();
+                Cloudinary cloudinary = new(account);
+                cloudinary.Api.Secure = true;
+                var count = 0;
+                foreach (var image in createPostInputModel.ImageUrls)
+                {
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription($"{image.ImageUrl}"),
+                        PublicId = post.Id.ToString() + count,
+                        Folder = "FishApp/PostImages/",
+                    };
+
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    count++;
+                }
+            }
+
             await this.postsRepository.AddAsync(post);
             await this.postsRepository.SaveChangesAsync();
             return post.Id;
@@ -48,6 +73,14 @@
             }
         }
 
+        public ICollection<Comment> GetAllCommentsToPost(int postId)
+        {
+            var post = this.postsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+            var comments = post.Comments.ToList();
+
+            return comments;
+        }
+
         public Post GetById(int id)
         {
             var post = this.postsRepository.All().Where(x => x.Id == id).FirstOrDefault();
@@ -57,7 +90,24 @@
             }
             else
             {
-                throw new Exception("No knot found by this id");
+                throw new Exception("No post found by this id");
+            }
+        }
+
+        public async Task UpdateAsync(int postId, UpdatePostInputModel updatePostInputModel)
+        {
+            var post = this.postsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+            if (post is not null)
+            {
+                post.Content = updatePostInputModel.Content;
+                post.Title = updatePostInputModel.Title;
+
+                this.postsRepository.Update(post);
+                await this.postsRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No post found by this id");
             }
         }
     }

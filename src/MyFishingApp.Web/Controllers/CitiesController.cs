@@ -22,9 +22,25 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateCity(CitiesInputModel citiesInputModel )
+        public async Task<IActionResult> CreateCity(CitiesInputModel citiesInputModel)
         {
             await this.cityService.CreateAsync(citiesInputModel);
+
+            return Ok();
+        }
+
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteCity(string cityId)
+        {
+            await this.cityService.DeleteAsync(cityId);
+
+            return Ok();
+        }
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateCity(string cityId, CitiesInputModel citiesInputModel)
+        {
+            await this.cityService.UpdateAsync(cityId, citiesInputModel);
 
             return Ok();
         }

@@ -22,18 +22,36 @@ namespace MyFishingAppReact.Controllers
             this.reservoirService = reservoirService;
         }
 
-        [HttpGet]
-        public IEnumerable<Reservoir> Get()
+        [HttpGet("getAllReservoirs")]
+        public IEnumerable<Reservoir> GetAllReservoirs()
         {
-             var reservoirs = this.reservoirService.GetAllReservoirs(1);
+            var reservoirs = this.reservoirService.GetAllReservoirs(1);
             return reservoirs;
-            
+
         }
 
         [HttpPost("create")]
         public void CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
         {
             this.reservoirService.CreateReservoir(createReservoirInputModel);
+        }
+
+        [HttpPost("delete")]
+        public void DeleteReservoir(string reservoirId)
+        {
+            this.reservoirService.DeleteReservoir(reservoirId);
+        }
+
+        [HttpPost("update")]
+        public void UpdateReservoir(string reservoirId, UpdateReservoirInputModel updateReservoirInputModel)
+        {
+            this.reservoirService.UpdateReservoir(updateReservoirInputModel, reservoirId);
+        }
+
+        [HttpGet("getById")]
+        public void GetReservoirById(string reservoirId)
+        {
+            this.reservoirService.GetById(reservoirId);
         }
 
     }

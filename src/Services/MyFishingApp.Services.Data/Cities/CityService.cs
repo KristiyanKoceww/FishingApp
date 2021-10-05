@@ -40,6 +40,21 @@
             await this.cityRepository.SaveChangesAsync();
         }
 
+        public async Task DeleteAsync(string cityId)
+        {
+            var city = this.cityRepository.All().Where(x => x.Id == cityId).FirstOrDefault();
+
+            if (city is not null)
+            {
+                this.cityRepository.Delete(city);
+                await this.cityRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No city found  by this id");
+            }
+        }
+
         public City FindCityById(string cityId)
         {
             var city = this.cityRepository.All().Where(x => x.Id == cityId).FirstOrDefault();
@@ -83,6 +98,25 @@
             else
             {
                 throw new Exception("No cities found");
+            }
+        }
+
+        public async Task UpdateAsync(string cityId, CitiesInputModel citiesInputModel)
+        {
+            var city = this.cityRepository.All().Where(x => x.Id == cityId).FirstOrDefault();
+
+            if (city is not null)
+            {
+                city.Name = citiesInputModel.Name;
+                city.Description = citiesInputModel.Description;
+                city.Country = citiesInputModel.Country;
+                city.CountryName = citiesInputModel.Country.Name;
+                this.cityRepository.Update(city);
+                await this.cityRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No city found  by this id");
             }
         }
     }

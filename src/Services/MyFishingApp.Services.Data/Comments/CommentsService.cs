@@ -13,26 +13,44 @@
     public class CommentsService : ICommentsService
     {
         private readonly IDeletableEntityRepository<Comment> commentsRepository;
+        private readonly IDeletableEntityRepository<Post> postRepository;
 
         public CommentsService(
-            IDeletableEntityRepository<Comment> commentsRepository)
+            IDeletableEntityRepository<Comment> commentsRepository,
+            IDeletableEntityRepository<Post> postRepository)
         {
             this.commentsRepository = commentsRepository;
+            this.postRepository = postRepository;
         }
 
-        public async Task CreateAsync(CommentsInputModel commentsInputModel)
+        public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
         {
             var comment = new Comment
             {
-                Content = commentsInputModel.Content,
-                ParentId = commentsInputModel.ParentId,
-                PostId = commentsInputModel.PostId,
-                UserId = commentsInputModel.UserId,
+                Content = content,
+                ParentId = parentId,
+                PostId = postId,
+                UserId = userId,
             };
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
         }
 
+        // public async Task CreateAsync(CommentsInputModel commentsInputModel, string userId)
+        // {
+        //     var comment = new Comment
+        //     {
+        //         Content = commentsInputModel.Content,
+        //         PostId = commentsInputModel.PostId,
+        //         UserId = userId,
+        //     };
+        //     if (commentsInputModel.ParentId is not null)
+        //     {
+        //         comment.ParentId = commentsInputModel.ParentId;
+        //     }
+        //     await this.commentsRepository.AddAsync(comment);
+        //     await this.commentsRepository.SaveChangesAsync();
+        // }
         public async Task DeleteAsync(int commentId)
         {
             var comment = this.commentsRepository.All().Where(x => x.Id == commentId).FirstOrDefault();
@@ -52,6 +70,29 @@
             var commentPostId = this.commentsRepository.All().Where(x => x.Id == commentId)
                 .Select(x => x.PostId).FirstOrDefault();
             return commentPostId == postId;
+        }
+
+        public async Task UpdateAsync(int commentId, CommentsInputModel commentsInputModel)
+        {
+            var post = this.postRepository.All().Where(x => x.Id == commentsInputModel.PostId).FirstOrDefault();
+            if (post is null)
+            {
+                throw new Exception("No post found  by this id");
+            }
+
+            var comment = post.Comments.FirstOrDefault(x => x.Id == commentId);
+
+            // var comment = this.commentsRepository.All().Where(x => x.Id == commentId).FirstOrDefault();
+            if (comment is not null)
+            {
+                comment.Content = commentsInputModel.Content;
+                this.commentsRepository.Update(comment);
+                await this.commentsRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No comment found  by this id");
+            }
         }
     }
 }

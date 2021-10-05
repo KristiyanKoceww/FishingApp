@@ -42,5 +42,15 @@ namespace MyFishingApp.Web.Controllers
 
             return json;
         }
+
+        [HttpGet("getPostCommentsByPostId/Id")]
+        public string GetPostCommentsByPostId(int postId)
+        {
+            var post = this.postsService.GetAllCommentsToPost(postId);
+
+            var json = JsonConvert.SerializeObject(post);
+
+            return json;
+        }
     }
 }

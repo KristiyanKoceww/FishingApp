@@ -14,6 +14,10 @@
 
         Task DeleteAsync(int postId);
 
+        Task UpdateAsync(int postId, UpdatePostInputModel updatePostInputModel);
+
         Post GetById(int id);
+
+        ICollection<Comment> GetAllCommentsToPost(int postId);
     }
 }

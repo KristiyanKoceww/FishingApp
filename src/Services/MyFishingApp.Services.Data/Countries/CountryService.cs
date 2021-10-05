@@ -80,5 +80,20 @@
                 throw new Exception("No countries found");
             }
         }
+
+        public async Task UpdateAsync(string countryId, string countryName)
+        {
+            var country = this.countryRepository.All().Where(x => x.Id == countryId).FirstOrDefault();
+            if (country is not null)
+            {
+                country.Name = countryName;
+                this.countryRepository.Update(country);
+                await this.countryRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No country found  by this id");
+            }
+        }
     }
 }

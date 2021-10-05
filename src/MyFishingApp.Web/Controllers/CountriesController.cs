@@ -29,6 +29,22 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateCountry(string countryId, string countryName)
+        {
+            await this.countryService.UpdateAsync(countryId, countryName);
+
+            return Ok();
+        }
+
+        [HttpPost("delete")]
+        public async Task<IActionResult> DeleteCountry(string countryId)
+        {
+            await this.countryService.DeleteCountryAsync(countryId);
+
+            return Ok();
+        }
+
         [HttpGet("getCountries")]
         public string GetAllCountries()
         {
@@ -48,5 +64,7 @@ namespace MyFishingApp.Web.Controllers
 
             return json;
         }
+
+
     }
 }
