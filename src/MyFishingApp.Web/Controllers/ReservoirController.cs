@@ -54,5 +54,11 @@ namespace MyFishingAppReact.Controllers
             this.reservoirService.GetById(reservoirId);
         }
 
+        [HttpGet("getByName")]
+        public void GetReservoirByName(string reservoirName)
+        {
+            this.reservoirService.GetByName(reservoirName);
+        }
+
     }
 }

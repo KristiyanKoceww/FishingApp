@@ -45,32 +45,27 @@
             await this.reservoirRepository.AddAsync(reservoir);
             await this.reservoirRepository.SaveChangesAsync();
 
-            Account account = new();
-            Cloudinary cloudinary = new(account);
-            cloudinary.Api.Secure = true;
-            var count = 0;
-            foreach (var image in createReservoirInputModel.ImageUrls)
+            if (createReservoirInputModel.ImageUrls != null)
             {
-                var uploadParams = new ImageUploadParams()
+                Account account = new();
+                Cloudinary cloudinary = new(account);
+                cloudinary.Api.Secure = true;
+                var count = 0;
+                foreach (var image in createReservoirInputModel.ImageUrls)
                 {
-                    File = new FileDescription($"{image.ImageUrl}"),
-                    PublicId = reservoir.Id + count,
-                    Folder = "FishApp/ReservoirImages/",
-                };
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription($"{image.ImageUrl}"),
+                        PublicId = reservoir.Id + count,
+                        Folder = "FishApp/ReservoirImages/",
+                    };
 
-                var uploadResult = cloudinary.Upload(uploadParams);
-                count++;
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    count++;
+                }
+
+                await this.reservoirRepository.SaveChangesAsync();
             }
-
-            // var url = uploadResult.Url.ToString();
-
-            // var imageUrl = new ImageUrls()
-            // {
-            //    ImageUrl = url,
-            // };
-
-            // reservoir.ImageUrls.Add(imageUrl);
-            await this.reservoirRepository.SaveChangesAsync();
         }
 
         public async Task DeleteReservoir(string reservoirId)
@@ -91,7 +86,7 @@
         {
             var reservoirs = this.reservoirRepository.AllAsNoTracking().ToList();
 
-             // .OrderByDescending(x => x.Id)
+            // .OrderByDescending(x => x.Id)
             // .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
             // .ToList();
             if (reservoirs.Count > 0)
@@ -114,6 +109,19 @@
             else
             {
                 throw new Exception("No reservoir found by this id");
+            }
+        }
+
+        public Reservoir GetByName(string reservoirName)
+        {
+            var reservoir = this.reservoirRepository.All().Where(x => x.Name == reservoirName).FirstOrDefault();
+            if (reservoir is not null)
+            {
+                return reservoir;
+            }
+            else
+            {
+                throw new Exception("No reservoir found by this name!");
             }
         }
 

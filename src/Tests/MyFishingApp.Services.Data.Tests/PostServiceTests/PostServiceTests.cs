@@ -130,9 +130,54 @@
             await Assert.ThrowsAsync<Exception>(() => postService.DeleteAsync(1));
         }
 
+        [Fact]
+        public async Task TestUpdatePostShouldWorkCorrectly()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
+            repository.AddAsync(new Post { Id = 1, Title = "test" }).GetAwaiter().GetResult();
+            await repository.SaveChangesAsync();
+            var postService = new PostsService(repository);
+
+            var model = new UpdatePostInputModel()
+            {
+                Content = "test",
+                Title = "new test",
+            };
+
+            await postService.UpdateAsync(1, model);
+            var post = repository.All().Where(x => x.Id == 1).FirstOrDefault();
+
+            Assert.NotNull(post);
+            Assert.Equal("test", post.Content);
+            Assert.Equal("new test", post.Title);
+        }
+
+        [Fact]
+        public async Task TestUpdatePostShouldThrowsExceptionWhenNoPostFound()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
+
+            await repository.SaveChangesAsync();
+            var postService = new PostsService(repository);
+
+            var model = new UpdatePostInputModel()
+            {
+                Content = "test",
+                Title = "new test",
+            };
+            await Assert.ThrowsAsync<Exception>(() => postService.UpdateAsync(1, model));
+        }
+
         public class MyTestPost : IMapFrom<Post>
         {
             public string Title { get; set; }
         }
+
     }
 }

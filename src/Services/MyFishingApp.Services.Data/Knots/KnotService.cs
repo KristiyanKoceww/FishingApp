@@ -46,24 +46,27 @@
             await this.knotRepository.AddAsync(knot);
             await this.knotRepository.SaveChangesAsync();
 
-            Account account = new();
-            Cloudinary cloudinary = new(account);
-            cloudinary.Api.Secure = true;
-            var count = 0;
-            foreach (var image in knotInputModel.ImageUrls)
+            if (knotInputModel.ImageUrls != null)
             {
-                var uploadParams = new ImageUploadParams()
+                Account account = new();
+                Cloudinary cloudinary = new(account);
+                cloudinary.Api.Secure = true;
+                var count = 0;
+                foreach (var image in knotInputModel.ImageUrls)
                 {
-                    File = new FileDescription($"{image.ImageUrl}"),
-                    PublicId = knot.Id + count,
-                    Folder = "FishApp/KnotImages/",
-                };
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription($"{image.ImageUrl}"),
+                        PublicId = knot.Id + count,
+                        Folder = "FishApp/KnotImages/",
+                    };
 
-                var uploadResult = cloudinary.Upload(uploadParams);
-                count++;
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    count++;
+                }
+
+                await this.knotRepository.SaveChangesAsync();
             }
-
-            await this.knotRepository.SaveChangesAsync();
         }
 
         public async Task DeleteKnotAsync(string knotId)
@@ -110,6 +113,19 @@
             else
             {
                 throw new Exception("No knot found by this id");
+            }
+        }
+
+        public Knot GetByName(string knotName)
+        {
+            var knot = this.knotRepository.All().Where(x => x.Name == knotName).FirstOrDefault();
+            if (knot is not null)
+            {
+                return knot;
+            }
+            else
+            {
+                throw new Exception("No knot found by this name!");
             }
         }
 

@@ -55,6 +55,16 @@ namespace MyFishingApp.Web.Controllers
             return json;
         }
 
+        [HttpGet("getFishByName")]
+        public string GetFishByName(string fishName)
+        {
+            var fish = this.fishService.GetByName(fishName);
+
+            var json = JsonConvert.SerializeObject(fish);
+
+            return json;
+        }
+
         [HttpGet("getAllFish")]
         public string GetAllFish()
         {

@@ -342,5 +342,85 @@
 
             await Assert.ThrowsAsync<Exception>(() => fishService.UpdateFish(model, "2"));
         }
+
+        [Fact]
+        public async Task TestGetFishByNameShouldReturnCorrectFish()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
+            var fishService = new FishService(repository);
+
+            await repository.AddAsync(new Fish()
+            {
+                Id = "1",
+                Name = "Carp",
+                Habittat = "Natural",
+                Description = "Simple knot",
+                Lenght = 100,
+                Weight = 10,
+                Nutrition = "null",
+                Tips = "Very hard to catch",
+            });
+
+            await repository.AddAsync(new Fish()
+            {
+                Id = "2",
+                Name = "Ton",
+                Habittat = "Natural",
+                Description = "Simple knot",
+                Lenght = 100,
+                Weight = 10,
+                Nutrition = "null",
+                Tips = "Very hard to catch",
+            });
+
+            await repository.SaveChangesAsync();
+
+            var fish1 = fishService.GetByName("Carp");
+            var fish2 = fishService.GetByName("Ton");
+
+            Assert.Equal("Carp", fish1.Name);
+            Assert.Equal("Ton", fish2.Name);
+        }
+
+        [Fact]
+        public async Task TestGetFishByNameShouldThrowsExceptionWhenNoMatch()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
+            var fishService = new FishService(repository);
+
+            await repository.AddAsync(new Fish()
+            {
+                Id = "1",
+                Name = "Carp",
+                Habittat = "Natural",
+                Description = "Simple knot",
+                Lenght = 100,
+                Weight = 10,
+                Nutrition = "null",
+                Tips = "Very hard to catch",
+            });
+
+            await repository.AddAsync(new Fish()
+            {
+                Id = "2",
+                Name = "Ton",
+                Habittat = "Natural",
+                Description = "Simple knot",
+                Lenght = 100,
+                Weight = 10,
+                Nutrition = "null",
+                Tips = "Very hard to catch",
+            });
+
+            await repository.SaveChangesAsync();
+
+            Assert.Throws<Exception>(() => fishService.GetByName("myFish"));
+        }
     }
 }

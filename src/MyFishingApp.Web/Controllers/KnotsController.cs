@@ -55,6 +55,16 @@ namespace MyFishingApp.Web.Controllers
             return json;
         }
 
+        [HttpGet("getKnotByName")]
+        public string GetKnotByName(string knotName)
+        {
+            var knot = this.knotService.GetById(knotName);
+
+            var json = JsonConvert.SerializeObject(knot);
+
+            return json;
+        }
+
         [HttpGet("getAllKnots")]
         public string GetAllKnot()
         {

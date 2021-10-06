@@ -33,6 +33,16 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdatePost(int postId, UpdatePostInputModel updatePostInputModel)
+        {
+            await this.postsService.UpdateAsync(postId, updatePostInputModel);
+
+            return Ok();
+        }
+
+
+
         [HttpGet("getPostById/Id")]
         public string GetPostById(int postId)
         {

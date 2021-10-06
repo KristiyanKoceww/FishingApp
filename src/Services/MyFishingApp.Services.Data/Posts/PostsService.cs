@@ -31,7 +31,7 @@
                 UserId = createPostInputModel.UserId,
             };
 
-            if (createPostInputModel.ImageUrls.Count > 0)
+            if (createPostInputModel.ImageUrls != null)
             {
                 post.ImageUrls = createPostInputModel.ImageUrls;
 
@@ -76,7 +76,17 @@
         public ICollection<Comment> GetAllCommentsToPost(int postId)
         {
             var post = this.postsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
-            var comments = post.Comments.ToList();
+            var comments = post.Comments.Select(x => new Comment()
+            {
+                Content = x.Content,
+                ParentId = x.ParentId,
+                PostId = x.PostId,
+            }).ToList();
+
+            if (comments.Count == 0)
+            {
+                throw new Exception("There are no coments for this post!");
+            }
 
             return comments;
         }

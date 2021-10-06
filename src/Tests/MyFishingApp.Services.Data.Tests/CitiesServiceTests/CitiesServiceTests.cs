@@ -74,6 +74,76 @@
         }
 
         [Fact]
+        public async Task TestDeleteCityShouldWorkCorrectly()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(repository);
+
+            var country = new Country()
+            {
+                Id = "1",
+                Name = "Bulgaria",
+            };
+
+            var model = new CitiesInputModel
+            {
+                Name = "Sofia",
+                Description = "Sofia is a city in Bulgarian",
+                Country = country,
+            };
+            var model2 = new CitiesInputModel
+            {
+                Name = "Burgas",
+                Description = "Burgas is a city in Bulgarian",
+                Country = country,
+            };
+
+            await cityService.CreateAsync(model);
+            await cityService.CreateAsync(model2);
+
+            var city = repository.All().Where(x => x.Name == "Sofia").FirstOrDefault();
+            await cityService.DeleteAsync(city.Id);
+            var result = repository.All().Count();
+
+            Assert.Equal("Sofia", city.Name);
+            Assert.Equal(1, result);
+        }
+
+        [Fact]
+        public async Task TestDeleteCityShouldThrowsExceptionWhenCityIsNotFound()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(repository);
+
+            var country = new Country()
+            {
+                Id = "1",
+                Name = "Bulgaria",
+            };
+
+            var model = new CitiesInputModel
+            {
+                Name = "Sofia",
+                Description = "Sofia is a city in Bulgarian",
+                Country = country,
+            };
+
+            await cityService.CreateAsync(model);
+            var result = repository.All().Count();
+
+            await Assert.ThrowsAsync<Exception>(() => cityService.DeleteAsync("myCity"));
+            Assert.Equal(1, result);
+        }
+
+        [Fact]
         public async Task TestGetByIdShouldWorkProperly()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
@@ -199,6 +269,83 @@
             var cityService = new CityService(repository);
 
             Assert.Throws<Exception>(() => cityService.GetAllCities());
+        }
+
+        [Fact]
+        public async Task TestUpdateCityShouldWorkCorrectly()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(repository);
+
+            var country = new Country()
+            {
+                Id = "1",
+                Name = "Bulgaria",
+            };
+
+            var model = new CitiesInputModel
+            {
+                Name = "Sofia",
+                Description = "Sofia is a city in Bulgarian",
+                Country = country,
+            };
+
+            await cityService.CreateAsync(model);
+
+            var city = repository.All().FirstOrDefault();
+
+            var model2 = new CitiesInputModel
+            {
+                Name = "Sofia2",
+                Description = "city",
+                Country = country,
+            };
+            await cityService.UpdateAsync(city.Id, model2);
+
+            Assert.NotNull(city);
+            Assert.Equal("city", city.Description);
+            Assert.Equal("Sofia2", city.Name);
+        }
+
+        [Fact]
+        public async Task TestUpdateCityShouldThrowsExceptionWhenCityIsNotFound()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(repository);
+
+            var country = new Country()
+            {
+                Id = "1",
+                Name = "Bulgaria",
+            };
+
+            var model = new CitiesInputModel
+            {
+                Name = "Sofia",
+                Description = "Sofia is a city in Bulgarian",
+                Country = country,
+            };
+
+            await cityService.CreateAsync(model);
+
+            var city = repository.All().FirstOrDefault();
+
+            var model2 = new CitiesInputModel
+            {
+                Name = "Sofia2",
+                Description = "city",
+                Country = country,
+            };
+
+            await Assert.ThrowsAsync<Exception>(() => cityService.UpdateAsync("myCity", model2));
         }
     }
 }

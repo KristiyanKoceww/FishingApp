@@ -254,5 +254,51 @@
 
             await Assert.ThrowsAsync<Exception>(() => knotService.UpdateKnotAsync(model, "2"));
         }
+
+        [Fact]
+        public async Task GetKnotByNameShouldWorkCorectly()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
+
+            repository.AddAsync(new Knot
+            {
+                Id = "1",
+                Name = "8",
+                Type = "Simple",
+                Description = "Simple knot",
+            }).GetAwaiter().GetResult();
+            repository.AddAsync(new Knot
+            {
+                Id = "2",
+                Name = "So Simple",
+                Type = "Simple",
+                Description = "Simple knot",
+            }).GetAwaiter().GetResult();
+            await repository.SaveChangesAsync();
+
+            var knotService = new KnotService(repository);
+
+            var res = knotService.GetByName("8");
+            var res2 = knotService.GetByName("So Simple");
+
+            Assert.Equal("8", res.Name);
+            Assert.Equal("So Simple", res2.Name);
+        }
+
+        [Fact]
+        public void GetKnotByNameShouldThrowExceptionIfDoesntExists()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Knot>(new ApplicationDbContext(options.Options));
+            var knotService = new KnotService(repository);
+
+            Assert.Throws<Exception>(() => knotService.GetByName("myKnot"));
+        }
+
     }
 }

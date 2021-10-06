@@ -190,5 +190,48 @@
 
             Assert.Throws<Exception>(() => countryService.GetAll());
         }
+
+        [Fact]
+        public async Task TestUpdateCountryShouldWorkCorrectly()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var countryService = new CountryService(repository);
+
+            var model = new CountryInputModel
+            {
+                Name = "Bulgaria",
+            };
+
+            await countryService.CreateAsync(model);
+            var country = repository.All().FirstOrDefault();
+
+            await countryService.UpdateAsync(country.Id, "India");
+
+            Assert.NotNull(country);
+            Assert.Equal("India", country.Name);
+        }
+
+        [Fact]
+        public async Task TestUpdateCityShouldThrowsExceptionWhenCityIsNotFound()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var countryService = new CountryService(repository);
+
+            var model = new CountryInputModel
+            {
+                Name = "Sofia",
+            };
+
+            await countryService.CreateAsync(model);
+            await Assert.ThrowsAsync<Exception>(() => countryService.UpdateAsync("myCity", "myCountry"));
+        }
     }
 }

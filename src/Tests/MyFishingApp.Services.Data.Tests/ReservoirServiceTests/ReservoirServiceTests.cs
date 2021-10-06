@@ -221,5 +221,37 @@
 
             await Assert.ThrowsAsync<Exception>(() => reservoirService.UpdateReservoir(model, "3"));
         }
+
+        [Fact]
+        public async Task GetReservoirByNameShouldWorkCorrectly()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+
+            repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
+            repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
+            await repository.SaveChangesAsync();
+            var reservoirService = new ReservoirService(repository);
+
+            var res = reservoirService.GetByName("Iskar");
+            var res2 = reservoirService.GetByName("Dunav");
+
+            Assert.Equal("Iskar", res.Name);
+            Assert.Equal("Dunav", res2.Name);
+        }
+
+        [Fact]
+        public void GetReservoirByNameShouldThrowsExceptionIfDoesntExists()
+        {
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+            var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var reservoirService = new ReservoirService(repository);
+
+            Assert.Throws<Exception>(() => reservoirService.GetByName("myReservoir"));
+        }
     }
 }

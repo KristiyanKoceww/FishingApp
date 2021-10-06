@@ -16,7 +16,9 @@
 
         Task UpdateFish(FishInputModel updateFishInputModel, string fishId);
 
-        Fish GetById(string reservoirId);
+        Fish GetById(string fishId);
+
+        Fish GetByName(string fishName);
 
         IEnumerable<Fish> GetAllFish();
     }

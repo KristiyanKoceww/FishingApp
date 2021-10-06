@@ -16,6 +16,8 @@
 
         Reservoir GetById(string reservoirId);
 
+        Reservoir GetByName(string reservoirName);
+
         IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12);
     }
 }

@@ -44,25 +44,28 @@
             await this.fishRepository.AddAsync(fish);
             await this.fishRepository.SaveChangesAsync();
 
-            Account account = new();
-
-            Cloudinary cloudinary = new(account);
-            cloudinary.Api.Secure = true;
-            var count = 0;
-            foreach (var image in fishInputModel.ImageUrls)
+            if (fishInputModel.ImageUrls != null)
             {
-                var uploadParams = new ImageUploadParams()
+                Account account = new();
+
+                Cloudinary cloudinary = new(account);
+                cloudinary.Api.Secure = true;
+                var count = 0;
+                foreach (var image in fishInputModel.ImageUrls)
                 {
-                    File = new FileDescription($"{image.ImageUrl}"),
-                    PublicId = fish.Id + count,
-                    Folder = "FishApp/FishImages/",
-                };
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription($"{image.ImageUrl}"),
+                        PublicId = fish.Id + count,
+                        Folder = "FishApp/FishImages/",
+                    };
 
-                var uploadResult = cloudinary.Upload(uploadParams);
-                count++;
+                    var uploadResult = cloudinary.Upload(uploadParams);
+                    count++;
+                }
+
+                await this.fishRepository.SaveChangesAsync();
             }
-
-            await this.fishRepository.SaveChangesAsync();
         }
 
         public async Task DeleteFish(string fishId)
@@ -114,6 +117,20 @@
             else
             {
                 throw new Exception("There is no fish found by this id");
+            }
+        }
+
+        public Fish GetByName(string fishName)
+        {
+            var fish = this.fishRepository.All().Where(x => x.Name == fishName).FirstOrDefault();
+
+            if (fish is not null)
+            {
+                return fish;
+            }
+            else
+            {
+                throw new Exception("There is no fish found by this name!");
             }
         }
 

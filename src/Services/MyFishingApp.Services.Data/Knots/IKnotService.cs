@@ -16,6 +16,8 @@
 
         Knot GetById(string knotId);
 
+        Knot GetByName(string knotName);
+
         IEnumerable<Knot> GetAllKnots();
     }
 }
