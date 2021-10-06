@@ -5,6 +5,7 @@ using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data;
 using MyFishingApp.Services.Data.Dam;
 using MyFishingApp.Services.Data.InputModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,41 +26,53 @@ namespace MyFishingAppReact.Controllers
         }
 
         [HttpGet("getAllReservoirs")]
-        public IEnumerable<Reservoir> GetAllReservoirs()
+        public string GetAllReservoirs()
         {
             var reservoirs = this.reservoirService.GetAllReservoirs(1);
-            return reservoirs;
+            var json = JsonConvert.SerializeObject(reservoirs);
+            return json;
 
         }
 
         [HttpPost("create")]
-        public void CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
+        public async Task<IActionResult> CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
         {
-            this.reservoirService.CreateReservoir(createReservoirInputModel);
+            await this.reservoirService.CreateReservoir(createReservoirInputModel);
+
+            return Ok();
         }
 
         [HttpPost("delete")]
-        public void DeleteReservoir(string reservoirId)
+        public async Task<IActionResult> DeleteReservoir(string reservoirId)
         {
-            this.reservoirService.DeleteReservoir(reservoirId);
+            await this.reservoirService.DeleteReservoir(reservoirId);
+            return Ok();
         }
 
         [HttpPost("update")]
-        public void UpdateReservoir(string reservoirId, UpdateReservoirInputModel updateReservoirInputModel)
+        public async Task<IActionResult> UpdateReservoir(string reservoirId, UpdateReservoirInputModel updateReservoirInputModel)
         {
-            this.reservoirService.UpdateReservoir(updateReservoirInputModel, reservoirId);
-        }
+            await this.reservoirService.UpdateReservoir(updateReservoirInputModel, reservoirId);
+            return Ok();
+         }
 
         [HttpGet("getById")]
-        public void GetReservoirById(string reservoirId)
+        public string GetReservoirById(string reservoirId)
         {
-            this.reservoirService.GetById(reservoirId);
+           var reservoir =  this.reservoirService.GetById(reservoirId);
+
+            var json = JsonConvert.SerializeObject(reservoir);
+
+            return json;
         }
 
         [HttpGet("getByName")]
-        public void GetReservoirByName(string reservoirName)
+        public string GetReservoirByName(string reservoirName)
         {
-            this.reservoirService.GetByName(reservoirName);
+            var reservoir = this.reservoirService.GetByName(reservoirName);
+            var json = JsonConvert.SerializeObject(reservoir);
+
+            return json;
         }
 
     }

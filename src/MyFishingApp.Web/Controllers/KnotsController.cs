@@ -60,7 +60,7 @@ namespace MyFishingApp.Web.Controllers
         [HttpGet("getKnotByName")]
         public string GetKnotByName(string knotName)
         {
-            var knot = this.knotService.GetById(knotName);
+            var knot = this.knotService.GetByName(knotName);
 
             var json = JsonConvert.SerializeObject(knot);
 
