@@ -65,7 +65,7 @@
             }
             else
             {
-                throw new Exception("No city found  by this id");
+                throw new Exception("No city found  by this id!");
             }
         }
 
@@ -78,7 +78,7 @@
             }
             else
             {
-                throw new Exception("No city found  by this id");
+                throw new Exception("No city found  by this name!");
             }
         }
 

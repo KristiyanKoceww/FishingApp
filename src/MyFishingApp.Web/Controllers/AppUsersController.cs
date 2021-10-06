@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data.AppUsers;
 using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
@@ -30,6 +31,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
@@ -38,6 +40,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateUser(UserInputModel userInputModel, string userId)
         {
@@ -45,6 +48,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet("getUser/id")]
         public string GetUserById(string userId)
         {

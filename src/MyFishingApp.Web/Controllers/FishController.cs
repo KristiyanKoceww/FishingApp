@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.FishServ;
 using MyFishingApp.Services.Data.InputModels.FishInputModels;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class FishController : ControllerBase

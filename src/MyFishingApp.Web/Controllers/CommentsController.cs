@@ -14,6 +14,7 @@ using System.Security.Claims;
 
 namespace MyFishingApp.Web.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CommentsController : ControllerBase

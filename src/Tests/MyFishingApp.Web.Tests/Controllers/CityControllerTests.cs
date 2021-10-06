@@ -2,6 +2,7 @@
 {
     using System;
 
+    using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
     using MyFishingApp.Web.Controllers;
     using MyTested.AspNetCore.Mvc;
@@ -11,53 +12,118 @@
     {
         // https://github.com/ivaylokenov/MyTested.AspNetCore.Mvc/tree/development/samples/Blog/Blog.Test
         [Fact]
-        public void GetAllCitiesShouldReturnJson()
+        public void GetAllCitiesShouldReturnJsonString()
+            => MyController<CitiesController>
+            .Instance()
+            .WithData(new City() { Id = "2151", Name = "Varna" })
+            .Calling(c => c.GetAllCities())
+            .ShouldReturn()
+            .ResultOfType<string>();
+
+        [Fact]
+        public void GetAllCitiesShouldReturnNullJsonStringWhenNoCitiesFound()
             => MyController<CitiesController>
             .Instance()
             .Calling(c => c.GetAllCities())
-            .ShouldReturn()
-            .Json();
+            .ShouldThrow()
+            .Exception();
 
         [Fact]
-        public void GetCityByNameShouldReturnJson()
+        public void GetCityByNameShouldReturnJsonString()
             => MyController<CitiesController>
             .Instance()
-            .Calling(c => c.GetCityByName("Sofia"))
+            .WithData(new City() { Id = "2151", Name = "Varna" })
+            .Calling(c => c.GetCityByName("Varna"))
             .ShouldReturn()
-            .Json();
+            .ResultOfType<string>();
 
         [Fact]
-        public void GetAllCityByIdShouldReturnJson()
+        public void GetCitybyNameShouldThrowsExceptionWhenNoCityIsFound()
+           => MyController<CitiesController>
+           .Instance()
+           .WithData(new City() { Id = "2151", Name = "Varna" })
+           .Calling(c => c.GetCityByName("myCity"))
+           .ShouldThrow()
+            .Exception();
+
+        [Fact]
+        public void GetCityByIdShouldReturnJsonString()
             => MyController<CitiesController>
             .Instance()
-            .Calling(c => c.GetCityById("1"))
+            .WithData(new City() { Id = "2151", Name = "Varna" })
+            .Calling(c => c.GetCityById("2151"))
             .ShouldReturn()
-            .Json();
+            .ResultOfType<string>();
+
+        [Fact]
+        public void GetCitybyIdShouldThrowsExceptionWhenNoCityIsFound()
+          => MyController<CitiesController>
+          .Instance()
+          .WithData(new City() { Id = "2151", Name = "Varna" })
+          .Calling(c => c.GetCityByName("13526262623623"))
+          .ShouldThrow()
+           .Exception();
 
         [Fact]
         public void CreateCityShouldReturnOk()
             => MyController<CitiesController>
             .Instance()
-            .Calling(c => c.CreateCity(With.Empty<CitiesInputModel>()))
+            .Calling(c => c.CreateCity(new CitiesInputModel() { Name = "Varna", Description = "Varna", Country = new Country() { Id = "1", Name = "BG" } }))
             .ShouldReturn()
             .Ok();
 
-        // Check if that test method fails to see what  does with.Empty
         [Fact]
-        public void CreateCityShouldReturnJson()
-           => MyController<CitiesController>
-           .Instance(i => i.WithUser())
-           .Calling(c => c.CreateCity(With.Empty<CitiesInputModel>()))
-           .ShouldReturn()
-           .Ok();
-
-        [Fact]
-        public void A()
+        public void CreateCityShouldThrowExceptionWhenArgumentIsMissing()
             => MyController<CitiesController>
             .Instance()
+            .Calling(c => c.CreateCity(new CitiesInputModel() { Name = "Varna", Description = "Varna" }))
+            .ShouldThrow()
+            .Exception();
+
+        [Fact]
+        public void DeleteCityShouldReturnOk()
+            => MyController<CitiesController>
+            .Instance()
+            .WithData(new City() { Id = "2151", Name = "Varna" })
+            .Calling(c => c.DeleteCity("2151"))
+            .ShouldReturn()
+            .Ok();
+
+        [Fact]
+        public void DeleteCityShouldThrowsExceptionWhenNoCityIsFound()
+           => MyController<CitiesController>
+           .Instance()
+           .WithData(new City() { Id = "2151", Name = "Varna" })
+           .Calling(c => c.DeleteCity("215111"))
+           .ShouldThrow()
+            .Exception();
+
+        [Fact]
+        public void GetAllCitiesShouldHaveValidModelState()
+            => MyController<CitiesController>
+            .Instance()
+            .WithData(new City() { Id = "2151", Name = "Varna" })
             .Calling(c => c.GetAllCities())
             .ShouldHave()
             .ValidModelState();
+
+        [Fact]
+        public void GetCityByIdShouldHaveValidModelState()
+            => MyController<CitiesController>
+            .Instance()
+            .WithData(new City() { Id = "2151", Name = "Varna" })
+            .Calling(c => c.GetCityById("2151"))
+            .ShouldHave()
+            .ValidModelState();
+
+        [Fact]
+        public void GetCityByNameShouldHaveValidModelState()
+          => MyController<CitiesController>
+          .Instance()
+          .WithData(new City() { Id = "2151", Name = "Varna" })
+          .Calling(c => c.GetCityByName("Varna"))
+          .ShouldHave()
+          .ValidModelState();
 
         [Fact]
         public void GetAllCitiesRouth() =>
@@ -67,39 +133,30 @@
             .To<CitiesController>(c => c.GetAllCities());
 
         [Fact]
-        public void CreateCityRouth() =>
-           MyRouting
-           .Configuration()
-           .ShouldMap("/api/Cities/create")
-           .To<CitiesController>(c => c.CreateCity(With.Empty<CitiesInputModel>()));
+        public void UpdateCityShouldReturnOk()
+           => MyController<CitiesController>
+           .Instance()
+           .WithData(new City() { Id = "2151", Name = "Varna" })
+           .Calling(c => c.UpdateCity("2151", new CitiesInputModel() { Name = "Sofia", Description = "Super", Country = new Country() { Id = "1", Name = "BG" } }))
+           .ShouldReturn()
+           .Ok();
 
         [Fact]
-        public void GetCityByIdRouth() =>
-           MyRouting
-           .Configuration()
-           .ShouldMap("/api/Cities/getCityById/id")
-           .To<CitiesController>(c => c.GetCityById(Guid.NewGuid().ToString()));
+        public void UpdateCityShouldThrowExceptionWhenCityIsNotFound()
+           => MyController<CitiesController>
+           .Instance()
+           .WithData(new City() { Id = "123153563252", Name = "Varna" })
+           .Calling(c => c.UpdateCity("2151", new CitiesInputModel() { Name = "Sofia", Description = "Super", Country = new Country() { Id = "1", Name = "BG" } }))
+           .ShouldThrow()
+            .Exception();
 
         [Fact]
-        public void GetCityByNameRouth() =>
-           MyRouting
-           .Configuration()
-           .ShouldMap("/api/Cities/getCityByName/Name")
-           .To<CitiesController>(c => c.GetCityByName(Guid.NewGuid().ToString()));
-
-        [Fact]
-        public void GetAll()
-        {
-            var controller = MyController<CitiesController>
-                .Instance();
-
-            // Act
-            var call = controller.Calling(c => c.GetCityById("1"));
-
-            // Assert
-            call
-                .ShouldReturn()
-                .StatusCode(200);
-        }
+        public void UpdateCityShouldThrowExceptionWhenOneArgumentIsMissing()
+           => MyController<CitiesController>
+           .Instance()
+           .WithData(new City() { Id = "123153563252", Name = "Varna" })
+           .Calling(c => c.UpdateCity("2151", new CitiesInputModel() { Name = "Sofia", Description = "Super" }))
+           .ShouldThrow()
+            .Exception();
     }
 }

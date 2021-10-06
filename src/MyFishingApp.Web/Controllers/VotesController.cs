@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.InputModels.VoteInputModels;
 using MyFishingApp.Services.Data.Votes;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class VotesController : ControllerBase
