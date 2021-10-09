@@ -57,28 +57,31 @@
             await this.appUserRepository.AddAsync(user);
             await this.appUserRepository.SaveChangesAsync();
 
-            Account account = new();
-            Cloudinary cloudinary = new(account);
-            cloudinary.Api.Secure = true;
-
-            var uploadParams = new ImageUploadParams()
+            if (userInputModel.MainImageUrl != null)
             {
-                File = new FileDescription($"{userInputModel.MainImageUrl}"),
-                PublicId = user.Id,
-                Folder = "FishApp/UserImages/",
-            };
+                Account account = new();
+                Cloudinary cloudinary = new(account);
+                cloudinary.Api.Secure = true;
 
-            var uploadResult = cloudinary.Upload(uploadParams);
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription($"{userInputModel.MainImageUrl}"),
+                    PublicId = user.Id,
+                    Folder = "FishApp/UserImages/",
+                };
 
-            var url = uploadResult.Url.ToString();
+                var uploadResult = cloudinary.Upload(uploadParams);
 
-            var imageUrl = new ImageUrls()
-            {
-                ImageUrl = url,
-            };
+                var url = uploadResult.Url.ToString();
 
-            user.MainImageUrl = url;
-            await this.appUserRepository.SaveChangesAsync();
+                var imageUrl = new ImageUrls()
+                {
+                    ImageUrl = url,
+                };
+
+                user.MainImageUrl = url;
+                await this.appUserRepository.SaveChangesAsync();
+            }
         }
 
         public async Task DeleteAsync(string userId)
