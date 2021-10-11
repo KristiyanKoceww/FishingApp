@@ -23,12 +23,12 @@
         [MaxLength(300)]
         public string Description { get; set; }
 
-        [Required]
+        //[Required]
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }
 
         public string VideoUrl { get; set; }
 
-        [Required]
+        //[Required]
         public string ImageUrl { get; set; }
     }
 }

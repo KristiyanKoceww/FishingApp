@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class KnotsController : ControllerBase

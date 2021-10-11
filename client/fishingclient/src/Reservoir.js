@@ -8,7 +8,7 @@ export class Reservoir extends Component{
     }
 
     refreshList(){
-        fetch('https://localhost:44366/api/Reservoir')
+        fetch('https://localhost:44366/api/Reservoir/getAllReservoirs')
         .then(r => r.json())
     .then(data => {
         this.setState({reservoir:data})

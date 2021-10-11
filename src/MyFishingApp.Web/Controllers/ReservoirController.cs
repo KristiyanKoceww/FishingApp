@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace MyFishingAppReact.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ReservoirController : ControllerBase

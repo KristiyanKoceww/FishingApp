@@ -36,7 +36,7 @@
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
 
-        [Required]
+        //[Required]
         public string MainImageUrl { get; set; }
 
         [Required]
