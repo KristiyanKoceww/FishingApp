@@ -14,5 +14,7 @@
         Task UpdateUserAsync(UserInputModel userInputModel, string userId);
 
         ApplicationUser GetById(string userId);
+
+        ApplicationUser Authenticate(string username, string password);
     }
 }

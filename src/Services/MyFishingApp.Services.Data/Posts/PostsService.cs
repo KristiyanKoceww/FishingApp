@@ -33,7 +33,11 @@
 
             if (createPostInputModel.ImageUrls != null)
             {
-                post.ImageUrls = createPostInputModel.ImageUrls;
+
+                for (int i = 0; i < createPostInputModel.ImageUrls.Count; i++)
+                {
+                    post.ImageUrls.Add(createPostInputModel.ImageUrls.ToArray()[i]);
+                }
 
                 Account account = new();
                 Cloudinary cloudinary = new(account);
@@ -54,6 +58,7 @@
             }
 
             await this.postsRepository.AddAsync(post);
+
             await this.postsRepository.SaveChangesAsync();
             return post.Id;
         }
@@ -89,6 +94,30 @@
             }
 
             return comments;
+        }
+
+        public IEnumerable<Post> GetAllPosts()
+        {
+            var posts = this.postsRepository.All().Select(x => new Post
+            {
+                Title = x.Title,
+                Content = x.Content,
+                Comments = x.Comments.Select(x => new Comment
+                {
+                    Content = x.Content,
+                }).ToList(),
+                ImageUrls = x.ImageUrls.Select(x => new ImageUrls
+                {
+                    ImageUrl = x.ImageUrl,
+                }).ToList(),
+                Votes = x.Votes.Select(x => new Vote
+                {
+                    Type = x.Type,
+                }).ToList(),
+                UserId = x.UserId,
+                User = x.User,
+            }).ToList();
+            return posts;
         }
 
         public Post GetById(int id)

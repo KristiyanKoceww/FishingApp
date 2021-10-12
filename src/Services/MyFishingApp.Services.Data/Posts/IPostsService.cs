@@ -19,5 +19,7 @@
         Post GetById(int id);
 
         ICollection<Comment> GetAllCommentsToPost(int postId);
+
+        IEnumerable<Post> GetAllPosts();
     }
 }

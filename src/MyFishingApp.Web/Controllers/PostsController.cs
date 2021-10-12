@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
-    [Authorize]
+    
     [ApiController]
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
@@ -59,6 +59,16 @@ namespace MyFishingApp.Web.Controllers
         public string GetPostCommentsByPostId(int postId)
         {
             var post = this.postsService.GetAllCommentsToPost(postId);
+
+            var json = JsonConvert.SerializeObject(post);
+
+            return json;
+        }
+
+        [HttpGet("getAllPosts")]
+        public string GetAllPosts()
+        {
+            var post = this.postsService.GetAllPosts();
 
             var json = JsonConvert.SerializeObject(post);
 

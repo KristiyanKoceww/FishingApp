@@ -7,16 +7,27 @@ import Register from './Account/Register';
 import {BrowserRouter, Route, Switch,NavLink} from 'react-router-dom';
 import CreateCountry from './Country';
 import DisplayAllFish from './Fish/DisplayAllFish';
+import { useState } from 'react';
+import Publications from './Posts/Publications';
+
 
 function App() {
 
+  // [data,setData] = useState([]);
  
+  // getPosts = async() =>{
+  //   const data = await getData();
+  //   setData(data);
+  // }
+
+  // componentDidMount() {
+  //   getPosts();
+  // };
 
   return (
     <BrowserRouter>
     <div className="App container">
       
-    
       <Switch>
         
         <Route path='/Reservoir' component={Reservoir}/>
@@ -34,6 +45,8 @@ function App() {
           <Route exact path='/Country' component={CreateCountry}/>
         </Switch>
       </Switch>
+
+      <Publications/>
     </div>
     </BrowserRouter>
   );

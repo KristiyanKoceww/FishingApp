@@ -8,6 +8,7 @@
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using Microsoft.AspNetCore.Identity;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
@@ -15,10 +16,14 @@
     public class AppUser : IAppUser
     {
         private readonly IRepository<ApplicationUser> appUserRepository;
+        private readonly UserManager<ApplicationUser> userManager;
 
-        public AppUser(IRepository<ApplicationUser> appUserRepository)
+        public AppUser(
+            IRepository<ApplicationUser> appUserRepository,
+            UserManager<ApplicationUser> userManager)
         {
             this.appUserRepository = appUserRepository;
+            this.userManager = userManager;
         }
 
         public static string ComputeSha256Hash(string password)
@@ -41,6 +46,17 @@
 
         public async Task CreateAsync(UserInputModel userInputModel)
         {
+            var userName = this.appUserRepository.All().Where(x => x.UserName == userInputModel.UserName).FirstOrDefault();
+            if (userName != null)
+            {
+                throw new Exception("Username already taken by another user.Please enter new username.");
+            }
+
+            if (string.IsNullOrWhiteSpace(userInputModel.Password) || string.IsNullOrWhiteSpace(userInputModel.UserName))
+            {
+                throw new Exception("Password is required");
+            }
+
             var user = new ApplicationUser()
             {
                 FirstName = userInputModel.FirstName,
@@ -110,6 +126,25 @@
             {
                 throw new Exception("No user found  by this id");
             }
+        }
+
+        public ApplicationUser Authenticate(string username, string password)
+        {
+            var dbUser = this.appUserRepository.All().Where(x => x.UserName == username).FirstOrDefault();
+
+            if (dbUser == null)
+            {
+                return null;
+            }
+
+            var userPassHash = ComputeSha256Hash(password);
+
+            if (!(dbUser.UserName == username && dbUser.PasswordHash == userPassHash))
+            {
+                throw new Exception("Invalid username or password!");
+            }
+
+            return dbUser;
         }
 
         public async Task UpdateUserAsync(UserInputModel userInputModel, string userId)
