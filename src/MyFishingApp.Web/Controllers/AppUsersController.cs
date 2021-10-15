@@ -51,7 +51,7 @@ namespace MyFishingApp.Web.Controllers
                 {
                     new Claim(ClaimTypes.Name, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token =  tokenHandler.CreateToken(tokenDescriptor);
@@ -72,7 +72,14 @@ namespace MyFishingApp.Web.Controllers
                 Token = tokenString,
             });
         }
+        [HttpPost("logOut")]
+        public IActionResult LogOut()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            return null;
+            
+        }
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register (UserInputModel model)

@@ -1,29 +1,12 @@
 import React, { useEffect, useState } from "react";
+import useFetch from "../customHooks/useFetch";
 import Fish from './Fish'
 
 const DisplayAllFish = () => {
-    const [fish, setFish] = useState([]);
-    useEffect(() => {
-        
-        const url = "https://localhost:44366/api/Fish/getAllFish"
-        const fetchData = async () => {
-            try {
-                const response = await fetch(url);
-                const json = await response.json();
-                console.log(json);
-                // console.log(json.data);
-                setFish(json);
-                } catch (error) {
-                console.log("error", error);
-                }
-        };
 
-        fetchData();
-    },[]);
-   
+   const[fish,isFishLoading] = useFetch(`https://localhost:44366/api/Fish/getAllFish`,{});
 
       if (fish === undefined) {
-        console.log(fish);
         return null;
       }
      
@@ -34,7 +17,7 @@ const DisplayAllFish = () => {
      <thead>
          <tr className="text-justify">
              <th className="text-justify">
-                Reservoirs
+                Fish
              </th>
          </tr>
          <tr>

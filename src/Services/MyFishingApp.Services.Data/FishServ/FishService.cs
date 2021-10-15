@@ -109,7 +109,6 @@
         public Fish GetById(string fishId)
         {
             var fish = this.fishRepository.All().Where(x => x.Id == fishId).FirstOrDefault();
-
             if (fish is not null)
             {
                 return fish;

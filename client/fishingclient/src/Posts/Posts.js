@@ -1,30 +1,20 @@
 import React, { useState, useCallback, useEffect, useMemo } from 'react'
 import Post from './Post'
-import getData from './index'
+import useFetch from "../customHooks/useFetch";
 
 
 const Posts = (props) => {
-   
-    const [posts, setPosts] = useState([])
-  
-    const getPosts = useCallback(async () => {
-      const posts = await getData()
-      setPosts(posts)
-    },[])
-  
-    const renderPosts = useMemo(() => {
-      return posts.map((post, index) => {
-        return (
-          <Post key={post.id} index={index} {...post} />
-        )
-      })
-    }, [posts])
-  
-    useEffect(() => {
-        getPosts()
-    }, [])
-  
-    return (
+  const[posts,isPostLoading] = useFetch(`https://localhost:44366/api/Posts/getAllPosts`,{});
+
+  const renderPosts = useMemo(() => {
+    return posts.map((post, index) => {
+      return (
+        <Post key={post.id} index={index} {...post} />
+      )
+    })
+  }, [posts])
+
+  return (
       <div>
         {renderPosts}
       </div>

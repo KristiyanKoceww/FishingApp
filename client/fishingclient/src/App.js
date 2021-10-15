@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Navbar from './NavbarMenu/Navbar';
@@ -7,22 +8,12 @@ import Register from './Account/Register';
 import {BrowserRouter, Route, Switch,NavLink} from 'react-router-dom';
 import CreateCountry from './Country';
 import DisplayAllFish from './Fish/DisplayAllFish';
-import { useState } from 'react';
 import Publications from './Posts/Publications';
-
+import Fish from './Fish/Fish';
+import FishPublications from './Fish/FishPublication';
+import RenderRibi from './Fish/Riba';
 
 function App() {
-
-  // [data,setData] = useState([]);
- 
-  // getPosts = async() =>{
-  //   const data = await getData();
-  //   setData(data);
-  // }
-
-  // componentDidMount() {
-  //   getPosts();
-  // };
 
   return (
     <BrowserRouter>
@@ -35,6 +26,9 @@ function App() {
         <Route path='/Create' component={CreateKnot}/>
         <Route exact path='/Register' component={Register}/>
         <Route exact path='/Country' component={CreateCountry}/>
+        <Route exact path='/Posts' component={Publications}/>
+        <Route exact path='/FishPublication' component={FishPublications}/>
+        <Route exact path='/Ribi' component={RenderRibi}/>
 
         <Navbar/>
         <Switch>
@@ -44,9 +38,9 @@ function App() {
           <Route exact path='/DisplayAllFish' component={DisplayAllFish}/>
           <Route exact path='/Country' component={CreateCountry}/>
         </Switch>
+        
       </Switch>
-
-      <Publications/>
+      {/* <Publications/> */}
     </div>
     </BrowserRouter>
   );

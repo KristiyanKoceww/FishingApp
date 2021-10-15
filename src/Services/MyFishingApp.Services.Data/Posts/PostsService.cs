@@ -84,7 +84,8 @@
             var comments = post.Comments.Select(x => new Comment()
             {
                 Content = x.Content,
-                ParentId = x.ParentId,
+                User = x.User,
+                UserId = x.UserId,
                 PostId = x.PostId,
             }).ToList();
 
@@ -105,6 +106,9 @@
                 Comments = x.Comments.Select(x => new Comment
                 {
                     Content = x.Content,
+                    User = x.User,
+                    UserId = x.UserId,
+                    PostId = x.PostId,
                 }).ToList(),
                 ImageUrls = x.ImageUrls.Select(x => new ImageUrls
                 {

@@ -1,61 +1,63 @@
-import react from "react";
-import Carousel from 'react-bootstrap/Carousel'
+import './Post.css';
+
 
 const post = (props) =>{
 
-   return(
-    <div class="container">
-    <div class="box image">
-      <div class="box-header">
-        <h3><a><img src="https://goo.gl/oOD0V2" alt="" />{props.User.FirstName}</a>
-          <span>Date: {props.CreatedOn} <i class="fa fa-globe"></i></span>
-        </h3>
-        <span><i class="fa fa-angle-down"></i></span>
-        <div class="window"><span></span></div>
+  return(
+   
+<div className="main">
+<div class="container bootstrap snippets bootdey">
+<div class="col-md-8">
+  <div class="box box-widget">
+    <div class="box-header with-border">
+      <div class="user-block">
+        <img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image"/>
+        <span class="username"><a href="#">{props.User.FirstName}</a></span>
+        <span class="description">Shared publicly - {props.CreatedOn}</span>
       </div>
-      <div class="box-content">
-        <div class="content">
-          <img src={props.ImageUrls[0].ImageUrl} width="250px" alt="image" />
-        </div>
-        <div class="bottom">
-          <p >{props.Content}</p>
-          <span><span class="fa fa-search-plus"></span></span>
-        </div>
-      </div>
-      <div class="box-likes">
-        <div class="row">
-          <span><a ><img src="https://goo.gl/oM0Y8G" alt="" /></a></span>
-          <span><a ><img src="https://goo.gl/vswgSn" alt="" /></a></span>
-          <span><a ><img src="https://goo.gl/4W27eB" alt="" /></a></span>
-          <span><a >{props.Vote}</a></span>
-        </div>
-        <div class="row">
-          <span>{props.Comments}</span>
+      
+    </div>
+    <div class="box-body">
+      <p>{props.Content}</p>
+
+      <div class="attachment-block clearfix">
+        <img class="attachment-img" src={props.ImageUrls[0].ImageUrl} alt="Attachment Image"/>
+        <div class="attachment-pushed">
         </div>
       </div>
-      </div>
+      <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Like</button>
+      <button type="button" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-up"></i> Dislike</button>
+      <button type="button" class="btn btn-default btn-xs"><i class="fa fa-share"></i> Share</button>
+      <span class="pull-right text-muted">{props.Votes.Count ? props.Votes.Count : 0} likes - {props.Comments.Lenght ?  props.Comments.CoLenghtunt : 0} comments</span>
+    </div>
+    
+    <div class="box-footer box-comments">
+      <div class="box-comment">
+        <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="User Image"/>
+        <div class="comment-text">
+          <span class="username">
+            User writed this comment : 
+           {/* {props.Comments[3].User.FirstName} - {props.Comments[3].User.LastName}  */}
+          <span class="text-muted pull-right">{props.Comments.CreatedOn}</span>
+          </span>
+          {props.Comments.Content}
+        </div>
       </div>
      
-   )
-}
-     {/* return (
-        <div>
-        <h1>{props.Title}</h1>
-        <p>{props.Content}</p>
-        <div>
-            <p>
-                <li>User:{props.UserId}</li>
-                <li>User Name:{props.User.FirstName}</li>
-                <li>User Age:{props.User.Age}</li>
-                <li>Email:{props.User.Email}</li>
-              </p>
-        </div>
-              
-              <div>
-              <img src={props.ImageUrls[0].ImageUrl} alt="image post" width='250'></img> 
-              </div>
-       
     </div>
-        );  */}
+    <div class="box-footer">
+      <form action="#" method="post">
+        <img class="img-responsive img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="Alt Text"/>
+        <div class="img-push">
+          <input type="text" class="form-control input-sm" placeholder="Press enter to post comment"/>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+  )
+}
 
 export default post;

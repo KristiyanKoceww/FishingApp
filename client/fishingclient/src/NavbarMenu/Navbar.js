@@ -15,27 +15,15 @@ function Navbar() {
     <>
       <IconContext.Provider value={{ color: '#fff' }}>
         <div className='navbar'>
-          <Link to='#' className='menu-bars'>
-            <FaIcons.FaBars onClick={showSidebar} />
-          </Link>
+         
           <hr></hr>
           <h1 className="title">
             Welcome to your fishing place! Enjoy our services!
           </h1>
-          {/* <Link to='/Create' className='menu-bars'>
-            <FaIcons.Fa500Px></FaIcons.Fa500Px>
-            
-          <div className="title">Create knot</div>
-          </Link> */}
         </div>
         
-        <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
-          <ul className='nav-menu-items' onClick={showSidebar}>
-            <li className='navbar-toggle'>
-              <Link to='#' className='menu-bars'>
-                <AiIcons.AiOutlineClose />
-              </Link>
-            </li>
+        <nav className={'nav-menu active'}>
+          <ul className='nav-menu-items'>
             {SidebarData.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>

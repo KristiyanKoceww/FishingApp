@@ -25,6 +25,12 @@
 
         public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
         {
+            var post = this.postRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+            if (post is null)
+            {
+                throw new Exception("There is no post found by this id!");
+            }
+
             var comment = new Comment
             {
                 Content = content,
@@ -32,6 +38,10 @@
                 PostId = postId,
                 UserId = userId,
             };
+
+            post.Comments.Add(comment);
+
+            this.postRepository.Update(post);
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
         }
