@@ -1,7 +1,4 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-
 const CreateKnot = () => {
   const [formData, setFormData] = useState({
     name: "",
@@ -16,35 +13,29 @@ const CreateKnot = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    
-      // console.log(formData);
       const newKnot = {
        name,type,description
       };
-      try {
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        };
-        const body = JSON.stringify(newKnot);
-        const res = await axios.post("https://localhost:44366/api/Knots/create", body, config);
-        console.log(res.data);
-      } catch (err) {
-        console.error(err.response.data);
-      }
-    
-    
-  };
 
+      fetch('https://localhost:44366/api/Knots/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newKnot),
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
 
   return (
-    <Fragment>
-      <h1 className='large text-primary'>Create Knot</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Create Your new knot
-      </p>
+    <Fragment >
+      <div className="d-flex justify-content-center">
       
+      <h1 className='large text-primary'>Create Knot</h1>
+      </div>
+      <div className="d-flex justify-content-center">
       <form className='form' onSubmit={(e) => onSubmit(e)}>
       <div className='form-group'>
           <input
@@ -56,6 +47,7 @@ const CreateKnot = () => {
             required
           />
         </div>
+        <br/>
         <div className='form-group'>
           <input
             onChange={onChange}
@@ -66,6 +58,7 @@ const CreateKnot = () => {
             required
           />
         </div>
+        <br/>
         <div className='form-group'>
           <input
             onChange={onChange}
@@ -76,7 +69,7 @@ const CreateKnot = () => {
             required
           />
         </div>
-       
+        <br/>
         <input
           onChange={onChange}
           type='submit'
@@ -84,9 +77,9 @@ const CreateKnot = () => {
           value='Create'
         />
       </form>
-     
+     </div>
     </Fragment>
   );
-};
+  }
 
 export default CreateKnot;

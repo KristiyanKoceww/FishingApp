@@ -1,6 +1,4 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
 
 const CreateCountry = () => {
   const [formData, setFormData] = useState({
@@ -17,28 +15,26 @@ const CreateCountry = () => {
       const newCountry = {
         name
       };
-      try {
-        const config = {
+     
+        fetch('https://localhost:44366/api/Countries/create', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        };
-        const body = JSON.stringify(newCountry);
-        const res = await axios.post("https://localhost:44366/api/Countries/create", body, config);
-        console.log(res.data);
-      } catch (err) {
-        console.error(err.response.data);
+          body: JSON.stringify(newCountry),
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
       }
-    }
-    
   
   return (
+    
     <Fragment>
-      <h1 className='large text-primary'>Country</h1>
-      <p className='lead'>
-        <i className='fas fa-user'></i> Create Country
-      </p>
-      
+    <div className="d-flex justify-content-center">
+      <h1 className='large text-primary'>Create new country</h1>
+      </div>
+      <div className="d-flex justify-content-center">
       <form className='form' onSubmit={(e) => onSubmit(e)}>
       <div className='form-group'>
           <input
@@ -58,8 +54,9 @@ const CreateCountry = () => {
           value='Create'
         />
       </form>
-      
+      </div>
     </Fragment>
+    
   );
 }
 

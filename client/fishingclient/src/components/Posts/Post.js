@@ -21,7 +21,7 @@ const post = (props) =>{
       <p>{props.Content}</p>
 
       <div class="attachment-block clearfix">
-        <img class="attachment-img" src={props.ImageUrls[0].ImageUrl} alt="Attachment Image"/>
+        {/* <img class="attachment-img" src={props.ImageUrls[0].ImageUrl} alt="Attachment Image"/> */}
         <div class="attachment-pushed">
         </div>
       </div>

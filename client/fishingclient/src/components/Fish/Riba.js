@@ -1,5 +1,5 @@
 import React, {useMemo} from "react";
-import useFetch from "../customHooks/useFetch";
+import useFetch from "../../customHooks/useFetch";
 import {
     Card, CardImg, CardText, CardBody,
     CardTitle, CardSubtitle, Button

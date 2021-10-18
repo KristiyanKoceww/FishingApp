@@ -40,20 +40,18 @@ const Register = () => {
         email,
         password,
       };
-      try {
-        const config = {
+
+      fetch('https://localhost:44366/api/AppUsers/create', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
-        };
-        const body = JSON.stringify(newUser);
-        const res = await axios.post("https://localhost:44366/api/AppUsers/create", body, config);
-        console.log(res.data);
-      } catch (err) {
-        console.error(err.response.data);
+          body: JSON.stringify(newUser),
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
       }
-    }
-    
   };
 
 
