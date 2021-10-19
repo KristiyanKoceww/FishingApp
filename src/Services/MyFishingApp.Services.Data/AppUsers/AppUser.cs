@@ -171,5 +171,19 @@
                 throw new Exception("No user found  by this id");
             }
         }
+
+        public ApplicationUser GetByUsername(string username)
+        {
+            var user = this.appUserRepository.All().Where(x => x.UserName == username).FirstOrDefault();
+
+            if (user is not null)
+            {
+                return user;
+            }
+            else
+            {
+                throw new Exception("No user found  by this username");
+            }
+        }
     }
 }

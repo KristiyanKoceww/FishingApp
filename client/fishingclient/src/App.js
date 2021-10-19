@@ -5,17 +5,23 @@ import CreateKnot from './components/Knot/CreateKnot'
 import CreateCountry from './components/Country/Country';
 import Publications from './components/Posts/Publications'
 import CreateReservoir from './components/Reservoir/CreateReservoir';
+import Login from './components/AcountManagment/Login';
+import Register from './components/AcountManagment/Register';
+import { useEffect, useState } from 'react';
 
 function App() {
 
+
   return (
     <Router>
-    <Sidebar />
+    <Sidebar/>
     <Switch>
       <Route path='/CreateKnot' exact component={CreateKnot} />
       <Route path='/CreateCountry' exact component={CreateCountry} />
       <Route path='/Posts' component={Publications}/>
       <Route path='/CreateReservoir' component={CreateReservoir}/>
+      <Route path='/Login' component={Login}/>
+      <Route path='/Register' component={Register}/>
     </Switch>
   </Router>
   );

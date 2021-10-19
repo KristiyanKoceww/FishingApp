@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
@@ -43,34 +43,90 @@ const SidebarWrap = styled.div`
 
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
+  const [name, setName] = useState('');
+
+
+  const logout = async () => {
+    await fetch('https://localhost:44366/api/AppUsers/logout',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+      });
+  }
+  useEffect(() => {
+    (async () => {
+      const response = await fetch('https://localhost:44366/api/AppUsers/user',
+        {
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+        });
+
+      const content = await response.json();
+      setName(content.FirstName);
+    })()
+  });
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  return (
-    <>
-      <IconContext.Provider value={{ color: '#fff' }}>
-        <Nav>
-          <NavIcon to='#'>
-            <FaIcons.FaBars onClick={showSidebar} />
-          </NavIcon>
-          <h1 className="text-center">Hello World</h1>
-          <div>LOGIN</div>
-          <div>REGISTER</div>
-          <div>LOGOUT</div>
-        </Nav>
-        <SidebarNav sidebar={sidebar}>
-          <SidebarWrap>
+  if (name === '' || name === undefined) {
+    return (
+      <>
+        <IconContext.Provider value={{ color: '#fff' }}>
+          <Nav>
             <NavIcon to='#'>
-              <AiIcons.AiOutlineClose onClick={showSidebar} />
+              <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            {SidebarData.map((item, index) => {
-              return <SubMenu item={item} key={index} />;
-            })}
-          </SidebarWrap>
-        </SidebarNav>
-      </IconContext.Provider>
-    </>
-  );
+            <h1 className="text-center">Hello anonymous</h1>
+            <div>
+              <Link to="/Login">Login</Link>
+            </div>
+            <div>
+              <Link to="/Register">Register</Link>
+            </div>
+          </Nav>
+          <SidebarNav sidebar={sidebar}>
+            <SidebarWrap>
+              <NavIcon to='#'>
+                <AiIcons.AiOutlineClose onClick={showSidebar} />
+              </NavIcon>
+              {SidebarData.map((item, index) => {
+                return <SubMenu item={item} key={index} />;
+              })}
+            </SidebarWrap>
+          </SidebarNav>
+        </IconContext.Provider>
+      </>
+    );
+  }
+  else {
+    return (
+      <>
+        <IconContext.Provider value={{ color: '#fff' }}>
+          <Nav>
+            <NavIcon to='#'>
+              <FaIcons.FaBars onClick={showSidebar} />
+            </NavIcon>
+            <h1 className="text-center">Hello {name}</h1>
+            <Link to="/Logout" onClick={logout}>Logout</Link>
+          </Nav>
+          <SidebarNav sidebar={sidebar}>
+            <SidebarWrap>
+              <NavIcon to='#'>
+                <AiIcons.AiOutlineClose onClick={showSidebar} />
+              </NavIcon>
+              {SidebarData.map((item, index) => {
+                return <SubMenu item={item} key={index} />;
+              })}
+            </SidebarWrap>
+          </SidebarNav>
+        </IconContext.Provider>
+      </>
+    );
+  }
+
 };
 
 export default Sidebar;

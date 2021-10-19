@@ -15,6 +15,8 @@
 
         ApplicationUser GetById(string userId);
 
+        ApplicationUser GetByUsername(string username);
+
         ApplicationUser Authenticate(string username, string password);
     }
 }

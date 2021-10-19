@@ -65,4 +65,30 @@ export const SidebarData = [
       },
     ]
   },
+  {
+    title: 'Account',
+    path: '/',
+    icon: <IoIcons.IoMdHelpCircle />,
+
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+
+    subNav: [
+      {
+        title: 'Login',
+        path: '/Login',
+        icon: <IoIcons.IoIosPaper />
+      },
+      {
+        title: 'Register',
+        path: '/Register',
+        icon: <IoIcons.IoIosPaper />
+      },
+      {
+        title: 'Logout',
+        path: '/Logout',
+        icon: <IoIcons.IoIosPaper />
+      },
+    ]
+  },
 ];

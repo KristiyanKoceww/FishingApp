@@ -4,7 +4,7 @@ import useFetch from "../../customHooks/useFetch";
 
 
 const Posts = (props) => {
-  const[posts,isPostLoading] = useFetch(`https://localhost:44343/api/Posts/getAllPosts`,{});
+  const[posts,isPostLoading] = useFetch(`https://localhost:44366/api/Posts/getAllPosts`,{});
 
   const renderPosts = useMemo(() => {
     return posts.map((post, index) => {
