@@ -23,16 +23,12 @@ namespace MyFishingApp.Data.Models
         [Required]
         public string FirstName { get; set; }
 
-        [Required]
         public string MiddleName { get; set; }
 
         [Required]
         public string LastName { get; set; }
 
         public int Age { get; set; }
-
-        [Required]
-        public string Phone { get; set; }
 
         [Required]
         public Gender Gender { get; set; }

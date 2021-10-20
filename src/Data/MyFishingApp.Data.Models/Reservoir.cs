@@ -31,7 +31,6 @@
         [Required]
         public double Longitude { get; set; }
 
-        [Required]
         public virtual City City { get; set; }
 
         public virtual ICollection<Fish> Fishs { get; set; }

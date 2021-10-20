@@ -11,8 +11,8 @@ const post = (props) =>{
   <div class="box box-widget">
     <div class="box-header with-border">
       <div class="user-block">
-        <img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User Image"/>
-        <span class="username"><a href="#">{props.User.FirstName}</a></span>
+        <img class="img-circle" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="User"/>
+        <span class="username"><a>{props.User.FirstName}</a></span>
         <span class="description">Shared publicly - {props.CreatedOn}</span>
       </div>
       
@@ -33,7 +33,7 @@ const post = (props) =>{
     
     <div class="box-footer box-comments">
       <div class="box-comment">
-        <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="User Image"/>
+        <img class="img-circle img-sm" src="https://bootdey.com/img/Content/avatar/avatar5.png" alt="User"/>
         <div class="comment-text">
           <span class="username">
             User writed this comment : 

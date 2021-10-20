@@ -30,7 +30,7 @@
 
         [Required]
         [Phone]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         [Required]
         [EnumDataType(typeof(Gender))]

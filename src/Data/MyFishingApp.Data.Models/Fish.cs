@@ -30,7 +30,6 @@
         [Required]
         public string Description { get; set; }
 
-        [Required]
         public string Tips { get; set; }
 
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }

@@ -54,7 +54,7 @@
 
             if (string.IsNullOrWhiteSpace(userInputModel.Password) || string.IsNullOrWhiteSpace(userInputModel.UserName))
             {
-                throw new Exception("Password is required");
+                throw new Exception("Password and username are required");
             }
 
             var user = new ApplicationUser()
@@ -63,7 +63,7 @@
                 MiddleName = userInputModel.MiddleName,
                 LastName = userInputModel.LastName,
                 Email = userInputModel.Email,
-                Phone = userInputModel.Phone,
+                PhoneNumber = userInputModel.PhoneNumber,
                 UserName = userInputModel.UserName,
                 PasswordHash = ComputeSha256Hash(userInputModel.Password),
                 Age = userInputModel.Age,
@@ -157,7 +157,7 @@
                 user.MiddleName = userInputModel.MiddleName;
                 user.LastName = userInputModel.LastName;
                 user.Email = userInputModel.Email;
-                user.Phone = userInputModel.Phone;
+                user.PhoneNumber = userInputModel.PhoneNumber;
                 user.UserName = userInputModel.UserName;
                 user.PasswordHash = ComputeSha256Hash(userInputModel.Password);
                 user.Age = userInputModel.Age;

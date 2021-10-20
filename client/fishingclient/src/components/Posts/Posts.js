@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import Post from './Post'
 import useFetch from "../../customHooks/useFetch";
 

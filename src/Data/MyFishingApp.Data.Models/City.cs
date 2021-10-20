@@ -20,7 +20,6 @@
         [Required]
         public string Description { get; set; }
 
-        [Required]
         public virtual Country Country { get; set; }
 
         public string CountryName { get; set; }

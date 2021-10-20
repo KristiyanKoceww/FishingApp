@@ -7,7 +7,6 @@ import Publications from './components/Posts/Publications'
 import CreateReservoir from './components/Reservoir/CreateReservoir';
 import Login from './components/AcountManagment/Login';
 import Register from './components/AcountManagment/Register';
-import { useEffect, useState } from 'react';
 
 function App() {
 

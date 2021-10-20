@@ -86,6 +86,7 @@ namespace MyFishingApp.Web.Controllers
         //    return null;
 
         //}
+
         [AllowAnonymous]
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserInputModel model)
@@ -119,7 +120,7 @@ namespace MyFishingApp.Web.Controllers
 
             var jwt = jwtService.Generate(user.Id);
 
-            Response.Cookies.Append("jwt", jwt, new CookieOptions { HttpOnly = true , SameSite = SameSiteMode.None, Secure = true });
+            Response.Cookies.Append("jwt", jwt, new CookieOptions { HttpOnly = true });
             // SameSite = SameSiteMode.None , Secure = true
             return Ok(new
             {
