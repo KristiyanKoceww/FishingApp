@@ -33,12 +33,6 @@
 
             if (createPostInputModel.ImageUrls != null)
             {
-
-                for (int i = 0; i < createPostInputModel.ImageUrls.Count; i++)
-                {
-                    post.ImageUrls.Add(createPostInputModel.ImageUrls.ToArray()[i]);
-                }
-
                 Account account = new();
                 Cloudinary cloudinary = new(account);
                 cloudinary.Api.Secure = true;
@@ -54,6 +48,13 @@
 
                     var uploadResult = cloudinary.Upload(uploadParams);
                     count++;
+
+                    var imageUrl = new ImageUrls()
+                    {
+                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                    };
+
+                    post.ImageUrls.Add(imageUrl);
                 }
             }
 
@@ -144,6 +145,33 @@
             {
                 post.Content = updatePostInputModel.Content;
                 post.Title = updatePostInputModel.Title;
+
+                if (updatePostInputModel.ImageUrls != null)
+                {
+                    Account account = new();
+                    Cloudinary cloudinary = new(account);
+                    cloudinary.Api.Secure = true;
+                    var count = 0;
+                    foreach (var image in updatePostInputModel.ImageUrls)
+                    {
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription($"{image.ImageUrl}"),
+                            PublicId = post.Id.ToString() + count,
+                            Folder = "FishApp/PostImages/",
+                        };
+
+                        var uploadResult = cloudinary.Upload(uploadParams);
+                        count++;
+
+                        var imageUrl = new ImageUrls()
+                        {
+                            ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                        };
+
+                        post.ImageUrls.Add(imageUrl);
+                    }
+                }
 
                 this.postsRepository.Update(post);
                 await this.postsRepository.SaveChangesAsync();

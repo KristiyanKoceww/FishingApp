@@ -120,7 +120,7 @@ namespace MyFishingApp.Web.Controllers
 
             var jwt = jwtService.Generate(user.Id);
 
-            Response.Cookies.Append("jwt", jwt, new CookieOptions { HttpOnly = true });
+            Response.Cookies.Append("jwt", jwt, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true });
             // SameSite = SameSiteMode.None , Secure = true
             return Ok(new
             {
@@ -142,7 +142,7 @@ namespace MyFishingApp.Web.Controllers
 
                 var user = this.userService.GetById(userId);
 
-                return Ok(user);
+                return Ok(new { userId, user });
             }
             catch (Exception e)
             {

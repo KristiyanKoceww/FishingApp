@@ -35,7 +35,6 @@
                 Name = knotInputModel.Name,
                 Type = knotInputModel.Type,
                 Description = knotInputModel.Description,
-                ImageUrls = knotInputModel.ImageUrls,
             };
 
             if (knotInputModel.VideoUrl is not null)
@@ -63,6 +62,13 @@
 
                     var uploadResult = cloudinary.Upload(uploadParams);
                     count++;
+
+                    var imageUrl = new ImageUrls()
+                    {
+                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                    };
+
+                    knot.ImageUrls.Add(imageUrl);
                 }
 
                 await this.knotRepository.SaveChangesAsync();
@@ -138,14 +144,40 @@
                 knot.Name = knotInputModel.Name;
                 knot.Type = knotInputModel.Type;
                 knot.Description = knotInputModel.Description;
-                knot.ImageUrls = knotInputModel.ImageUrls;
 
-                this.knotRepository.Update(knot);
-                await this.knotRepository.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception("No knot found by this id");
+                if (knotInputModel.ImageUrls != null)
+                {
+                    Account account = new();
+                    Cloudinary cloudinary = new(account);
+                    cloudinary.Api.Secure = true;
+                    var count = 0;
+                    foreach (var image in knotInputModel.ImageUrls)
+                    {
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription($"{image.ImageUrl}"),
+                            PublicId = knot.Id + count,
+                            Folder = "FishApp/KnotImages/",
+                        };
+
+                        var uploadResult = cloudinary.Upload(uploadParams);
+                        count++;
+
+                        var imageUrl = new ImageUrls()
+                        {
+                            ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                        };
+
+                        knot.ImageUrls.Add(imageUrl);
+                    }
+
+                    this.knotRepository.Update(knot);
+                    await this.knotRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("No knot found by this id");
+                }
             }
         }
     }

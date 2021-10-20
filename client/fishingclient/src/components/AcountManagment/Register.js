@@ -7,7 +7,7 @@ const [firstName,setFirstName] = useState('');
 const [middleName,setMiddleName] = useState('');
 const [lastName,setLastName] = useState('');
 const [age,setAge] = useState(18);
-const [phone,setPhone] = useState('');
+const [phoneNumber,setPhoneNumber] = useState('');
 const [gender,setGender] = useState(1);
 const [image,setImage] = useState('https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg');
 const [email,setEmail] = useState('');
@@ -25,7 +25,7 @@ const submit = async (e) =>{
         middleName,
         lastName,
         age,
-        phone,
+        phoneNumber,
         gender,
         image,
         email,
@@ -75,8 +75,8 @@ if (redirect) {
                 </div>
 
                 <div className="form-floating">
-                    <input type="phone" className="form-control" onChange={e => setPhone(e.target.value)} />
-                    <label for="floatingInput">Phone</label>
+                    <input type="phone" className="form-control" onChange={e => setPhoneNumber(e.target.value)} />
+                    <label for="floatingInput">PhoneNumber</label>
                 </div>
 
                 <div className="form-floating">

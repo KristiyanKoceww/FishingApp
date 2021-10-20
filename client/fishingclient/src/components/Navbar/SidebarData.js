@@ -46,8 +46,19 @@ export const SidebarData = [
   },
   {
     title: 'Posts',
-    path: '/Posts',
-    icon: <IoIcons.IoMdHelpCircle />
+    path: '/',
+    icon: <IoIcons.IoMdHelpCircle />,
+
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+
+    subNav: [
+      {
+        title: 'Create post',
+        path: '/CreatePost',
+        icon: <IoIcons.IoIosPaper />
+      },
+    ]
   },
   {
     title: 'Reservoir',

@@ -7,10 +7,10 @@ import Publications from './components/Posts/Publications'
 import CreateReservoir from './components/Reservoir/CreateReservoir';
 import Login from './components/AcountManagment/Login';
 import Register from './components/AcountManagment/Register';
+import CreatePost from './components/Posts/CreatePost';
+import { useState, useEffect } from 'react';
 
 function App() {
-
-
   return (
     <Router>
     <Sidebar/>
@@ -18,6 +18,7 @@ function App() {
       <Route path='/CreateKnot' exact component={CreateKnot} />
       <Route path='/CreateCountry' exact component={CreateCountry} />
       <Route path='/Posts' component={Publications}/>
+      <Route path='/CreatePost' component={CreatePost}/>
       <Route path='/CreateReservoir' component={CreateReservoir}/>
       <Route path='/Login' component={Login}/>
       <Route path='/Register' component={Register}/>

@@ -38,7 +38,6 @@
                 Nutrition = fishInputModel.Nutrition,
                 Description = fishInputModel.Description,
                 Tips = fishInputModel.Tips,
-                ImageUrls = fishInputModel.ImageUrls,
             };
 
             await this.fishRepository.AddAsync(fish);
@@ -62,6 +61,13 @@
 
                     var uploadResult = cloudinary.Upload(uploadParams);
                     count++;
+
+                    var imageUrl = new ImageUrls()
+                    {
+                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                    };
+
+                    fish.ImageUrls.Add(imageUrl);
                 }
 
                 await this.fishRepository.SaveChangesAsync();
@@ -146,14 +152,41 @@
                 fish.Nutrition = fishInputModel.Nutrition;
                 fish.Description = fishInputModel.Description;
                 fish.Tips = fishInputModel.Tips;
-                fish.ImageUrls = fishInputModel.ImageUrls;
 
-                this.fishRepository.Update(fish);
-                await this.fishRepository.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception("There is no fish found by this id");
+                if (fishInputModel.ImageUrls != null)
+                {
+                    Account account = new();
+
+                    Cloudinary cloudinary = new(account);
+                    cloudinary.Api.Secure = true;
+                    var count = 0;
+                    foreach (var image in fishInputModel.ImageUrls)
+                    {
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription($"{image.ImageUrl}"),
+                            PublicId = fish.Id + count,
+                            Folder = "FishApp/FishImages/",
+                        };
+
+                        var uploadResult = cloudinary.Upload(uploadParams);
+                        count++;
+
+                        var imageUrl = new ImageUrls()
+                        {
+                            ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                        };
+
+                        fish.ImageUrls.Add(imageUrl);
+                    }
+
+                    this.fishRepository.Update(fish);
+                    await this.fishRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("There is no fish found by this id");
+                }
             }
         }
     }

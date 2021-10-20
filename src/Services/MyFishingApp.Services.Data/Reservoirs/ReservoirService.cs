@@ -39,7 +39,6 @@
                 Latitude = createReservoirInputModel.Latitude,
                 Longitude = createReservoirInputModel.Longitude,
                 Fishs = createReservoirInputModel.Fish,
-                ImageUrls = createReservoirInputModel.ImageUrls,
             };
 
             await this.reservoirRepository.AddAsync(reservoir);
@@ -62,6 +61,13 @@
 
                     var uploadResult = cloudinary.Upload(uploadParams);
                     count++;
+
+                    var imageUrl = new ImageUrls()
+                    {
+                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                    };
+
+                    reservoir.ImageUrls.Add(imageUrl);
                 }
 
                 await this.reservoirRepository.SaveChangesAsync();
@@ -136,14 +142,40 @@
                 reservoir.Description = updateReservoirInputModel.Description;
                 reservoir.Latitude = updateReservoirInputModel.Latitude;
                 reservoir.Longitude = updateReservoirInputModel.Longitude;
-                reservoir.ImageUrls = updateReservoirInputModel.ImageUrls;
 
-                this.reservoirRepository.Update(reservoir);
-                await this.reservoirRepository.SaveChangesAsync();
-            }
-            else
-            {
-                throw new Exception("No reservoir found by this id");
+                if (updateReservoirInputModel.ImageUrls != null)
+                {
+                    Account account = new();
+                    Cloudinary cloudinary = new(account);
+                    cloudinary.Api.Secure = true;
+                    var count = 0;
+                    foreach (var image in updateReservoirInputModel.ImageUrls)
+                    {
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription($"{image.ImageUrl}"),
+                            PublicId = reservoir.Id + count,
+                            Folder = "FishApp/ReservoirImages/",
+                        };
+
+                        var uploadResult = cloudinary.Upload(uploadParams);
+                        count++;
+
+                        var imageUrl = new ImageUrls()
+                        {
+                            ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                        };
+
+                        reservoir.ImageUrls.Add(imageUrl);
+                    }
+
+                    this.reservoirRepository.Update(reservoir);
+                    await this.reservoirRepository.SaveChangesAsync();
+                }
+                else
+                {
+                    throw new Exception("No reservoir found by this id");
+                }
             }
         }
     }
