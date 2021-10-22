@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
-import useFetch from "../customHooks/useFetch";
 import Fish from './Fish'
 
 const DisplayAllFish = () => {
 
-   const[fish,isFishLoading] = useFetch(`https://localhost:44366/api/Fish/getAllFish`,{});
+   const[fish,setFish] = useState([]) //useFetch(`https://localhost:44366/api/Fish/getAllFish`,{});
 
+  
+
+   useEffect(() => {
+      (async () => {
+        const response = await fetch('https://localhost:44343/api/Fish/getAllFish',
+        )
+        const content = await response.json();
+        setFish(content);
+      })()
+    });
       if (fish === undefined) {
         return null;
       }
@@ -40,7 +49,7 @@ const DisplayAllFish = () => {
                  <td>{d.Habittat}</td>
                  <td>{d.Tips}</td>
                  <td>{d.Description}</td>
-                 <td><img alt="fish"  src={d.ImageUrls[0].ImageUrl} width='100px' /></td> 
+                 {/* <td><img alt="fish"  src={d.ImageUrls[0].ImageUrl} width='100px' /></td>  */}
                  </tr>
                  )}
      </tbody>

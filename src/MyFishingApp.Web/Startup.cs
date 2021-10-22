@@ -13,15 +13,8 @@ using MyFishingApp.Data.Models;
 using MyFishingApp.Data.Repositories;
 using MyFishingApp.Services.Data.Dam;
 using Newtonsoft.Json.Serialization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-
-using System.Reflection;
 
 using MyFishingApp.Data.Seeding;
-
-
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using MyFishingApp.Services.Data;
 using MyFishingApp.Services.Data.Cities;
 using AirportSystem.Services.Data.CitiesAndCountries;
@@ -34,11 +27,11 @@ using MyFishingApp.Services.Data.Votes;
 using MyFishingApp.Services.Data.Weather;
 using MyFishingApp.Services.Data.AppUsers;
 using CloudinaryDotNet;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Threading.Tasks;
-using Microsoft.IdentityModel.Tokens;
 using MyFishingApp.Services.Data.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace MyFishingApp.Web
 {
@@ -61,12 +54,12 @@ namespace MyFishingApp.Web
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-            //services.Configure<CookiePolicyOptions>(
-            //    options =>
-            //    {
-            //        options.CheckConsentNeeded = context => true;
-            //        options.MinimumSameSitePolicy = SameSiteMode.None;
-            //    });
+            services.Configure<CookiePolicyOptions>(
+                options =>
+                {
+                    options.CheckConsentNeeded = context => true;
+                    options.MinimumSameSitePolicy = SameSiteMode.None;
+                });
 
 
             //services.AddAntiforgery(options =>
@@ -75,8 +68,6 @@ namespace MyFishingApp.Web
             //});
 
             services.AddSingleton(this.configuration);
-
-
 
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
             services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -98,51 +89,49 @@ namespace MyFishingApp.Web
             services.AddTransient<IPostsService, PostsService>();
 
             // configure strongly typed settings objects
-            //var appSettingsSection = configuration.GetSection("AppSettings");
-            //services.Configure<AppSettings>(appSettingsSection);
+            var appSettingsSection = configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
-            //// configure jwt authentication
-            //var appSettings = appSettingsSection.Get<AppSettings>();
-            //var key = Encoding.ASCII.GetBytes(appSettings.Secret);
-            //services.AddAuthentication(x =>
-            //{
-            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //})
-            //.AddJwtBearer(x =>
-            //{
-            //    x.Events = new JwtBearerEvents
-            //    {
-            //        OnTokenValidated = context =>
-            //        {
-            //            var userService = context.HttpContext.RequestServices.GetRequiredService<IAppUser>();
-            //            var userId = context.Principal.Identity.Name;
-            //            var user = userService.GetById(userId);
-            //            if (user == null)
-            //            {
-            //                // return unauthorized if user no longer exists
-            //                context.Fail("Unauthorized");
-            //            }
-            //            return Task.CompletedTask;
-            //        }
-            //    };
-            //    x.RequireHttpsMetadata = false;
-            //    x.SaveToken = true;
-            //    x.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        IssuerSigningKey = new SymmetricSecurityKey(key),
-            //        ValidateIssuer = false,
-            //        ValidateAudience = false
-            //    };
-            //});
-
+            // configure jwt authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(x =>
+            {
+                x.Events = new JwtBearerEvents
+                {
+                    OnTokenValidated = context =>
+                    {
+                        var userService = context.HttpContext.RequestServices.GetRequiredService<IAppUser>();
+                        var userId = context.Principal.Identity.Name;
+                        var user = userService.GetById(userId);
+                        if (user == null)
+                        {
+                            // return unauthorized if user no longer exists
+                            context.Fail("Unauthorized");
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
+                x.RequireHttpsMetadata = false;
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+            services.AddCors();
             //services.AddCors(c =>
             //{
             //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
             //});
-
-            services.AddCors();
 
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>

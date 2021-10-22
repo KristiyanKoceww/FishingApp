@@ -100,6 +100,47 @@ export const SidebarData = [
         path: '/Logout',
         icon: <IoIcons.IoIosPaper />
       },
+      {
+        title: 'Delete user',
+        path: '/DeleteUser',
+        icon: <IoIcons.IoIosPaper />
+      },
+      {
+        title: 'Get user by Id',
+        path: '/GetUserById',
+        icon: <IoIcons.IoIosPaper />
+      },
+      {
+        title: 'UserDetails',
+        path: '/UserDetails',
+        icon: <IoIcons.IoIosPaper />
+      },
+    ]
+  },
+  {
+    title: 'Fish',
+    path: '/',
+    icon: <IoIcons.IoMdHelpCircle />,
+
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+
+    subNav: [
+      {
+        title: 'All Fish',
+        path: '/AllFish',
+        icon: <IoIcons.IoIosPaper />
+      },
+      {
+        title: 'FishPublications',
+        path: '/FishPublications',
+        icon: <IoIcons.IoIosPaper />
+      },
+      {
+        title: 'FishWithPictures',
+        path: '/FishWithPictures',
+        icon: <IoIcons.IoIosPaper />
+      },
     ]
   },
 ];

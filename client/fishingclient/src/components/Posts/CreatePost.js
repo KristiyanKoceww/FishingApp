@@ -12,19 +12,19 @@ const [redirect,setRedirect] = useState(false);
 
 const [userId,setUserId] = useState('');
 
-useEffect(() => {
-  (async () => {
-    const response = await fetch('https://localhost:44343/api/AppUsers/user',
-      {
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
+// useEffect(() => {
+//   (async () => {
+//     const response = await fetch('https://localhost:44343/api/AppUsers/user',
+//       {
+//         headers: { 'Content-Type': 'application/json' },
+//         credentials: 'include',
+//       });
 
-    const content = await response.json();
-    console.log(content);
-    setUserId(content.userId);
-  })()
-});
+//     const content = await response.json();
+//     console.log(content);
+//     setUserId(content.userId);
+//   })()
+// });
 
 
 
