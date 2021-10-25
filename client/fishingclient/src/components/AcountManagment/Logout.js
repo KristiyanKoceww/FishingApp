@@ -1,5 +1,5 @@
 const logout = async () => {
-    await fetch('https://localhost:44343/api/AppUsers/logout',
+    await fetch('https://localhost:44366/api/AppUsers/logout',
       {
         method: 'POST',
         headers: {

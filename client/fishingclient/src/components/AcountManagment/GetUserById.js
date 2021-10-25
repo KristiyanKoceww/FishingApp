@@ -14,7 +14,7 @@ const GetUserById = () => {
 
     const myFunc = (() => {
         (async () => {
-          const response = await fetch("https://localhost:44343/api/AppUsers/getUser/id?userId=" + userId,
+          const response = await fetch("https://localhost:44366/api/AppUsers/getUser/id?userId=" + userId,
           )
           const content = await response.json();
           setUser(content);

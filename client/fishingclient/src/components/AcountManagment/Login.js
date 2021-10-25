@@ -15,7 +15,7 @@ const Login = () => {
             password,
         };
 
-       await fetch('https://localhost:44343/api/AppUsers/login', {
+       await fetch('https://localhost:44366/api/AppUsers/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

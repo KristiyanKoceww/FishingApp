@@ -5,12 +5,13 @@
     using System.Text;
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Http;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.PostInputModels;
 
     public interface IPostsService
     {
-        Task<int> CreateAsync(CreatePostInputModel createPostInputModel);
+        Task<int> CreateAsync(CreatePostInputModel createPostInputModel, IFormFileCollection formFiles);
 
         Task DeleteAsync(int postId);
 

@@ -12,7 +12,7 @@ const submit = async (e) =>{
     e.preventDefault();
  
        try {
-        fetch('https://localhost:44343/api/AppUsers/delete?userId='+userId, {
+        fetch('https://localhost:44366/api/AppUsers/delete?userId='+userId, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

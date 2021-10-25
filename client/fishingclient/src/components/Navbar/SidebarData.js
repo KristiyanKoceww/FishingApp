@@ -58,6 +58,11 @@ export const SidebarData = [
         path: '/CreatePost',
         icon: <IoIcons.IoIosPaper />
       },
+      {
+        title: 'Posts',
+        path: '/Posts',
+        icon: <IoIcons.IoIosPaper />
+      },
     ]
   },
   {
@@ -127,18 +132,13 @@ export const SidebarData = [
 
     subNav: [
       {
-        title: 'All Fish',
+        title: 'Fish for admin',
         path: '/AllFish',
         icon: <IoIcons.IoIosPaper />
       },
       {
-        title: 'FishPublications',
-        path: '/FishPublications',
-        icon: <IoIcons.IoIosPaper />
-      },
-      {
-        title: 'FishWithPictures',
-        path: '/FishWithPictures',
+        title: 'Fish',
+        path: '/FishInfo',
         icon: <IoIcons.IoIosPaper />
       },
     ]

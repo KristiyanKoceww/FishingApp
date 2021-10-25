@@ -40,7 +40,7 @@ const CreateReservoir = () => {
     };
 
     console.log(newReservoir);
-    fetch("https://localhost:44343/api/Reservoir/create", {
+    fetch("https://localhost:44366/api/Reservoir/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

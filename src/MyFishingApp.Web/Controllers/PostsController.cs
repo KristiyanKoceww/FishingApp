@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.InputModels.PostInputModels;
 using MyFishingApp.Services.Data.Posts;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
@@ -20,9 +22,30 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreatePost(CreatePostInputModel createPostInputModel)
+        public async Task<IActionResult> CreatePost([FromForm] CreatePostInputModel createPostInputModel)
         {
-            await this.postsService.CreateAsync(createPostInputModel);
+            var files = Request.Form.Files;
+            var fileBytes = new List<byte[]>();
+
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await file.CopyToAsync(memoryStream);
+                        fileBytes.Add(memoryStream.ToArray());
+                    }
+                    //var stream = new FileStreamResult();
+                    
+                    //using(var filestream = new FileStream(file.OpenReadStream(),FileAccess.Read))
+                    //{
+
+                    //}
+                }
+            }
+
+            await this.postsService.CreateAsync(createPostInputModel,files);
 
             return Ok();
         }

@@ -34,7 +34,7 @@ const submit = async (e) =>{
        };
  
        try {
-        fetch('https://localhost:44343/api/AppUsers/register', {
+        fetch('https://localhost:44366/api/AppUsers/register', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

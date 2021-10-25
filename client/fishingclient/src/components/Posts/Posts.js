@@ -2,9 +2,8 @@ import React, { useMemo } from 'react'
 import Post from './Post'
 import useFetch from "../../customHooks/useFetch";
 
-
 const Posts = (props) => {
-  const[posts,isPostLoading] = useFetch(`https://localhost:44366/api/Posts/getAllPosts`,{});
+  const [posts, isPostLoading] = useFetch(`https://localhost:44366/api/Posts/getAllPosts`, {});
 
   const renderPosts = useMemo(() => {
     return posts.map((post, index) => {
@@ -15,10 +14,10 @@ const Posts = (props) => {
   }, [posts])
 
   return (
-      <div>
-        {renderPosts}
-      </div>
-    )
-  }
-  
-  export default Posts
+    <div>
+      {renderPosts}
+    </div>
+  )
+}
+
+export default Posts

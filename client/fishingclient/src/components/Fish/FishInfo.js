@@ -1,11 +1,10 @@
 import React from 'react'
 import AllFish from './AllFish'
 
-const FishPublications = () => {
+const FishInfo = () => {
 
   return (
       <AllFish />
   )
 }
-
-export default FishPublications
+export default FishInfo

@@ -9,6 +9,7 @@
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using Microsoft.AspNetCore.Http;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.PostInputModels;
@@ -22,7 +23,7 @@
             this.postsRepository = postsRepository;
         }
 
-        public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel)
+        public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel, IFormFileCollection formFiles)
         {
             var post = new Post
             {
@@ -31,17 +32,18 @@
                 UserId = createPostInputModel.UserId,
             };
 
-            if (createPostInputModel.ImageUrls != null)
+            Account account = new();
+            Cloudinary cloudinary = new(account);
+            cloudinary.Api.Secure = true;
+            var count = 0;
+
+            if (formFiles != null)
             {
-                Account account = new();
-                Cloudinary cloudinary = new(account);
-                cloudinary.Api.Secure = true;
-                var count = 0;
-                foreach (var image in createPostInputModel.ImageUrls)
+                foreach (var image in formFiles)
                 {
                     var uploadParams = new ImageUploadParams()
                     {
-                        File = new FileDescription($"{image.ImageUrl}"),
+                        File = new FileDescription($"{image.FileName}"),
                         PublicId = post.Id.ToString() + count,
                         Folder = "FishApp/PostImages/",
                     };
