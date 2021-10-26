@@ -1,6 +1,6 @@
 import "./styles/footer.scss";
 
-function Footer() {
+const Footer = () => {
   return (
     <div className="footer">
       <ul className="links">
@@ -16,7 +16,7 @@ function Footer() {
         <li>Hashtags</li>
         <li>Language</li>
       </ul>
-      <div className="copyright">@ 2020 INSTAGRAM FROM FACEBOOK</div>
+      <div className="copyright">@ 2021 Your Fishing App</div>
     </div>
   );
 }

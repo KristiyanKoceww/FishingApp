@@ -1,6 +1,6 @@
 import "./styles/comment.scss";
 
-function Comment(props) {
+const Comment = (props) => {
   const { accountName, comment } = props;
 
   return (

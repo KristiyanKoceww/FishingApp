@@ -1,8 +1,7 @@
 import "./styles/profile.scss";
 import ProfileIcon from "./ProfileIcon";
-import users from "./data/users";
 
-function Profile(props) {
+const Profile = (props) => {
   const {
     username,
     caption,

@@ -2,7 +2,7 @@ import "./styles/card.scss";
 import Profile from "./Profile";
 import CardMenu from "./CardMenu";
 import Comment from "./Comment";
-import ImageSlider from "../ImageSlider";
+import ImageSlider from "../ImageSlider/ImageSlider";
 
 const Card = (props) => {
   const {

@@ -4,11 +4,10 @@ import Sidebar from './components/Navbar/Sidebar';
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import CreateKnot from './components/Knot/CreateKnot'
 import CreateCountry from './components/Country/Country';
-import Publications from './components/Posts/Publications'
 import CreateReservoir from './components/Reservoir/CreateReservoir';
 import Login from './components/AcountManagment/Login';
 import Register from './components/AcountManagment/Register';
-import CreatePost from './components/Posts/CreatePost';
+import CreatePost from './components/UserPosts/CreatePost';
 import { useState, useEffect } from 'react';
 import logout from './components/AcountManagment/Logout';
 import DisplayAllFish from './components/Fish/DisplayAllFish';
@@ -18,6 +17,7 @@ import GetUserById from './components/AcountManagment/GetUserById';
 import UserDetails from './components/AcountManagment/UserDetails';
 
 import Cards from './components/UserPosts/Cards'
+import Footer from './components/UserPosts/Footer';
 
 function App() {
   return (
@@ -27,7 +27,6 @@ function App() {
         <Switch>
           <Route path='/CreateKnot' exact component={CreateKnot} />
           <Route path='/CreateCountry' exact component={CreateCountry} />
-          <Route path='/Posts' component={Publications} />
           <Route path='/CreatePost' component={CreatePost} />
           <Route path='/CreateReservoir' component={CreateReservoir} />
           <Route path='/Login' component={Login} />
@@ -45,6 +44,7 @@ function App() {
         <Cards />
       </div>
       </main>
+      <Footer/>
     </div>
   );
 }

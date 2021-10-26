@@ -4,7 +4,7 @@ import { ReactComponent as Comments } from "./images/comments.svg";
 import { ReactComponent as Notifications } from "./images/notifications.svg";
 import { ReactComponent as Bookmark } from "./images/bookmark.svg";
 
-function CardMenu() {
+const CardMenu = () => {
   return (
     <div className="cardMenu">
       <div className="interactions">

@@ -1,6 +1,6 @@
 import "./styles/profileIcon.scss";
 
-function ProfileIcon(props) {
+const ProfileIcon = (props) => {
   const { iconSize, storyBorder, image } = props;
 
   function getRandomInt(min, max) {

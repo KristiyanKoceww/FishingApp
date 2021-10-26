@@ -6,7 +6,7 @@ import { ReactComponent as Notifications } from "../images/notifications.svg";
 import ProfileIcon from "./ProfileIcon";
 import image from "../images/profile.jpg";
 
-function Menu() {
+const Menu = () => {
   return (
     <div className="menu">
       <Home className="icon" />
