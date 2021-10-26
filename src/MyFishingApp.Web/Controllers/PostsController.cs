@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.InputModels.PostInputModels;
 using MyFishingApp.Services.Data.Posts;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
-    
+
     [ApiController]
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
@@ -24,30 +25,16 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreatePost([FromForm] CreatePostInputModel createPostInputModel)
         {
-            var files = Request.Form.Files;
-            var fileBytes = new List<byte[]>();
 
-            foreach (var file in files)
+            try
             {
-                if (file.Length > 0)
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        await file.CopyToAsync(memoryStream);
-                        fileBytes.Add(memoryStream.ToArray());
-                    }
-                    //var stream = new FileStreamResult();
-                    
-                    //using(var filestream = new FileStream(file.OpenReadStream(),FileAccess.Read))
-                    //{
-
-                    //}
-                }
+                await this.postsService.CreateAsync(createPostInputModel);
+                return Ok();
             }
-
-            await this.postsService.CreateAsync(createPostInputModel,files);
-
-            return Ok();
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("delete")]

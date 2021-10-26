@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Security.Claims;
     using System.Text;
@@ -17,51 +18,78 @@
     public class PostsService : IPostsService
     {
         private readonly IDeletableEntityRepository<Post> postsRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> appUsersRepository;
 
-        public PostsService(IDeletableEntityRepository<Post> postsRepository)
+        public PostsService(
+            IDeletableEntityRepository<Post> postsRepository,
+            IDeletableEntityRepository<ApplicationUser> appUsersRepository)
         {
             this.postsRepository = postsRepository;
+            this.appUsersRepository = appUsersRepository;
         }
 
-        public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel, IFormFileCollection formFiles)
+        public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel)
         {
+            var user = this.appUsersRepository.All().Where(x => x.Id == createPostInputModel.UserId).FirstOrDefault();
+
+            if (user == null)
+            {
+                throw new Exception("No user found by this id.");
+
+            }
+
             var post = new Post
             {
                 Content = createPostInputModel.Content,
                 Title = createPostInputModel.Title,
                 UserId = createPostInputModel.UserId,
+                User = user,
             };
 
             Account account = new();
             Cloudinary cloudinary = new(account);
             cloudinary.Api.Secure = true;
-            var count = 0;
 
-            if (formFiles != null)
+            foreach (var image in createPostInputModel.FormFiles)
             {
-                foreach (var image in formFiles)
+                byte[] bytes;
+                using (var memoryStream = new MemoryStream())
                 {
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription($"{image.FileName}"),
-                        PublicId = post.Id.ToString() + count,
-                        Folder = "FishApp/PostImages/",
-                    };
-
-                    var uploadResult = cloudinary.Upload(uploadParams);
-                    count++;
-
-                    var imageUrl = new ImageUrls()
-                    {
-                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
-                    };
-
-                    post.ImageUrls.Add(imageUrl);
+                    image.CopyTo(memoryStream);
+                    bytes = memoryStream.ToArray();
                 }
+
+                string base64 = Convert.ToBase64String(bytes);
+
+                var prefix = @"data:image/png;base64,";
+                var imagePath = prefix + base64;
+
+                // create a new ImageUploadParams object and assign the directory name
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(imagePath),
+                    Folder = "FishApp/PostImages/",
+                };
+                // pass the new ImageUploadParams object to the UploadAsync method of the Cloudinary Api
+
+                var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                var error = uploadResult.Error;
+
+                if (error != null)
+                {
+                    throw new Exception($"Error: {error.Message}");
+                }
+
+                var imageUrl = new ImageUrls()
+                {
+                    ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                };
+
+                post.ImageUrls.Add(imageUrl);
             }
 
             await this.postsRepository.AddAsync(post);
-
             await this.postsRepository.SaveChangesAsync();
             return post.Id;
         }

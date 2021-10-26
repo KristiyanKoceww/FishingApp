@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Security.Claims;
     using System.Security.Cryptography;
@@ -62,44 +63,61 @@
             var user = new ApplicationUser()
             {
                 FirstName = userInputModel.FirstName,
-                MiddleName = userInputModel.MiddleName,
                 LastName = userInputModel.LastName,
                 Email = userInputModel.Email,
-                PhoneNumber = userInputModel.PhoneNumber,
                 UserName = userInputModel.UserName,
                 PasswordHash = ComputeSha256Hash(userInputModel.Password),
                 Age = userInputModel.Age,
                 Gender = userInputModel.Gender,
             };
 
-            await this.appUserRepository.AddAsync(user);
-            await this.appUserRepository.SaveChangesAsync();
+            if (userInputModel.MiddleName != null)
+            {
+                user.MiddleName = userInputModel.MiddleName;
+            }
+            else if (userInputModel.PhoneNumber != null)
+            {
+                user.PhoneNumber = userInputModel.PhoneNumber;
+            }
 
-            if (userInputModel.MainImageUrl != null)
+            if (userInputModel.MainImage != null)
             {
                 Account account = new();
                 Cloudinary cloudinary = new(account);
                 cloudinary.Api.Secure = true;
 
+                byte[] bytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    userInputModel.MainImage.CopyTo(memoryStream);
+                    bytes = memoryStream.ToArray();
+                }
+
+                string base64 = Convert.ToBase64String(bytes);
+
+                var prefix = @"data:image/png;base64,";
+                var imagePath = prefix + base64;
+
                 var uploadParams = new ImageUploadParams()
                 {
-                    File = new FileDescription($"{userInputModel.MainImageUrl}"),
-                    PublicId = user.Id,
+                    File = new FileDescription(imagePath),
                     Folder = "FishApp/UserImages/",
                 };
 
-                var uploadResult = cloudinary.Upload(uploadParams);
+                var uploadResult = await cloudinary.UploadAsync(@uploadParams);
 
-                var url = uploadResult.Url.ToString();
+                var error = uploadResult.Error;
 
-                var imageUrl = new ImageUrls()
+                if (error != null)
                 {
-                    ImageUrl = url,
-                };
+                    throw new Exception($"Error: {error.Message}");
+                }
 
-                user.MainImageUrl = url;
-                await this.appUserRepository.SaveChangesAsync();
+                user.MainImageUrl = uploadResult.SecureUrl.AbsoluteUri;
             }
+
+            await this.appUserRepository.AddAsync(user);
+            await this.appUserRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(string userId)

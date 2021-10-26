@@ -11,7 +11,7 @@
 
     public interface IPostsService
     {
-        Task<int> CreateAsync(CreatePostInputModel createPostInputModel, IFormFileCollection formFiles);
+        Task<int> CreateAsync(CreatePostInputModel createPostInputModel);
 
         Task DeleteAsync(int postId);
 

@@ -2,6 +2,8 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
+
     public class CreatePostInputModel
     {
         [Required]
@@ -12,5 +14,7 @@
 
         [Required]
         public string UserId { get; set; }
+
+        public IFormFileCollection FormFiles { get; set; }
     }
 }

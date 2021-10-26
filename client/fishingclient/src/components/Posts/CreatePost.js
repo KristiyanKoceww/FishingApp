@@ -24,12 +24,12 @@ const CreatePost = (props) => {
 
 
     const [loading, setLoading] = useState(false)
-    const [images, setImages2] = useState([]);
+    const [FormFiles, setFormFiles] = useState([]);
 
     const saveFile = (e) => {
         for (let index = 0; index < e.target.files.length; index++) {
             const element = e.target.files[index];
-            setImages2((images) => [...images, element]);
+            setFormFiles((FormFiles) => [...FormFiles, element]);
         }
     };
 
@@ -37,9 +37,9 @@ const CreatePost = (props) => {
         e.preventDefault();
 
         const formData = new FormData();
-        for (let index = 0; index < images.length; index++) {
-            const element = images[index];
-            formData.append('images', element);
+        for (let index = 0; index < FormFiles.length; index++) {
+            const element = FormFiles[index];
+            formData.append('FormFiles', element);
         }
 
         formData.append("title", title);

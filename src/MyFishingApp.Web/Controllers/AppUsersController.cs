@@ -33,7 +33,7 @@ namespace MyFishingApp.Web.Controllers
 
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserInputModel model)
+        public async Task<IActionResult> Register([FromForm] UserInputModel model)
         {
             try
             {

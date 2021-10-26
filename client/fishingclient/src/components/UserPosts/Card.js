@@ -2,10 +2,12 @@ import "./styles/card.scss";
 import Profile from "./Profile";
 import CardMenu from "./CardMenu";
 import Comment from "./Comment";
+import ImageSlider from "../ImageSlider";
 
 const Card = (props) => {
   const {
     storyBorder,
+    profilePicture,
     image,
     comments,
     likedByText,
@@ -19,11 +21,12 @@ const Card = (props) => {
   return (
     <div className="card">
       <header>
-        <Profile iconSize="medium" storyBorder={storyBorder} accountName={accountName} />
+        <Profile iconSize="medium" image={profilePicture} storyBorder={storyBorder} accountName={accountName} />
       </header>
       <p className='text-center'>{title}</p>
       <p className='text-center'>  {content}</p>
-      <img className="cardImage" src={image} alt="card content" />
+      <ImageSlider slides={image} />
+
       <CardMenu />
       <div className="likedBy">
         <Profile iconSize="small" hideAccountName={true} />
@@ -37,7 +40,7 @@ const Card = (props) => {
           return (
             <Comment
               key={comment.id}
-              accountName={comment.User.FirstName ? comment.User.FirstName : null }
+              accountName={comment.User.FirstName ? comment.User.FirstName : null}
               comment={comment.Content}
             />
           );

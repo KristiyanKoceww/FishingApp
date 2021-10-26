@@ -2,6 +2,7 @@
 {
     using System.ComponentModel.DataAnnotations;
 
+    using Microsoft.AspNetCore.Http;
     using MyFishingApp.Data.Models;
 
     public class UserInputModel
@@ -12,7 +13,6 @@
         [RegularExpression("[A-Za-z]+", ErrorMessage = "Name must contains only letters")]
         public string FirstName { get; set; }
 
-        [Required]
         [MinLength(3)]
         [MaxLength(30)]
         [RegularExpression("[A-Za-z]+", ErrorMessage = "Name must contains only letters")]
@@ -28,7 +28,6 @@
         [Range(10, 120)]
         public int Age { get; set; }
 
-        [Required]
         [Phone]
         public string PhoneNumber { get; set; }
 
@@ -36,8 +35,7 @@
         [EnumDataType(typeof(Gender))]
         public Gender Gender { get; set; }
 
-        //[Required]
-        public string MainImageUrl { get; set; }
+        public IFormFile MainImage { get; set; }
 
         [Required]
         [EmailAddress]

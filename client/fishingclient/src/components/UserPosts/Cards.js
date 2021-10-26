@@ -22,14 +22,13 @@ const Cards = () => {
 
     return (
       <div className="cards">
-
         {posts.map((post) => {
-
           return(
             <Card
             accountName={post.User.FirstName}
+            profilePicture={post.User.MainImageUrl}
             storyBorder={true}
-            image={post.ImageUrls[0].ImageUrl}
+            image={post.ImageUrls}
             comments={post.Comments}
             likedByText="dadatlacak"
             likedByNumber={post.Votes.Count}
@@ -38,7 +37,6 @@ const Cards = () => {
             title = {post.Title}
           />
           )
-         
         })}
       </div>
     )

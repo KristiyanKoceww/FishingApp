@@ -3,7 +3,7 @@
 .card {
   border: 1px solid $border-color-grey;
   background-color: $background-white;
-  margin-bottom: 3.5em;
+  margin-bottom: 1.5em;
   border-radius: 3px;
 
   header {
@@ -23,7 +23,9 @@
         cursor: pointer;
       }
     }
+    
   }
+
 
   .cardImage {
     width: 100%;
