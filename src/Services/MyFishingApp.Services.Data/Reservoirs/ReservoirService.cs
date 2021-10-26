@@ -41,26 +41,41 @@
                 Fishs = createReservoirInputModel.Fish,
             };
 
-            await this.reservoirRepository.AddAsync(reservoir);
-            await this.reservoirRepository.SaveChangesAsync();
-
-            if (createReservoirInputModel.ImageUrls != null)
+            if (createReservoirInputModel.Images.Count > 0)
             {
                 Account account = new();
+
                 Cloudinary cloudinary = new(account);
                 cloudinary.Api.Secure = true;
-                var count = 0;
-                foreach (var image in createReservoirInputModel.ImageUrls)
+
+                foreach (var image in createReservoirInputModel.Images)
                 {
+                    byte[] bytes;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        image.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
+                    }
+
+                    string base64 = Convert.ToBase64String(bytes);
+
+                    var prefix = @"data:image/png;base64,";
+                    var imagePath = prefix + base64;
+
                     var uploadParams = new ImageUploadParams()
                     {
-                        File = new FileDescription($"{image.ImageUrl}"),
-                        PublicId = reservoir.Id + count,
+                        File = new FileDescription(imagePath),
                         Folder = "FishApp/ReservoirImages/",
                     };
 
-                    var uploadResult = cloudinary.Upload(uploadParams);
-                    count++;
+                    var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                    var error = uploadResult.Error;
+
+                    if (error != null)
+                    {
+                        throw new Exception($"Error: {error.Message}");
+                    }
 
                     var imageUrl = new ImageUrls()
                     {
@@ -70,6 +85,7 @@
                     reservoir.ImageUrls.Add(imageUrl);
                 }
 
+                await this.reservoirRepository.AddAsync(reservoir);
                 await this.reservoirRepository.SaveChangesAsync();
             }
         }

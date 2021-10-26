@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -40,27 +41,41 @@
                 Tips = fishInputModel.Tips,
             };
 
-            await this.fishRepository.AddAsync(fish);
-            await this.fishRepository.SaveChangesAsync();
-
-            if (fishInputModel.ImageUrls != null)
+            if (fishInputModel.Images.Count > 0)
             {
                 Account account = new();
 
                 Cloudinary cloudinary = new(account);
                 cloudinary.Api.Secure = true;
-                var count = 0;
-                foreach (var image in fishInputModel.ImageUrls)
+
+                foreach (var image in fishInputModel.Images)
                 {
+                    byte[] bytes;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        image.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
+                    }
+
+                    string base64 = Convert.ToBase64String(bytes);
+
+                    var prefix = @"data:image/png;base64,";
+                    var imagePath = prefix + base64;
+
                     var uploadParams = new ImageUploadParams()
                     {
-                        File = new FileDescription($"{image.ImageUrl}"),
-                        PublicId = fish.Id + count,
+                        File = new FileDescription(imagePath),
                         Folder = "FishApp/FishImages/",
                     };
 
-                    var uploadResult = cloudinary.Upload(uploadParams);
-                    count++;
+                    var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                    var error = uploadResult.Error;
+
+                    if (error != null)
+                    {
+                        throw new Exception($"Error: {error.Message}");
+                    }
 
                     var imageUrl = new ImageUrls()
                     {
@@ -69,9 +84,10 @@
 
                     fish.ImageUrls.Add(imageUrl);
                 }
-
-                await this.fishRepository.SaveChangesAsync();
             }
+
+            await this.fishRepository.AddAsync(fish);
+            await this.fishRepository.SaveChangesAsync();
         }
 
         public async Task DeleteFish(string fishId)
@@ -153,18 +169,18 @@
                 fish.Description = fishInputModel.Description;
                 fish.Tips = fishInputModel.Tips;
 
-                if (fishInputModel.ImageUrls != null)
+                if (fishInputModel.Images != null)
                 {
                     Account account = new();
 
                     Cloudinary cloudinary = new(account);
                     cloudinary.Api.Secure = true;
                     var count = 0;
-                    foreach (var image in fishInputModel.ImageUrls)
+                    foreach (var image in fishInputModel.Images)
                     {
                         var uploadParams = new ImageUploadParams()
                         {
-                            File = new FileDescription($"{image.ImageUrl}"),
+                            File = new FileDescription($"{image.FileName}"),
                             PublicId = fish.Id + count,
                             Folder = "FishApp/FishImages/",
                         };

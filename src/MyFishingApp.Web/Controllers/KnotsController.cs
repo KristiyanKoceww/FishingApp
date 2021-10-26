@@ -24,11 +24,18 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateKnot(KnotInputModel knotInputModel)
+        public async Task<IActionResult> CreateKnot([FromForm] KnotInputModel knotInputModel)
         {
-            await this.knotService.CreateKnotAsync(knotInputModel);
+            try
+            {
+                await this.knotService.CreateKnotAsync(knotInputModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
 
-            return Ok();
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("delete")]

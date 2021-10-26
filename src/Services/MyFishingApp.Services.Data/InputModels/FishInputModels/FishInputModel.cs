@@ -42,6 +42,6 @@
         public string Tips { get; set; }
 
         [Required]
-        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
+        public IFormFileCollection Images { get; set; }
     }
 }

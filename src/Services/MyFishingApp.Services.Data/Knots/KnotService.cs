@@ -42,26 +42,41 @@
                 knot.VideoUrl = knotInputModel.VideoUrl;
             }
 
-            await this.knotRepository.AddAsync(knot);
-            await this.knotRepository.SaveChangesAsync();
-
-            if (knotInputModel.ImageUrls != null)
+            if (knotInputModel.Images.Count > 0)
             {
                 Account account = new();
+
                 Cloudinary cloudinary = new(account);
                 cloudinary.Api.Secure = true;
-                var count = 0;
-                foreach (var image in knotInputModel.ImageUrls)
+
+                foreach (var image in knotInputModel.Images)
                 {
+                    byte[] bytes;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        image.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
+                    }
+
+                    string base64 = Convert.ToBase64String(bytes);
+
+                    var prefix = @"data:image/png;base64,";
+                    var imagePath = prefix + base64;
+
                     var uploadParams = new ImageUploadParams()
                     {
-                        File = new FileDescription($"{image.ImageUrl}"),
-                        PublicId = knot.Id + count,
+                        File = new FileDescription(imagePath),
                         Folder = "FishApp/KnotImages/",
                     };
 
-                    var uploadResult = cloudinary.Upload(uploadParams);
-                    count++;
+                    var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                    var error = uploadResult.Error;
+
+                    if (error != null)
+                    {
+                        throw new Exception($"Error: {error.Message}");
+                    }
 
                     var imageUrl = new ImageUrls()
                     {
@@ -70,9 +85,10 @@
 
                     knot.ImageUrls.Add(imageUrl);
                 }
-
-                await this.knotRepository.SaveChangesAsync();
             }
+
+            await this.knotRepository.AddAsync(knot);
+            await this.knotRepository.SaveChangesAsync();
         }
 
         public async Task DeleteKnotAsync(string knotId)
@@ -145,17 +161,17 @@
                 knot.Type = knotInputModel.Type;
                 knot.Description = knotInputModel.Description;
 
-                if (knotInputModel.ImageUrls != null)
+                if (knotInputModel.Images != null)
                 {
                     Account account = new();
                     Cloudinary cloudinary = new(account);
                     cloudinary.Api.Secure = true;
                     var count = 0;
-                    foreach (var image in knotInputModel.ImageUrls)
+                    foreach (var image in knotInputModel.Images)
                     {
                         var uploadParams = new ImageUploadParams()
                         {
-                            File = new FileDescription($"{image.ImageUrl}"),
+                            File = new FileDescription($"{image.FileName}"),
                             PublicId = knot.Id + count,
                             Folder = "FishApp/KnotImages/",
                         };

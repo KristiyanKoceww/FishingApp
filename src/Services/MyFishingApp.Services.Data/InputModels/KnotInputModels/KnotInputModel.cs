@@ -23,12 +23,9 @@
         [MaxLength(300)]
         public string Description { get; set; }
 
-        //[Required]
-        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
+        [Required]
+        public virtual IFormFileCollection Images { get; set; }
 
         public string VideoUrl { get; set; }
-
-        //[Required]
-        public string ImageUrl { get; set; }
     }
 }

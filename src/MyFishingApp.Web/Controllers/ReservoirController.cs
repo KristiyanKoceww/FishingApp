@@ -35,11 +35,18 @@ namespace MyFishingAppReact.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
+        public async Task<IActionResult> CreateReservoir([FromForm] CreateReservoirInputModel createReservoirInputModel)
         {
-            await this.reservoirService.CreateReservoir(createReservoirInputModel);
+            try
+            {
+                await this.reservoirService.CreateReservoir(createReservoirInputModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
 
-            return Ok();
         }
 
         [HttpPost("delete")]
@@ -54,12 +61,12 @@ namespace MyFishingAppReact.Controllers
         {
             await this.reservoirService.UpdateReservoir(updateReservoirInputModel, reservoirId);
             return Ok();
-         }
+        }
 
         [HttpGet("getById")]
         public string GetReservoirById(string reservoirId)
         {
-           var reservoir =  this.reservoirService.GetById(reservoirId);
+            var reservoir = this.reservoirService.GetById(reservoirId);
 
             var json = JsonConvert.SerializeObject(reservoir);
 

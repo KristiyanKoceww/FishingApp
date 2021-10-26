@@ -24,11 +24,19 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> CreateFish(FishInputModel fishInputModel)
+        public async Task<IActionResult> CreateFish([FromForm] FishInputModel fishInputModel)
         {
-            await this.fishService.CreateAsync(fishInputModel);
+            try
+            {
+                await this.fishService.CreateAsync(fishInputModel);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPost("delete")]

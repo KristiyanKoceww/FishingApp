@@ -29,14 +29,10 @@
         [Required]
         public double Longitude { get; set; }
 
-        [Required]
         public ICollection<Fish> Fish { get; set; }
 
         [Required]
-        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
-
-        [Required]
-        public string ImageUrl { get; set; }
+        public virtual IFormFileCollection Images { get; set; }
 
         [Required]
         public virtual City City { get; set; }

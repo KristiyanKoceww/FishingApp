@@ -45,8 +45,7 @@ const CreatePost = (props) => {
         formData.append("title", title);
         formData.append("userId", userId);
         formData.append("content", content);
-
-        console.log(formData);
+        
         fetch(
             'https://localhost:44366/api/Posts/create',
             {
