@@ -27,6 +27,9 @@ const CreateKnot = () => {
 
     fetch('https://localhost:44366/api/Knots/create', {
       method: 'POST',
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzUzNjg0MDAsImlzcyI6ImZhYTVkMDBkLWU1NmEtNDViNi05N2U0LTVhYjcyMWM0ZDc5MCJ9.MCNvxn69xWrsfvutfxfznG9Qiq-5Rj_fIhSGBUOeXsw'
+      },
       body: formData
     })
       .catch((error) => {

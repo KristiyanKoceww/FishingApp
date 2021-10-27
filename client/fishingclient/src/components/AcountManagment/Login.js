@@ -14,20 +14,26 @@ const Login = () => {
             username,
             password,
         };
-
-       await fetch('https://localhost:44366/api/AppUsers/login', {
+        
+        await fetch('https://localhost:44366/api/AppUsers/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
             body: JSON.stringify(newUser),
+        }).then(response => response.json()).then(res => {
+
+            if (res.AccessToken) {
+                localStorage.setItem("jwt", res.AccessToken);
+            }
         })
 
         setRedirect(true);
     }
+
     if (redirect) {
-        return <Redirect to="/"/>
+        return <Redirect to="/" />
     }
     return (
         <main className="form-signin">

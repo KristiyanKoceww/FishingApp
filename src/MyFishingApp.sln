@@ -19,6 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFishingApp.Services.Messa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyFishingApp.Data", "Data\MyFishingApp.Data\MyFishingApp.Data.csproj", "{4B844ECB-E845-49A6-8B31-85E577933598}"
 	ProjectSection(ProjectDependencies) = postProject
+		{D0D59508-CF8B-4656-A344-396C530BB9DF} = {D0D59508-CF8B-4656-A344-396C530BB9DF}
 		{8522212F-F01E-4E20-9975-FCF5E10D71DB} = {8522212F-F01E-4E20-9975-FCF5E10D71DB}
 	EndProjectSection
 EndProject

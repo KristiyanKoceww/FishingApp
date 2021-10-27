@@ -6,6 +6,7 @@ import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
+import Logout from '../AcountManagment/Logout';
 
 const Nav = styled.div`
   background: #15171c;
@@ -134,7 +135,6 @@ const Sidebar = () => {
             <FaIcons.FaBars onClick={showSidebar} />
           </NavIcon>
           <h1 className="text-center">Hello {name}</h1>
-          
         </Nav>
         <SidebarNav sidebar={sidebar}>
           <SidebarWrap>

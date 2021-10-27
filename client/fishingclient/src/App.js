@@ -9,7 +9,7 @@ import Login from './components/AcountManagment/Login';
 import Register from './components/AcountManagment/Register';
 import CreatePost from './components/UserPosts/CreatePost';
 import { useState, useEffect } from 'react';
-import logout from './components/AcountManagment/Logout';
+import Logout from './components/AcountManagment/Logout';
 import DisplayAllFish from './components/Fish/DisplayAllFish';
 import FishInfo from './components/Fish/FishInfo';
 import DeleteUser from './components/AcountManagment/DeleteUser';
@@ -31,7 +31,7 @@ function App() {
           <Route path='/CreateReservoir' component={CreateReservoir} />
           <Route path='/Login' component={Login} />
           <Route path='/Register' component={Register} />
-          <Route path='/Logout' component={logout} />
+          <Route path='/Logout' component={Logout} />
           <Route path='/AllFish' component={DisplayAllFish} />
           <Route path='/FishInfo' component={FishInfo} />
           <Route path='/DeleteUser' component={DeleteUser} />

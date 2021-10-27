@@ -3,33 +3,34 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using MyFishingApp.Services.Data.AppUsers;
 using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
-using MyFishingApp.Services.Data.Jwt;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using MyFishingApp.Services.Data.NEWJWTSERVICE;
+using System.Linq;
+using MyFishingApp.Services.Data.JwtService;
 
 namespace MyFishingApp.Web.Controllers
 {
-
     [ApiController]
     [Route("api/[controller]")]
     public class AppUsersController : ControllerBase
     {
         private readonly IAppUser userService;
-        private readonly AppSettings _appSettings;
-        private readonly IJwtService jwtService;
+        private readonly ILogger<AppUsersController> logger;
+        private readonly SignInManager signInManager;
 
         public AppUsersController(
             IAppUser userService,
-            IOptions<AppSettings> appSettings,
-            IJwtService jwtService)
+            ILogger<AppUsersController> logger,
+            SignInManager signInManager,
+            JWTAuthService jwtAuthManager)
         {
             this.userService = userService;
-            _appSettings = appSettings.Value;
-            this.jwtService = jwtService;
+            this.logger = logger;
+            this.signInManager = signInManager;
         }
-        
 
         [AllowAnonymous]
         [HttpPost("register")]
@@ -46,65 +47,57 @@ namespace MyFishingApp.Web.Controllers
             }
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
-        public IActionResult Login(LoginInputModel loginInputModel)
+        public async Task<ActionResult> Login([FromBody] LoginRequest request)
         {
-            var user = this.userService.GetByUsername(loginInputModel.Username);
-            if (user == null)
-            {
-                return BadRequest(new { message = "Invalid Credentials" });
-            }
 
-            var userAuth = this.userService.Authenticate(loginInputModel.Username, loginInputModel.Password);
-            if (userAuth == null)
-            {
-                return BadRequest(new { message = "Invalid Credentials" });
-            }
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-            var jwt = jwtService.Generate(user.Id);
+            var result = await this.signInManager.SignIn(request.UserName, request.Password);
 
-            Response.Cookies.Append("jwt", jwt, new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.None, Secure = true });
-            // SameSite = SameSiteMode.None , Secure = true
-            return Ok(new
+            if (!result.Success) return Unauthorized();
+
+            this.logger.LogInformation($"User [{request.UserName}] logged in the system.");
+
+            return Ok(new LoginResult
             {
-                message = "Success",
+                UserName = result.User.UserName,
+                AccessToken = result.AccessToken,
+                RefreshToken = result.RefreshToken
             });
         }
 
-
-        [HttpGet("user")]
-        public IActionResult UserAuth()
-        {
-            try
-            {
-                var jwt = Request.Cookies["jwt"];
-
-                var token = jwtService.Verify(jwt);
-
-                var userId = token.Issuer;
-
-                var user = this.userService.GetById(userId);
-                
-                return Ok(new { userId, user });
-            }
-            catch (Exception e)
-            {
-                return Unauthorized();
-            }
-
-        }
-
         [HttpPost("logout")]
-        public IActionResult LogOut()
+        public ActionResult Logout()
         {
-
+            var jwt = Request.Headers.FirstOrDefault(x => x.Key == "jwt");
+            var jwt2 = Request.Cookies.FirstOrDefault(x => x.Key == "jwt");
             Response.Cookies.Delete("jwt");
-            return Ok(new { mesage = "Success" });
+            Response.Headers.Remove("jwt");
+
+            return Ok(
+            );
 
         }
 
+        [HttpPost("refreshtoken")]
+        public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+        {
+            if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
-        
+            var result = await this.signInManager.RefreshToken(request.AccessToken, request.RefreshToken);
+
+            if (!result.Success) return Unauthorized();
+
+            return Ok(new LoginResult
+            {
+                UserName = result.User.Email,
+                AccessToken = result.AccessToken,
+                RefreshToken = result.RefreshToken
+            });
+        }
+
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
@@ -112,7 +105,6 @@ namespace MyFishingApp.Web.Controllers
 
             return Ok();
         }
-
         
         [HttpPost("update")]
         public async Task<IActionResult> UpdateUser(UserInputModel userInputModel, string userId)
@@ -120,7 +112,6 @@ namespace MyFishingApp.Web.Controllers
             await this.userService.UpdateUserAsync(userInputModel, userId);
             return Ok();
         }
-
         
         [HttpGet("getUser/id")]
         public string GetUserById(string userId)

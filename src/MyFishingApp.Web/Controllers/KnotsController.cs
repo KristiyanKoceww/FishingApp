@@ -23,6 +23,7 @@ namespace MyFishingApp.Web.Controllers
             this.knotService = knotService;
         }
 
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateKnot([FromForm] KnotInputModel knotInputModel)
         {
