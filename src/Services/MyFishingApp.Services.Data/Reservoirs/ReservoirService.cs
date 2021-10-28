@@ -22,6 +22,15 @@
             this.reservoirRepository = reservoirRepository;
         }
 
+        public static Cloudinary Cloudinary()
+        {
+            Account account = new();
+            Cloudinary cloudinary = new(account);
+            cloudinary.Api.Secure = true;
+
+            return cloudinary;
+        }
+
         public async Task CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
         {
             var reservoirExists = this.reservoirRepository.All().Where(x => x.Name == createReservoirInputModel.Name).FirstOrDefault();
@@ -43,11 +52,7 @@
 
             if (createReservoirInputModel.Images.Count > 0)
             {
-                Account account = new();
-
-                Cloudinary cloudinary = new(account);
-                cloudinary.Api.Secure = true;
-
+                var cloudinary = Cloudinary();
                 foreach (var image in createReservoirInputModel.Images)
                 {
                     byte[] bytes;
@@ -147,9 +152,9 @@
             }
         }
 
-        public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel, string reservoirId)
+        public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel)
         {
-            var reservoir = this.GetById(reservoirId);
+            var reservoir = this.GetById(updateReservoirInputModel.ReservoirId);
 
             if (reservoir is not null)
             {
@@ -159,39 +164,50 @@
                 reservoir.Latitude = updateReservoirInputModel.Latitude;
                 reservoir.Longitude = updateReservoirInputModel.Longitude;
 
-                if (updateReservoirInputModel.ImageUrls != null)
+                var cloudinary = Cloudinary();
+                foreach (var image in updateReservoirInputModel.FormFiles)
                 {
-                    Account account = new();
-                    Cloudinary cloudinary = new(account);
-                    cloudinary.Api.Secure = true;
-                    var count = 0;
-                    foreach (var image in updateReservoirInputModel.ImageUrls)
+                    byte[] bytes;
+                    using (var memoryStream = new MemoryStream())
                     {
-                        var uploadParams = new ImageUploadParams()
-                        {
-                            File = new FileDescription($"{image.ImageUrl}"),
-                            PublicId = reservoir.Id + count,
-                            Folder = "FishApp/ReservoirImages/",
-                        };
-
-                        var uploadResult = cloudinary.Upload(uploadParams);
-                        count++;
-
-                        var imageUrl = new ImageUrls()
-                        {
-                            ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
-                        };
-
-                        reservoir.ImageUrls.Add(imageUrl);
+                        image.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
                     }
 
-                    this.reservoirRepository.Update(reservoir);
-                    await this.reservoirRepository.SaveChangesAsync();
+                    string base64 = Convert.ToBase64String(bytes);
+
+                    var prefix = @"data:image/png;base64,";
+                    var imagePath = prefix + base64;
+
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(imagePath),
+                        Folder = "FishApp/ReservoirImages/",
+                    };
+
+                    var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                    var error = uploadResult.Error;
+
+                    if (error != null)
+                    {
+                        throw new Exception($"Error: {error.Message}");
+                    }
+
+                    var imageUrl = new ImageUrls()
+                    {
+                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                    };
+
+                    reservoir.ImageUrls.Add(imageUrl);
                 }
-                else
-                {
-                    throw new Exception("No reservoir found by this id");
-                }
+
+                this.reservoirRepository.Update(reservoir);
+                await this.reservoirRepository.SaveChangesAsync();
+            }
+            else
+            {
+                throw new Exception("No reservoir found by this id");
             }
         }
     }

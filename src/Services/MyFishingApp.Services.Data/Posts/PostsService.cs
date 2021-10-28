@@ -28,6 +28,15 @@
             this.appUsersRepository = appUsersRepository;
         }
 
+        public static Cloudinary Cloudinary()
+        {
+            Account account = new();
+            Cloudinary cloudinary = new(account);
+            cloudinary.Api.Secure = true;
+
+            return cloudinary;
+        }
+
         public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel)
         {
             var user = this.appUsersRepository.All().Where(x => x.Id == createPostInputModel.UserId).FirstOrDefault();
@@ -35,7 +44,6 @@
             if (user == null)
             {
                 throw new Exception("No user found by this id.");
-
             }
 
             var post = new Post
@@ -46,47 +54,45 @@
                 User = user,
             };
 
-            Account account = new();
-            Cloudinary cloudinary = new(account);
-            cloudinary.Api.Secure = true;
-
-            foreach (var image in createPostInputModel.FormFiles)
+            if (createPostInputModel.FormFiles.Count > 0)
             {
-                byte[] bytes;
-                using (var memoryStream = new MemoryStream())
+                var cloudinary = Cloudinary();
+                foreach (var image in createPostInputModel.FormFiles)
                 {
-                    image.CopyTo(memoryStream);
-                    bytes = memoryStream.ToArray();
+                    byte[] bytes;
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        image.CopyTo(memoryStream);
+                        bytes = memoryStream.ToArray();
+                    }
+
+                    string base64 = Convert.ToBase64String(bytes);
+
+                    var prefix = @"data:image/png;base64,";
+                    var imagePath = prefix + base64;
+
+                    var uploadParams = new ImageUploadParams()
+                    {
+                        File = new FileDescription(imagePath),
+                        Folder = "FishApp/PostImages/",
+                    };
+
+                    var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                    var error = uploadResult.Error;
+
+                    if (error != null)
+                    {
+                        throw new Exception($"Error: {error.Message}");
+                    }
+
+                    var imageUrl = new ImageUrls()
+                    {
+                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                    };
+
+                    post.ImageUrls.Add(imageUrl);
                 }
-
-                string base64 = Convert.ToBase64String(bytes);
-
-                var prefix = @"data:image/png;base64,";
-                var imagePath = prefix + base64;
-
-                // create a new ImageUploadParams object and assign the directory name
-                var uploadParams = new ImageUploadParams()
-                {
-                    File = new FileDescription(imagePath),
-                    Folder = "FishApp/PostImages/",
-                };
-                // pass the new ImageUploadParams object to the UploadAsync method of the Cloudinary Api
-
-                var uploadResult = await cloudinary.UploadAsync(@uploadParams);
-
-                var error = uploadResult.Error;
-
-                if (error != null)
-                {
-                    throw new Exception($"Error: {error.Message}");
-                }
-
-                var imageUrl = new ImageUrls()
-                {
-                    ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
-                };
-
-                post.ImageUrls.Add(imageUrl);
             }
 
             await this.postsRepository.AddAsync(post);
@@ -168,31 +174,45 @@
             }
         }
 
-        public async Task UpdateAsync(int postId, UpdatePostInputModel updatePostInputModel)
+        public async Task UpdateAsync(UpdatePostInputModel updatePostInputModel)
         {
-            var post = this.postsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+            var post = this.postsRepository.All().Where(x => x.Id == updatePostInputModel.PostId).FirstOrDefault();
             if (post is not null)
             {
                 post.Content = updatePostInputModel.Content;
                 post.Title = updatePostInputModel.Title;
 
-                if (updatePostInputModel.ImageUrls != null)
+                if (updatePostInputModel.FormFiles.Count > 0)
                 {
-                    Account account = new();
-                    Cloudinary cloudinary = new(account);
-                    cloudinary.Api.Secure = true;
-                    var count = 0;
-                    foreach (var image in updatePostInputModel.ImageUrls)
+                    var cloudinary = Cloudinary();
+                    foreach (var image in updatePostInputModel.FormFiles)
                     {
+                        byte[] bytes;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            image.CopyTo(memoryStream);
+                            bytes = memoryStream.ToArray();
+                        }
+
+                        string base64 = Convert.ToBase64String(bytes);
+
+                        var prefix = @"data:image/png;base64,";
+                        var imagePath = prefix + base64;
+
                         var uploadParams = new ImageUploadParams()
                         {
-                            File = new FileDescription($"{image.ImageUrl}"),
-                            PublicId = post.Id.ToString() + count,
+                            File = new FileDescription(imagePath),
                             Folder = "FishApp/PostImages/",
                         };
 
-                        var uploadResult = cloudinary.Upload(uploadParams);
-                        count++;
+                        var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                        var error = uploadResult.Error;
+
+                        if (error != null)
+                        {
+                            throw new Exception($"Error: {error.Message}");
+                        }
 
                         var imageUrl = new ImageUrls()
                         {

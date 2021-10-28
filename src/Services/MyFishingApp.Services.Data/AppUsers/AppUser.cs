@@ -11,6 +11,7 @@
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
@@ -19,14 +20,20 @@
     public class AppUser : IAppUser
     {
         private readonly IRepository<ApplicationUser> appUserRepository;
-        private readonly UserManager<ApplicationUser> userManager;
 
         public AppUser(
-            IRepository<ApplicationUser> appUserRepository,
-            UserManager<ApplicationUser> userManager)
+            IRepository<ApplicationUser> appUserRepository)
         {
             this.appUserRepository = appUserRepository;
-            this.userManager = userManager;
+        }
+
+        public static Cloudinary Cloudinary()
+        {
+            Account account = new();
+            Cloudinary cloudinary = new(account);
+            cloudinary.Api.Secure = true;
+
+            return cloudinary;
         }
 
         public static string ComputeSha256Hash(string password)
@@ -82,10 +89,7 @@
 
             if (userInputModel.MainImage != null)
             {
-                Account account = new();
-                Cloudinary cloudinary = new(account);
-                cloudinary.Api.Secure = true;
-
+                var cloudinary = Cloudinary();
                 byte[] bytes;
                 using (var memoryStream = new MemoryStream())
                 {
@@ -165,6 +169,44 @@
             }
 
             return dbUser;
+        }
+
+        public async Task ChangeUserProfilePicture(ChangePictureInputModel changePictureInputModel)
+        {
+            var user = this.GetById(changePictureInputModel.UserId);
+
+            if (changePictureInputModel.MainImage != null)
+            {
+                var cloudinary = Cloudinary();
+                byte[] bytes;
+                using (var memoryStream = new MemoryStream())
+                {
+                    changePictureInputModel.MainImage.CopyTo(memoryStream);
+                    bytes = memoryStream.ToArray();
+                }
+
+                string base64 = Convert.ToBase64String(bytes);
+
+                var prefix = @"data:image/png;base64,";
+                var imagePath = prefix + base64;
+
+                var uploadParams = new ImageUploadParams()
+                {
+                    File = new FileDescription(imagePath),
+                    Folder = "FishApp/UserImages/",
+                };
+
+                var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                var error = uploadResult.Error;
+
+                if (error != null)
+                {
+                    throw new Exception($"Error: {error.Message}");
+                }
+
+                user.MainImageUrl = uploadResult.SecureUrl.AbsoluteUri;
+            }
         }
 
         public async Task UpdateUserAsync(UserInputModel userInputModel, string userId)

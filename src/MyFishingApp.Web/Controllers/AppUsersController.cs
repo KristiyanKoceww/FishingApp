@@ -24,8 +24,7 @@ namespace MyFishingApp.Web.Controllers
         public AppUsersController(
             IAppUser userService,
             ILogger<AppUsersController> logger,
-            SignInManager signInManager,
-            JWTAuthService jwtAuthManager)
+            SignInManager signInManager)
         {
             this.userService = userService;
             this.logger = logger;
@@ -81,6 +80,8 @@ namespace MyFishingApp.Web.Controllers
 
         }
 
+
+
         [HttpPost("refreshtoken")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
@@ -107,12 +108,27 @@ namespace MyFishingApp.Web.Controllers
         }
         
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateUser(UserInputModel userInputModel, string userId)
+        public async Task<IActionResult> UpdateUser([FromForm] UserInputModel userInputModel, string userId)
         {
             await this.userService.UpdateUserAsync(userInputModel, userId);
             return Ok();
         }
-        
+
+        [Authorize]
+        [HttpPost("ChangeProfilePicture")]
+        public async Task<IActionResult> ChangeProfilePicture([FromForm] ChangePictureInputModel changePictureInputModel)
+        {
+            try
+            {
+                await userService.ChangeUserProfilePicture(changePictureInputModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         [HttpGet("getUser/id")]
         public string GetUserById(string userId)
         {

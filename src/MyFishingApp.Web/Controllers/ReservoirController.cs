@@ -46,7 +46,6 @@ namespace MyFishingAppReact.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         [HttpPost("delete")]
@@ -57,10 +56,18 @@ namespace MyFishingAppReact.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateReservoir(string reservoirId, UpdateReservoirInputModel updateReservoirInputModel)
+        public async Task<IActionResult> UpdateReservoir([FromForm] UpdateReservoirInputModel updateReservoirInputModel)
         {
-            await this.reservoirService.UpdateReservoir(updateReservoirInputModel, reservoirId);
-            return Ok();
+            try
+            {
+                await this.reservoirService.UpdateReservoir(updateReservoirInputModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
 
         [HttpGet("getById")]

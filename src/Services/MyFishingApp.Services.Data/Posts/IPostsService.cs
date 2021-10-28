@@ -15,7 +15,7 @@
 
         Task DeleteAsync(int postId);
 
-        Task UpdateAsync(int postId, UpdatePostInputModel updatePostInputModel);
+        Task UpdateAsync(UpdatePostInputModel updatePostInputModel);
 
         Post GetById(int id);
 

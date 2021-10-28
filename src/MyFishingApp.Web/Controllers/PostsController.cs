@@ -46,14 +46,19 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdatePost(int postId, UpdatePostInputModel updatePostInputModel)
+        public async Task<IActionResult> UpdatePost([FromForm] UpdatePostInputModel updatePostInputModel)
         {
-            await this.postsService.UpdateAsync(postId, updatePostInputModel);
+            try
+            {
+                await this.postsService.UpdateAsync(updatePostInputModel);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
-
-
 
         [HttpGet("getPostById/Id")]
         public string GetPostById(int postId)

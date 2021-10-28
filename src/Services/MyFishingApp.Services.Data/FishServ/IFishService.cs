@@ -14,7 +14,7 @@
 
         Task DeleteFish(string fishId);
 
-        Task UpdateFish(FishInputModel updateFishInputModel, string fishId);
+        Task UpdateFish(UpdateFishInputModel updateFishInputModel);
 
         Fish GetById(string fishId);
 

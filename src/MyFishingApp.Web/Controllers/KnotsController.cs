@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.InputModels;
+using MyFishingApp.Services.Data.InputModels.KnotInputModels;
 using MyFishingApp.Services.Data.Knots;
 using Newtonsoft.Json;
 using System;
@@ -48,11 +49,17 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateKnot(KnotInputModel knotInputModel, string knotId)
+        public async Task<IActionResult> UpdateKnot([FromForm] UpdateKnotInputModel knotInputModel)
         {
-            await this.knotService.UpdateKnotAsync(knotInputModel, knotId);
-
-            return Ok();
+            try
+            {
+                await this.knotService.UpdateKnotAsync(knotInputModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet("getKnotById")]

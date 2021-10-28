@@ -22,6 +22,15 @@
             this.fishRepository = fishRepository;
         }
 
+        public static Cloudinary Cloudinary()
+        {
+            Account account = new();
+            Cloudinary cloudinary = new(account);
+            cloudinary.Api.Secure = true;
+
+            return cloudinary;
+        }
+
         public async Task CreateAsync(FishInputModel fishInputModel)
         {
             var fishExists = this.fishRepository.All().Where(x => x.Name == fishInputModel.Name).FirstOrDefault();
@@ -43,10 +52,7 @@
 
             if (fishInputModel.Images.Count > 0)
             {
-                Account account = new();
-
-                Cloudinary cloudinary = new(account);
-                cloudinary.Api.Secure = true;
+                var cloudinary = Cloudinary();
 
                 foreach (var image in fishInputModel.Images)
                 {
@@ -124,7 +130,7 @@
             }
             else
             {
-                throw new Exception("There is no fish found by this id");
+                throw new Exception("There is no fish found");
             }
         }
 
@@ -155,38 +161,52 @@
             }
         }
 
-        public async Task UpdateFish(FishInputModel fishInputModel, string fishId)
+        public async Task UpdateFish(UpdateFishInputModel updateFishInputModel)
         {
-            var fish = this.fishRepository.All().Where(x => x.Id == fishId).FirstOrDefault();
+            var fish = this.fishRepository.All().Where(x => x.Id == updateFishInputModel.FishId).FirstOrDefault();
 
             if (fish is not null)
             {
-                fish.Name = fishInputModel.Name;
-                fish.Weight = fishInputModel.Weight;
-                fish.Lenght = fishInputModel.Lenght;
-                fish.Habittat = fishInputModel.Habittat;
-                fish.Nutrition = fishInputModel.Nutrition;
-                fish.Description = fishInputModel.Description;
-                fish.Tips = fishInputModel.Tips;
+                fish.Name = updateFishInputModel.Name;
+                fish.Weight = updateFishInputModel.Weight;
+                fish.Lenght = updateFishInputModel.Lenght;
+                fish.Habittat = updateFishInputModel.Habittat;
+                fish.Nutrition = updateFishInputModel.Nutrition;
+                fish.Description = updateFishInputModel.Description;
+                fish.Tips = updateFishInputModel.Tips;
 
-                if (fishInputModel.Images != null)
+                if (updateFishInputModel.Images != null)
                 {
-                    Account account = new();
+                    var cloudinary = Cloudinary();
 
-                    Cloudinary cloudinary = new(account);
-                    cloudinary.Api.Secure = true;
-                    var count = 0;
-                    foreach (var image in fishInputModel.Images)
+                    foreach (var image in updateFishInputModel.Images)
                     {
+                        byte[] bytes;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            image.CopyTo(memoryStream);
+                            bytes = memoryStream.ToArray();
+                        }
+
+                        string base64 = Convert.ToBase64String(bytes);
+
+                        var prefix = @"data:image/png;base64,";
+                        var imagePath = prefix + base64;
+
                         var uploadParams = new ImageUploadParams()
                         {
-                            File = new FileDescription($"{image.FileName}"),
-                            PublicId = fish.Id + count,
+                            File = new FileDescription(imagePath),
                             Folder = "FishApp/FishImages/",
                         };
 
-                        var uploadResult = cloudinary.Upload(uploadParams);
-                        count++;
+                        var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                        var error = uploadResult.Error;
+
+                        if (error != null)
+                        {
+                            throw new Exception($"Error: {error.Message}");
+                        }
 
                         var imageUrl = new ImageUrls()
                         {

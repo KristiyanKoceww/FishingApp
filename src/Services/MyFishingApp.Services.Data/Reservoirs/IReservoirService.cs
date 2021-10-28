@@ -12,7 +12,7 @@
 
         Task DeleteReservoir(string reservoirId);
 
-        Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel, string reservoirId);
+        Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel);
 
         Reservoir GetById(string reservoirId);
 

@@ -1,15 +1,13 @@
-﻿namespace MyFishingApp.Services.Data.InputModels
+﻿namespace MyFishingApp.Services.Data.InputModels.KnotInputModels
 {
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     using Microsoft.AspNetCore.Http;
-    using MyFishingApp.Data.Models;
 
-    public class UpdateReservoirInputModel
+    public class UpdateKnotInputModel
     {
         [Required]
-        public string ReservoirId { get; set; }
+        public string KnotId { get; set; }
 
         [Required]
         [MinLength(3)]
@@ -26,14 +24,8 @@
         [MaxLength(300)]
         public string Description { get; set; }
 
-        [Required]
-        [Range(2, 30)]
-        public double Latitude { get; set; }
+        public virtual IFormFileCollection Images { get; set; }
 
-        [Required]
-        [Range(2, 30)]
-        public double Longitude { get; set; }
-
-        public IFormFileCollection FormFiles { get; set; }
+        public string VideoUrl { get; set; }
     }
 }

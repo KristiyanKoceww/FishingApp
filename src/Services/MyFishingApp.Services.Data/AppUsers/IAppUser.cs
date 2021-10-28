@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
 
+    using Microsoft.AspNetCore.Http;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
 
@@ -12,6 +13,8 @@
         Task DeleteAsync(string userId);
 
         Task UpdateUserAsync(UserInputModel userInputModel, string userId);
+
+        Task ChangeUserProfilePicture(ChangePictureInputModel changePictureInputModel);
 
         ApplicationUser GetById(string userId);
 

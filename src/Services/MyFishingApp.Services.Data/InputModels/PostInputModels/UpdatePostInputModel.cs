@@ -1,15 +1,18 @@
 ﻿namespace MyFishingApp.Services.Data.InputModels.PostInputModels
 {
-    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
 
-    using MyFishingApp.Data.Models;
+    using Microsoft.AspNetCore.Http;
 
     public class UpdatePostInputModel
     {
+        [Required]
+        public int PostId { get; set; }
+
         public string Title { get; set; }
 
         public string Content { get; set; }
 
-        public virtual ICollection<ImageUrls> ImageUrls { get; set; }
+        public IFormFileCollection FormFiles { get; set; }
     }
 }

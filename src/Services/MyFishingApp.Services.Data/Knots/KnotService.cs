@@ -11,6 +11,7 @@
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
+    using MyFishingApp.Services.Data.InputModels.KnotInputModels;
 
     public class KnotService : IKnotService
     {
@@ -20,6 +21,15 @@
             IDeletableEntityRepository<Knot> knotRepository)
         {
             this.knotRepository = knotRepository;
+        }
+
+        public static Cloudinary Cloudinary()
+        {
+            Account account = new();
+            Cloudinary cloudinary = new(account);
+            cloudinary.Api.Secure = true;
+
+            return cloudinary;
         }
 
         public async Task CreateKnotAsync(KnotInputModel knotInputModel)
@@ -44,10 +54,7 @@
 
             if (knotInputModel.Images.Count > 0)
             {
-                Account account = new();
-
-                Cloudinary cloudinary = new(account);
-                cloudinary.Api.Secure = true;
+                var cloudinary = Cloudinary();
 
                 foreach (var image in knotInputModel.Images)
                 {
@@ -151,33 +158,54 @@
             }
         }
 
-        public async Task UpdateKnotAsync(KnotInputModel knotInputModel, string knotId)
+        public async Task UpdateKnotAsync(UpdateKnotInputModel updateKnotInputModel)
         {
-            // Update images and Images URL
-            var knot = this.GetById(knotId);
+            // Update videos
+            var knot = this.GetById(updateKnotInputModel.KnotId);
+
+            if (updateKnotInputModel.VideoUrl is not null)
+            {
+                knot.VideoUrl = updateKnotInputModel.VideoUrl;
+            }
+
             if (knot is not null)
             {
-                knot.Name = knotInputModel.Name;
-                knot.Type = knotInputModel.Type;
-                knot.Description = knotInputModel.Description;
+                knot.Name = updateKnotInputModel.Name;
+                knot.Type = updateKnotInputModel.Type;
+                knot.Description = updateKnotInputModel.Description;
 
-                if (knotInputModel.Images != null)
+                if (updateKnotInputModel.Images != null)
                 {
-                    Account account = new();
-                    Cloudinary cloudinary = new(account);
-                    cloudinary.Api.Secure = true;
-                    var count = 0;
-                    foreach (var image in knotInputModel.Images)
+                    var cloudinary = Cloudinary();
+
+                    foreach (var image in updateKnotInputModel.Images)
                     {
+                        byte[] bytes;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            image.CopyTo(memoryStream);
+                            bytes = memoryStream.ToArray();
+                        }
+
+                        string base64 = Convert.ToBase64String(bytes);
+
+                        var prefix = @"data:image/png;base64,";
+                        var imagePath = prefix + base64;
+
                         var uploadParams = new ImageUploadParams()
                         {
-                            File = new FileDescription($"{image.FileName}"),
-                            PublicId = knot.Id + count,
+                            File = new FileDescription(imagePath),
                             Folder = "FishApp/KnotImages/",
                         };
 
-                        var uploadResult = cloudinary.Upload(uploadParams);
-                        count++;
+                        var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                        var error = uploadResult.Error;
+
+                        if (error != null)
+                        {
+                            throw new Exception($"Error: {error.Message}");
+                        }
 
                         var imageUrl = new ImageUrls()
                         {

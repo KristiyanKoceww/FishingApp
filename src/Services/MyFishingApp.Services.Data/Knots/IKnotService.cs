@@ -5,6 +5,7 @@
 
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
+    using MyFishingApp.Services.Data.InputModels.KnotInputModels;
 
     public interface IKnotService
     {
@@ -12,7 +13,7 @@
 
         Task DeleteKnotAsync(string knotId);
 
-        Task UpdateKnotAsync(KnotInputModel knotInputModel, string knotId);
+        Task UpdateKnotAsync(UpdateKnotInputModel updateKnotInputModel);
 
         Knot GetById(string knotId);
 
