@@ -15,6 +15,7 @@ import FishInfo from './components/Fish/FishInfo';
 import DeleteUser from './components/AcountManagment/DeleteUser';
 import GetUserById from './components/AcountManagment/GetUserById';
 import UserDetails from './components/AcountManagment/UserDetails';
+import FishInfoPage from './components/Fish/FishInfoPage';
 
 import Cards from './components/UserPosts/Cards'
 import Footer from './components/UserPosts/Footer';
@@ -37,6 +38,7 @@ function App() {
           <Route path='/DeleteUser' component={DeleteUser} />
           <Route path='/GetUserById' component={GetUserById} />
           <Route path='/UserDetails' component={UserDetails} />
+          <Route path='/FishInfoPage' component={FishInfoPage} />
         </Switch>
       </Router>
       <main>
