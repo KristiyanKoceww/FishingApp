@@ -12,7 +12,6 @@ const RenderAllFish = () => {
       setFish(content);
     })()
   }, []);
-
   const renderFish = useMemo(() => {
 
     return (

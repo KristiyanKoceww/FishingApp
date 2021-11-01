@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
@@ -6,7 +6,7 @@ import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
 import { IconContext } from 'react-icons/lib';
-import Logout from '../AcountManagment/Logout';
+
 
 const Nav = styled.div`
   background: #15171c;
@@ -44,7 +44,7 @@ const SidebarWrap = styled.div`
 
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
-  const [name, setName] = useState('');
+  const [name, setName] = useState('user');
 
 
   // const logout = async () => {

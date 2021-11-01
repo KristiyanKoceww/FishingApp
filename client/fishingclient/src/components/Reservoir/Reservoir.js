@@ -1,57 +1,21 @@
-import React,{Component} from 'react';
+import React from "react";
+import {Link } from "react-router-dom";
 
-export class Reservoir extends Component{
+const Reservoir = (reservoir) => {
+  return (
+    <div className="col-sm-4 my-2">
+      <div className="card shadow-sm w-100" style={{ minHeight: 225 , minWidth: 420 }}>
+        <div className="card-body">
+          <h5 className="card-title text-center h3">{reservoir.Name}</h5>
+          <img src={reservoir.ImageUrls[0].ImageUrl} alt='reservoir' height='150px' width='370px'/>
+          <hr/>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Link className='btn btn-primary' to={"/reservoirInfoPage/" + reservoir.Name }> Learn more about {reservoir.Name}</Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-    constructor(props){
-        super(props);
-        this.state={ reservoir:[]}
-    }
-
-    refreshList(){
-        fetch('https://localhost:44366/api/Reservoir/getAllReservoirs')
-        .then(r => r.json())
-    .then(data => {
-        this.setState({reservoir:data})
-    });
-    }
-
-    componentDidMount(){
-        this.refreshList();
-    }
-
-    render(){
-        const {reservoir}=this.state;
-        const key = 1;
-        return(
-            <div>
-                <table className="table table-striped">
-                    <thead>
-                        <tr className="text-justify">
-                            <th className="text-justify">
-                               Reservoirs
-                            </th>
-                        </tr>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Description</th>
-                            <th>Latitude</th>
-                            <th>Longitude</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {reservoir.map(d=>
-                            <tr key={Math.random()}>
-                                <td>{d.Name}</td>
-                                <td>{d.Type}</td>
-                                <td>{d.Description}</td>
-                                <td>{d.Latitude}</td>
-                                <td>{d.Longitude}</td>
-                                </tr>
-                                )}
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
-}
+export default Reservoir;

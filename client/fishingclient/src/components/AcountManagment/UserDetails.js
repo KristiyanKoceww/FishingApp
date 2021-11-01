@@ -18,6 +18,7 @@ console.log(data);
               src="https://i.imgur.com/wvxPV9S.png"
               height="100"
               width="100"
+              alt="s"
             />
           </button>{" "}
           <span className="name mt-3">{data.FirstName}</span>{" "}

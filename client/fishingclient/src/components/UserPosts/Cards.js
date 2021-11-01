@@ -20,6 +20,7 @@ const Cards = () => {
 
     return (
       <div className="cards">
+         <h1 className='text-center'>User posts:</h1>
         {posts.map((post) => {
           return(
             <Card

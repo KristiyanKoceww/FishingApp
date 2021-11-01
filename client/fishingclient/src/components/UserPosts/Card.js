@@ -6,6 +6,7 @@ import ImageSlider from "../ImageSlider/ImageSlider";
 
 const Card = (props) => {
   const {
+    key2,
     storyBorder,
     profilePicture,
     image,

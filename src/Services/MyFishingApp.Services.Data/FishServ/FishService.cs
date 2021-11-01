@@ -136,7 +136,17 @@
 
         public Fish GetById(string fishId)
         {
-            var fish = this.fishRepository.All().Where(x => x.Id == fishId).FirstOrDefault();
+            var fish = this.fishRepository.All().Where(x => x.Id == fishId).Select(x => new Fish
+            {
+                Name = x.Name,
+                Weight = x.Weight,
+                Lenght = x.Lenght,
+                Habittat = x.Habittat,
+                Nutrition = x.Nutrition,
+                Description = x.Description,
+                Tips = x.Tips,
+                ImageUrls = x.ImageUrls,
+            }).FirstOrDefault();
             if (fish is not null)
             {
                 return fish;
@@ -149,7 +159,17 @@
 
         public Fish GetByName(string fishName)
         {
-            var fish = this.fishRepository.All().Where(x => x.Name == fishName).FirstOrDefault();
+            var fish = this.fishRepository.All().Where(x => x.Name == fishName).Select(x => new Fish
+            {
+                Name = x.Name,
+                Weight = x.Weight,
+                Lenght = x.Lenght,
+                Habittat = x.Habittat,
+                Nutrition = x.Nutrition,
+                Description = x.Description,
+                Tips = x.Tips,
+                ImageUrls = x.ImageUrls,
+            }).FirstOrDefault();
 
             if (fish is not null)
             {

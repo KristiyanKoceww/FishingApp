@@ -236,7 +236,40 @@
 
         public ApplicationUser GetByUsername(string username)
         {
-            var user = this.appUserRepository.All().Where(x => x.UserName == username).FirstOrDefault();
+            var user = this.appUserRepository.All().Where(x => x.UserName == username).Select(x => new ApplicationUser
+            {
+                FirstName = x.FirstName,
+                MiddleName = x.MiddleName,
+                LastName = x.MiddleName,
+                Age = x.Age,
+                Id = x.Id,
+                Email = x.Email,
+                Gender = x.Gender,
+                MainImageUrl = x.MainImageUrl,
+                PhoneNumber = x.PhoneNumber,
+                UserName = x.UserName,
+                Posts = x.Posts.Select(x => new Post
+                {
+                    Id = x.Id,
+                    ImageUrls = x.ImageUrls,
+                    Title = x.Title,
+                    User = x.User,
+                    UserId = x.UserId,
+                    Content = x.Content,
+                    Votes = x.Votes,
+                    Comments = x.Comments.Select(x => new Comment
+                    {
+                        Content = x.Content,
+                        User = x.User,
+                        UserId = x.UserId,
+                        Id = x.Id,
+                        Parent = x.Parent,
+                        ParentId = x.ParentId,
+                        Post = x.Post,
+                        PostId = x.PostId,
+                    }).ToList(),
+                }).ToList(),
+            }).FirstOrDefault();
 
             if (user is not null)
             {

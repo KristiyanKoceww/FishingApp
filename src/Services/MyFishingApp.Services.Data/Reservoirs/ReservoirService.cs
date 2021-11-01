@@ -15,11 +15,14 @@
     public class ReservoirService : IReservoirService
     {
         private readonly IDeletableEntityRepository<Reservoir> reservoirRepository;
+        private readonly IDeletableEntityRepository<City> citiesRepository;
 
         public ReservoirService(
-            IDeletableEntityRepository<Reservoir> reservoirRepository)
+            IDeletableEntityRepository<Reservoir> reservoirRepository,
+            IDeletableEntityRepository<City> citiesRepository)
         {
             this.reservoirRepository = reservoirRepository;
+            this.citiesRepository = citiesRepository;
         }
 
         public static Cloudinary Cloudinary()
@@ -33,22 +36,37 @@
 
         public async Task CreateReservoir(CreateReservoirInputModel createReservoirInputModel)
         {
-            var reservoirExists = this.reservoirRepository.All().Where(x => x.Name == createReservoirInputModel.Name).FirstOrDefault();
+            var reservoirExists = this.reservoirRepository.All()
+                .Where(x => x.Name == createReservoirInputModel.Name)
+                .FirstOrDefault();
             if (reservoirExists is not null)
             {
                 throw new Exception("This reservoir already exists");
             }
+
+            var city = this.citiesRepository.All().Where(x => x.Id == createReservoirInputModel.CityId).FirstOrDefault();
 
             var reservoir = new Reservoir()
             {
                 Name = createReservoirInputModel.Name,
                 Type = createReservoirInputModel.Type,
                 Description = createReservoirInputModel.Description,
-                City = createReservoirInputModel.City,
                 Latitude = createReservoirInputModel.Latitude,
                 Longitude = createReservoirInputModel.Longitude,
-                Fishs = createReservoirInputModel.Fish,
             };
+
+            if (createReservoirInputModel.Fish.Count > 0)
+            {
+                foreach (var fish in createReservoirInputModel.Fish)
+                {
+                    reservoir.Fishs.Add(fish);
+                }
+            }
+
+            if (city is not null)
+            {
+                reservoir.City = city;
+            }
 
             if (createReservoirInputModel.Images.Count > 0)
             {
@@ -109,13 +127,23 @@
             }
         }
 
-        public IEnumerable<Reservoir> GetAllReservoirs(int page, int itemsPerPage = 12)
+        public IEnumerable<Reservoir> GetAllReservoirs()
         {
-            var reservoirs = this.reservoirRepository.AllAsNoTracking().ToList();
+            var reservoirs = this.reservoirRepository
+                .AllAsNoTracking()
+                .Select(x => new Reservoir
+                {
+                    Name = x.Name,
+                    Type = x.Type,
+                    Description = x.Description,
+                    ImageUrls = x.ImageUrls,
+                    Latitude = x.Latitude,
+                    Longitude = x.Longitude,
+                    City = x.City,
+                    Fishs = x.Fishs,
+                    Id = x.Id,
+                }).ToList();
 
-            // .OrderByDescending(x => x.Id)
-            // .Skip((page - 1) * itemsPerPage).Take(itemsPerPage)
-            // .ToList();
             if (reservoirs.Count > 0)
             {
                 return reservoirs;
@@ -141,7 +169,21 @@
 
         public Reservoir GetByName(string reservoirName)
         {
-            var reservoir = this.reservoirRepository.All().Where(x => x.Name == reservoirName).FirstOrDefault();
+            var reservoir = this.reservoirRepository.All()
+                .Where(x => x.Name == reservoirName)
+                .Select(x => new Reservoir()
+                {
+                    Name = x.Name,
+                    Type = x.Type,
+                    Description = x.Description,
+                    ImageUrls = x.ImageUrls,
+                    Longitude = x.Longitude,
+                    Latitude = x.Latitude,
+                    City = x.City,
+                    Fishs = x.Fishs,
+                    Id = x.Id,
+                })
+                .FirstOrDefault();
             if (reservoir is not null)
             {
                 return reservoir;

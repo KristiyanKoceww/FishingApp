@@ -35,6 +35,6 @@
         public virtual IFormFileCollection Images { get; set; }
 
         [Required]
-        public virtual City City { get; set; }
+        public string CityId { get; set; }
     }
 }

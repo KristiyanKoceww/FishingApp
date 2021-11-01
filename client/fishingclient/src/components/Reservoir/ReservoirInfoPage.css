@@ -1,0 +1,29 @@
+.container2{
+    background-color:whitesmoke;
+    size: 4in 6in;
+}
+.Description{
+    font-size: 40px;
+    font-family: "Times New Roman";
+    font-weight: 900;
+}
+.Description2{
+    font-size: 30px;
+    font-family: "Times New Roman";
+}
+
+.coords{
+    font-size: 40px;
+    font-family: "Times New Roman";
+    font-weight: 900;
+}
+.city{
+    font-size: 40px;
+    font-family: "Times New Roman";
+    font-weight: 900;
+}
+.city2{
+    font-size: 30px;
+    font-family: "Times New Roman";
+}
+

@@ -28,7 +28,7 @@ namespace MyFishingAppReact.Controllers
         [HttpGet("getAllReservoirs")]
         public string GetAllReservoirs()
         {
-            var reservoirs = this.reservoirService.GetAllReservoirs(1);
+            var reservoirs = this.reservoirService.GetAllReservoirs();
             var json = JsonConvert.SerializeObject(reservoirs);
             return json;
 

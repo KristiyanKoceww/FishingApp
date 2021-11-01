@@ -45,22 +45,22 @@ const CreateKnot = () => {
 
         <div className="form-floating">
           <input required type="text" className="form-control" onChange={e => setName(e.target.value)} />
-          <label for="floatingInput">* Name</label>
+          <label htmlFor="floatingInput">* Name</label>
         </div>
 
         <div className="form-floating">
           <input required type="text" className="form-control" onChange={e => setType(e.target.value)} />
-          <label for="floatingInput">* Knot type</label>
+          <label htmlFor="floatingInput">* Knot type</label>
         </div>
 
         <div className="form-floating">
           <input required type="text" className="form-control" onChange={e => setDescription(e.target.value)} />
-          <label for="floatingInput">* Description</label>
+          <label htmlFor="floatingInput">* Description</label>
         </div>
 
         <div className="form-floating">
           <input required multiple type="file" className="form-control" onChange={saveFile} />
-          <label for="floatingInput">Images</label>
+          <label htmlFor="floatingInput">Images</label>
         </div>
 
         <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
