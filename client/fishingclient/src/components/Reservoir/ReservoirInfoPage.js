@@ -2,10 +2,13 @@ import React, { useEffect, useState, useMemo } from "react";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { useParams, Link } from "react-router-dom";
 import './ReservoirInfoPage.css'
+import Map from "../GoogleMap/Map";
 const ReservoirInfoPage = (props) => {
 
     const [reservoir, setReservoir] = useState();
     const [isLoading, setisLoading] = useState(true);
+    const [latitude, setLatitude] = useState(0);
+    const [longitude, setLongitude] = useState(0);
     const url = 'https://localhost:44366/api/Reservoir/getByName?reservoirName=';
     const { id } = useParams();
 
@@ -19,6 +22,7 @@ const ReservoirInfoPage = (props) => {
                     console.log(err);
                 })
             setisLoading(false);
+            
         }
         fetchData()
     }, []);
@@ -30,8 +34,12 @@ const ReservoirInfoPage = (props) => {
             )
         }
         else {
+
+            setLatitude(reservoir.Latitude);
+            setLongitude(reservoir.Longitude);
             return (
                 <div className="container2">
+                    <Link className='btn btn-primary' to={"/AllReservoirs/"}> Back </Link>
                     <div className="row m-2">
                         <h1 className="text-center">{reservoir.Name}</h1>
                         <ImageSlider slides={reservoir.ImageUrls} />
@@ -40,26 +48,31 @@ const ReservoirInfoPage = (props) => {
                             <div className='Description2'>
                                 {reservoir.Description}
                             </div>
-                            <hr/>
+                            <hr />
                             Type:
                             <div className='Description2'>
                                 {reservoir.Type}
                             </div>
-                            <hr/>
+                            <hr />
                             Reservoir coordinates:
                             <div className='coords'>
-                               <p>Latitude: {reservoir.Latitude}</p>
-                               <p>Longitude: {reservoir.Longitude}</p>
+                                <p>Latitude: {reservoir.Latitude}</p>
+                                <p>Longitude: {reservoir.Longitude}</p>
                             </div>
                         </div>
-                        <hr/>
+                        <hr />
                         <div className='city'>
-                         City:
-                            <div  className='city2'>
-                            {reservoir.Name} is located in {reservoir.City.Name},{reservoir.City.CountryName}.
-                            {reservoir.City.Name} is {reservoir.City.Description}
+                            City:
+                            <div className='city2'>
+                                {reservoir.Name} is located in {reservoir.City.Name},{reservoir.City.CountryName}.
+                                {reservoir.City.Name} is {reservoir.City.Description}
                             </div>
                         </div>
+                    </div>
+                    <hr/>
+                    <h1 className="text-center" >{reservoir.Name} location:</h1>
+                    <div className="d-flex justify-content-center">
+                        <Map props={latitude,longitude} />
                     </div>
                 </div>
             )
@@ -69,11 +82,9 @@ const ReservoirInfoPage = (props) => {
     return (
         <div>
             {renderReservoir}
-            <Link className='btn btn-primary'  to={"/AllReservoirs/"}> Back </Link>
         </div>
     )
 }
-
 export default ReservoirInfoPage;
 
 

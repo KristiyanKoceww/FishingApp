@@ -46,7 +46,6 @@ function App() {
       </Router>
       <main>
         <div className="container">
-         
         </div>
       </main>
       <Footer />
