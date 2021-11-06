@@ -72,7 +72,7 @@ const ReservoirInfoPage = (props) => {
                     <hr/>
                     <h1 className="text-center" >{reservoir.Name} location:</h1>
                     <div className="d-flex justify-content-center">
-                        <Map props={latitude,longitude} />
+                        {/* <Map props={latitude,longitude} /> */}
                     </div>
                 </div>
             )

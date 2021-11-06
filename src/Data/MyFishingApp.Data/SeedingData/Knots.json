@@ -1,0 +1,57 @@
+[
+  {
+    "Id": "b0e2ba13-5cae-4322-8e12-ab73e0b74455",
+    "Name": "Клуп",
+    "Type": "Лесен",
+    "Description": "Този възел осморка ви позволява да завържете клуп на края на основното влакно и да го закачите за повода.",
+    "VideoUrl": null,
+    "ImageUrls": [
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636216726/FishApp/KnotImages/suh0pyxxtvfpf5uqgpod.jpg"
+      }
+    ]
+  },
+  {
+    "Id": "b3e12e1e-de89-4997-9440-1e86f33f0424",
+    "Name": "Гринер",
+    "Type": "Лесен",
+    "Description": "Възел, който позволява основното влакно и повода да бъдат закачени към куки, вирбели и др. Издръжлив,Гринер става както за монофилно, така и за плетено влакно.",
+    "VideoUrl": null,
+    "ImageUrls": [
+
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217053/FishApp/KnotImages/xxp0n6lhixt1ecis88mv.jpg"
+      },
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217055/FishApp/KnotImages/mdgzimaofmcn8w2uuujc.jpg"
+      },
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217054/FishApp/KnotImages/zyxbkj3w7avlq88x1map.gif"
+      },
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217054/FishApp/KnotImages/junxmdzk2bc5de0laxlv.jpg"
+      }
+    ]
+  },
+  {
+    "Id": "b9a9c9af-2e38-4bbb-9d53-3c87cc804580",
+    "Name": "Паломар",
+    "Type": "Средно труден",
+    "Description": "Използван за връзване на основното влакно към вирбели и куки.Паломар е здрав и надежден възел, особено приспособен за монофилни влакна. Идеален е за връзване на кука, но без монтаж на косъм.",
+    "VideoUrl": null,
+    "ImageUrls": [
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217745/FishApp/KnotImages/ak6ekplulvrvagva74ra.jpg"
+      },
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217744/FishApp/KnotImages/n1opu5bcu1fmlydli6bp.jpg"
+      },
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217744/FishApp/KnotImages/cftp7g8vm9ibdqcncn5c.jpg"
+      },
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217743/FishApp/KnotImages/wt7yhulwu4d0hcinssgp.jpg"
+      }
+    ]
+  }
+]
