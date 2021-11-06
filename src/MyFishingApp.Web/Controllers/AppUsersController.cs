@@ -10,6 +10,9 @@ using Microsoft.Extensions.Logging;
 using MyFishingApp.Services.Data.NEWJWTSERVICE;
 using System.Linq;
 using MyFishingApp.Services.Data.JwtService;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using MyFishingApp.Data.Models;
 
 namespace MyFishingApp.Web.Controllers
 {
@@ -20,15 +23,21 @@ namespace MyFishingApp.Web.Controllers
         private readonly IAppUser userService;
         private readonly ILogger<AppUsersController> logger;
         private readonly SignInManager signInManager;
+        private readonly UserManager<ApplicationUser> userManager;
+        private readonly JWTAuthService jwtAuthService;
 
         public AppUsersController(
             IAppUser userService,
             ILogger<AppUsersController> logger,
-            SignInManager signInManager)
+            SignInManager signInManager,
+            UserManager<ApplicationUser> userManager,
+            JWTAuthService jwtAuthService)
         {
             this.userService = userService;
             this.logger = logger;
             this.signInManager = signInManager;
+            this.userManager = userManager;
+            this.jwtAuthService = jwtAuthService;
         }
 
         [AllowAnonymous]
@@ -50,7 +59,6 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login([FromBody] LoginRequest request)
         {
-
             if (!ModelState.IsValid) { return BadRequest(ModelState); }
 
             var result = await this.signInManager.SignIn(request.UserName, request.Password);
@@ -74,13 +82,22 @@ namespace MyFishingApp.Web.Controllers
             var jwt2 = Request.Cookies.FirstOrDefault(x => x.Key == "jwt");
             Response.Cookies.Delete("jwt");
             Response.Headers.Remove("jwt");
-
+            var logout = this.SignOut();
             return Ok(
             );
 
         }
 
+        [HttpPost("user")]
+        public ActionResult UserAuth([FromBody] string accessToken)
+        {
+            ClaimsPrincipal claimsPrincipal = this.jwtAuthService.GetPrincipalFromToken(accessToken);
+            string id = claimsPrincipal.Claims.First(c => c.Type == "id").Value;
+            return Ok(
+                id.ToString()
+            ); 
 
+        }
 
         [HttpPost("refreshtoken")]
         public async Task<ActionResult> RefreshToken([FromBody] RefreshTokenRequest request)

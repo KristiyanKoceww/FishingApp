@@ -54,6 +54,18 @@
             return builder.ToString();
         }
 
+        private void BuildClaims(ApplicationUser user)
+        {
+            var claim = new IdentityUserClaim<string>
+            {
+                UserId = user.Id,
+                ClaimType = "NameIdentifier",
+                ClaimValue = user.UserName,
+            };
+
+            user.Claims.Add(claim);
+        }
+
         public async Task CreateAsync(UserInputModel userInputModel)
         {
             var userName = this.appUserRepository.All().Where(x => x.UserName == userInputModel.UserName).FirstOrDefault();
@@ -119,6 +131,8 @@
 
                 user.MainImageUrl = uploadResult.SecureUrl.AbsoluteUri;
             }
+
+            this.BuildClaims(user);
 
             await this.appUserRepository.AddAsync(user);
             await this.appUserRepository.SaveChangesAsync();

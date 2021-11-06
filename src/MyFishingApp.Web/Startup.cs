@@ -103,7 +103,7 @@ namespace MyFishingApp.Web
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret))
                 };
             });
-           
+
             services.AddCors();
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
