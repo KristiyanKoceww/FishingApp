@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
@@ -46,16 +47,22 @@
 
             var city = this.citiesRepository.All().Where(x => x.Id == createReservoirInputModel.CityId).FirstOrDefault();
 
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ".";
+            provider.NumberGroupSeparator = ",";
+            var latitude = Convert.ToDouble(createReservoirInputModel.Latitude, provider);
+            var longitude = Convert.ToDouble(createReservoirInputModel.Longitude, provider);
+
             var reservoir = new Reservoir()
             {
                 Name = createReservoirInputModel.Name,
                 Type = createReservoirInputModel.Type,
                 Description = createReservoirInputModel.Description,
-                Latitude = createReservoirInputModel.Latitude,
-                Longitude = createReservoirInputModel.Longitude,
+                Latitude = latitude,
+                Longitude = longitude,
             };
 
-            if (createReservoirInputModel.Fish.Count > 0)
+            if (createReservoirInputModel.Fish != null)
             {
                 foreach (var fish in createReservoirInputModel.Fish)
                 {
@@ -197,14 +204,18 @@
         public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel)
         {
             var reservoir = this.GetById(updateReservoirInputModel.ReservoirId);
-
+            NumberFormatInfo provider = new NumberFormatInfo();
+            provider.NumberDecimalSeparator = ".";
+            provider.NumberGroupSeparator = ",";
+            var latitude = Convert.ToDouble(updateReservoirInputModel.Latitude, provider);
+            var longitude = Convert.ToDouble(updateReservoirInputModel.Longitude, provider);
             if (reservoir is not null)
             {
                 reservoir.Name = updateReservoirInputModel.Name;
                 reservoir.Type = updateReservoirInputModel.Type;
                 reservoir.Description = updateReservoirInputModel.Description;
-                reservoir.Latitude = updateReservoirInputModel.Latitude;
-                reservoir.Longitude = updateReservoirInputModel.Longitude;
+                reservoir.Latitude = latitude;
+                reservoir.Longitude = longitude;
 
                 var cloudinary = Cloudinary();
                 foreach (var image in updateReservoirInputModel.FormFiles)

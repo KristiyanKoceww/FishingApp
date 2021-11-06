@@ -1,113 +1,94 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
 import "./CreateReservoir.css";
 
 const CreateReservoir = () => {
-//   const [state, setState] = useState({
-//     name: "",
-//     type: "",
-//     description: "",
-//     latitude: 0,
-//     longitude: 0,
-//     image: null,
-//     city: null,
-//     fish: [],
-//   });
 
   const [name, setName] = useState('');
   const [type, setType] = useState('');
   const [description, setDescription] = useState('');
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [image, setImage] = useState(null);
-  const [city, setCity] = useState(null);
+  const [latitude, setLatitude] = useState(1);
+  const [longitude, setLongitude] = useState(1);
+  const [cityId, setCityId] = useState('');
   const [fish, setFish] = useState([]);
+  const [images, setImages] = useState([]);
 
-//   const { name, type, description, latitude, longitude, image, city, fish } =
-//   name,type,description,latitude,longitude,image,city,fish;
+const saveFile = (e) => {
+  for (let index = 0; index < e.target.files.length; index++) {
+      const element = e.target.files[index];
+      setImages((images) => [...images, element]);
+  }
+};
 
-  const onSubmit = async (e) => {
-    e.preventDefault();
-    const newReservoir = {
-      name,
-      type,
-      description,
-      latitude,
-      longitude,
-      image,
-      city,
-      fish,
-    };
+const uploadImage = async e => {
+  e.preventDefault();
 
-    console.log(newReservoir);
-    fetch("https://localhost:44366/api/Reservoir/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newReservoir),
-    }).catch((error) => {
-      console.error("Error:", error);
-    });
-  };
+  const formData = new FormData();
+  for (let index = 0; index < images.length; index++) {
+      const element = images[index];
+      formData.append('images', element);
+  }
 
-
+  formData.append("name", name);
+  formData.append("type", type);
+  formData.append("description", description);
+  formData.append("latitude", latitude);
+  formData.append("longitude", longitude);
+  formData.append("cityId", cityId);
+  
+  fetch(
+      'https://localhost:44366/api/Reservoir/create',
+      {
+          method: 'POST',
+          body: formData
+      }
+  )
+}
  
-  return (
-    <div>
-      <h1 className="d-flex align-items-center justify-content-center">
-        Create new reservoir
-      </h1>
-      <div className="d-flex align-items-center justify-content-center">
-        <Form className="form" onSubmit={onSubmit}>
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir name</Form.Label>
-            <Form.Control  type="text" placeholder="Enter name"  onChange = {(event) => setName({name:event.target.value})}/>
-          </Form.Group>
+return (
+  <main className="form-signin">
+      <form onSubmit={uploadImage}>
+          <h1 className="h3 mb-3 fw-normal">Fill data to create new reservoir</h1>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir type</Form.Label>
-            <Form.Control type="text" placeholder="Enter type" onChange = {(event) => setType({type:event.target.value})} />
-          </Form.Group>
+          <div className="form-floating">
+              <input type="text" className="form-control" onChange={e => setName(e.target.value)} />
+              <label>Reservoir name</label>
+          </div>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir description</Form.Label>
-            <Form.Control type="text" placeholder="Enter description" onChange = {(event) => setDescription({description:event.target.value})} />
-          </Form.Group>
+          <div className="form-floating">
+              <input type="text" className="form-control" onChange={e => setType(e.target.value)} />
+              <label>Type</label>
+          </div>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir latitude</Form.Label>
-            <Form.Control type="text" placeholder="Enter latitude" onChange = {(event) => setLatitude({latitude:event.target.value})} />
-          </Form.Group>
+          <div className="form-floating">
+              <textarea className="form-control" rows="100" onChange={e => setDescription(e.target.value)} />
+              <label>Description</label>
+          </div>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir longitude</Form.Label>
-            <Form.Control type="text" placeholder="Enter longitude" onChange = {(event) => setLongitude({longitude:event.target.value})}/>
-          </Form.Group>
+          <div className="form-floating">
+              <input type="text" step="any" className="form-control" onChange={e => setLatitude(e.target.value)} />
+              <label>Latitude</label>
+          </div>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir's fish</Form.Label>
-            <Form.Control type="text" placeholder="Enter fish" onChange = {(event) => setFish({fish:event.target.value})}/>
-          </Form.Group>
+          <div className="form-floating">
+              <input type="text" step="any" className="form-control" onChange={e => setLongitude(e.target.value)} />
+              <label>Longitude</label>
+          </div>
 
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir's city</Form.Label>
-            <Form.Control type="text" placeholder="Enter city" onChange = {(event) => setCity({city:event.target.value})} />
-          </Form.Group>
+          <div className="form-floating">
+              <input type="text" className="form-control" onChange={e => setCityId(e.target.value)} />
+              <label>City ID</label>
+          </div>
 
-          
-          <Form.Group className="mb-3" >
-            <Form.Label>Reservoir images</Form.Label>
-            <Form.Control type="file" placeholder="Select images" onChange = {(event) => setImage({image:event.target.value})}/>
-          </Form.Group>
+          <div className="form-floating">
+              <input multiple type="file" className="form-control" onChange={saveFile} />
+              <label>Image/s</label>
+          </div>
 
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </div>
-    </div>
-  );
+          <button className="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+          <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+      </form>
+  </main>
+)
 };
 
 export default CreateReservoir;

@@ -19,15 +19,14 @@
         public string Type { get; set; }
 
         [Required]
-        [MinLength(3)]
-        [MaxLength(300)]
+        [MinLength(10)]
         public string Description { get; set; }
 
         [Required]
-        public double Latitude { get; set; }
+        public string Latitude { get; set; }
 
         [Required]
-        public double Longitude { get; set; }
+        public string Longitude { get; set; }
 
         public ICollection<Fish> Fish { get; set; }
 
