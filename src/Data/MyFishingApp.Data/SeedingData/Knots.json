@@ -53,5 +53,17 @@
         "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217743/FishApp/KnotImages/wt7yhulwu4d0hcinssgp.jpg"
       }
     ]
+  },
+  {
+    "Id": "b9a9c9af-2e38-4bbb-9d53-3c87cc804589",
+    "Name": "Паломар2",
+    "Type": "Средно труден2",
+    "Description": "2Използван за връзване на основното влакно към вирбели и куки.Паломар е здрав и надежден възел, особено приспособен за монофилни влакна. Идеален е за връзване на кука, но без монтаж на косъм.",
+    "VideoUrl": null,
+    "ImageUrls": [
+      {
+        "ImageUrl": "https://res.cloudinary.com/kocewwcloud/image/upload/v1636217745/FishApp/KnotImages/ak6ekplulvrvagva74ra.jpg"
+      }
+    ]
   }
 ]

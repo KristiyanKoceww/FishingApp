@@ -3,10 +3,12 @@ import Profile from "./Profile";
 import CardMenu from "./CardMenu";
 import Comment from "./Comment";
 import ImageSlider from "../ImageSlider/ImageSlider";
+import React from "react";
+import { useState } from "react";
 
 const Card = (props) => {
+  const [text, setText] = useState("");
   const {
-    storyBorder,
     profilePicture,
     image,
     comments,
@@ -18,10 +20,34 @@ const Card = (props) => {
     accountName,
   } = props;
 
+  const submitComment = (e) => {
+    e.preventDefault();
+    const userId = '161b2a1d-e05b-41db-8423-542d6afc706b';
+    const postId = 13;
+
+    const data = {
+      Content: text,
+      UserId: userId,
+      PostId: postId,
+    }
+
+    fetch('https://localhost:44366/api/Comments/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  }
+
+
   return (
     <div className="card">
       <header>
-        <Profile iconSize="medium" image={profilePicture} storyBorder={storyBorder} accountName={accountName} />
+        <Profile iconSize="big" image={profilePicture} accountName={accountName} />
       </header>
       <p className='text-center'>{title}</p>
       <p className='text-center'>  {content}</p>
@@ -29,10 +55,10 @@ const Card = (props) => {
 
       <CardMenu />
       <div className="likedBy">
-        <Profile iconSize="small" hideAccountName={true} />
+        <Profile iconSize="small" image={profilePicture} />
         <span>
-          Liked by <strong>{likedByText}</strong> and{" "}
-          <strong>{likedByNumber} others</strong>
+          Харесано от <strong>{likedByText}</strong> и{" "}
+          <strong>{comments.Lenght} 50 други</strong>
         </span>
       </div>
       <div className="comments">
@@ -46,11 +72,13 @@ const Card = (props) => {
           );
         })}
       </div>
-      <div className="timePosted">{hours} HOURS AGO</div>
+      <div className="timePosted">Преди {hours} часа.</div>
+      <form onSubmit={submitComment}> 
       <div className="addComment">
-        <div className="commentText">Add a comment...</div>
-        <div className="postText">Post</div>
+        <textarea type="text" value={text} placeholder="Напишете коментар" className="commentText" onChange={(e) => setText(e.target.value)} />
+        <button className="btn btn-primary"  type="submit"  >Публикувай</button>
       </div>
+      </form>
     </div>
   );
 }

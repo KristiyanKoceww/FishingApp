@@ -1,17 +1,5 @@
 @import "./variables";
 
-.storyBorder {
-  padding: 2px;
-  background: linear-gradient(
-    200deg,
-    $gradient-one 25%,
-    $gradient-two 50%,
-    $gradient-three 75%,
-    $gradient-four 100%
-  );
-  border-radius: 50%;
-}
-
 .profileIcon {
   border-radius: 50%;
   border: 2px solid $background-white;

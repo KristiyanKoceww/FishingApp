@@ -23,44 +23,47 @@
             this.postRepository = postRepository;
         }
 
-        public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
-        {
-            var post = this.postRepository.All().Where(x => x.Id == postId).FirstOrDefault();
-            if (post is null)
-            {
-                throw new Exception("There is no post found by this id!");
-            }
+        //public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
+        //{
+        //    var post = this.postRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+        //    if (post is null)
+        //    {
+        //        throw new Exception("There is no post found by this id!");
+        //    }
 
+        //    var comment = new Comment
+        //    {
+        //        Content = content,
+        //        ParentId = parentId,
+        //        PostId = postId,
+        //        UserId = userId,
+        //    };
+
+        //    post.Comments.Add(comment);
+
+        //    this.postRepository.Update(post);
+        //    await this.commentsRepository.AddAsync(comment);
+        //    await this.commentsRepository.SaveChangesAsync();
+        //}
+
+        public async Task CreateAsync(CommentsInputModel commentsInputModel)
+        {
             var comment = new Comment
             {
-                Content = content,
-                ParentId = parentId,
-                PostId = postId,
-                UserId = userId,
+                Content = commentsInputModel.Content,
+                PostId = commentsInputModel.PostId,
+                UserId = commentsInputModel.UserId,
             };
 
-            post.Comments.Add(comment);
+            if (commentsInputModel.ParentId is not null)
+            {
+                comment.ParentId = commentsInputModel.ParentId;
+            }
 
-            this.postRepository.Update(post);
             await this.commentsRepository.AddAsync(comment);
             await this.commentsRepository.SaveChangesAsync();
         }
 
-        // public async Task CreateAsync(CommentsInputModel commentsInputModel, string userId)
-        // {
-        //     var comment = new Comment
-        //     {
-        //         Content = commentsInputModel.Content,
-        //         PostId = commentsInputModel.PostId,
-        //         UserId = userId,
-        //     };
-        //     if (commentsInputModel.ParentId is not null)
-        //     {
-        //         comment.ParentId = commentsInputModel.ParentId;
-        //     }
-        //     await this.commentsRepository.AddAsync(comment);
-        //     await this.commentsRepository.SaveChangesAsync();
-        // }
         public async Task DeleteAsync(int commentId)
         {
             var comment = this.commentsRepository.All().Where(x => x.Id == commentId).FirstOrDefault();

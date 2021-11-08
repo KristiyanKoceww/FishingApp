@@ -19,6 +19,8 @@ import AllReservoirs from './components/Reservoir/AllReservoirs'
 import Cards from './components/UserPosts/Cards'
 import Footer from './components/UserPosts/Footer';
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
+import AllKnots from './components/Knot/AllKnots'
+import KnotInfoPage from './components/Knot/KnotInfoPage';
 
 function App() {
   return (
@@ -27,21 +29,29 @@ function App() {
         <Sidebar />
         <Switch>
         <Route path='/' exact component={Cards} />
-          <Route path='/CreateKnot' exact component={CreateKnot} />
+        
+          <Route path='/CreateKnot' component={CreateKnot} />
+          <Route path='/AllKnots' component={AllKnots} />
+          <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
+
           <Route path='/CreateCountry' exact component={CreateCountry} />
           <Route path='/CreatePost' component={CreatePost} />
+
           <Route path='/CreateReservoir' component={CreateReservoir} />
           <Route path='/AllReservoirs' component={AllReservoirs} />
           <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
+
           <Route path='/Login' component={Login} />
           <Route path='/Register' component={Register} />
           <Route path='/Logout' component={Logout} />
+
           <Route path='/AllFish' component={DisplayAllFish} />
           <Route path='/FishInfo' component={FishInfo} />
+          <Route path='/FishInfoPage/:id' component={FishInfoPage} />
+
           <Route path='/DeleteUser' component={DeleteUser} />
           <Route path='/GetUserById' component={GetUserById} />
           <Route path='/UserDetails' component={UserDetails} />
-          <Route path='/FishInfoPage/:id' component={FishInfoPage} />
         </Switch>
       </Router>
       <main>

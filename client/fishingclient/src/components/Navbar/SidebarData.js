@@ -22,7 +22,7 @@ export const SidebarData = [
       },
       {
         title: 'Display all knots',
-        path: '/DisplayAllKnots',
+        path: '/AllKnots',
         icon: <IoIcons.IoIosPaper />
       }
     ]

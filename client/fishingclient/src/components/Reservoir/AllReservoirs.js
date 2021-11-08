@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Reservoir from './Reservoir'
 
-const RenderAllFish = () => {
+const RenderAllReservoirs = () => {
   const [reservoir, setReservoir] = useState([]);
 
   useEffect(() => {
@@ -32,4 +32,4 @@ const RenderAllFish = () => {
   )
 }
 
-export default RenderAllFish;
+export default RenderAllReservoirs;

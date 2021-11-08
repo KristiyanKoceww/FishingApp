@@ -5,10 +5,8 @@ const Profile = (props) => {
   const {
     username,
     caption,
-    urlText,
     iconSize,
     captionSize,
-    storyBorder,
     hideAccountName,
     image,
     accountName
@@ -18,7 +16,6 @@ const Profile = (props) => {
     <div className="profile">
       <ProfileIcon
         iconSize={iconSize}
-        storyBorder={storyBorder}
         image={image}
       />
       {(accountName || caption) && !hideAccountName && (
@@ -27,7 +24,6 @@ const Profile = (props) => {
           <span className={`caption ${captionSize}`}>{caption}</span>
         </div>
       )}
-      <a href="/">{urlText}</a>
     </div>
   );
 }

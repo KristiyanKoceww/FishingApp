@@ -20,7 +20,7 @@
 
             var knots = new List<Knot>();
 
-            using (StreamReader r = File.OpenText(@"C:\Users\Skyshop\Desktop\Kris\JsonDb\Knots.json"))
+            using (StreamReader r = File.OpenText(@"C:\Users\User\Desktop\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Knots.json"))
             {
                 string json = r.ReadToEnd();
                 knots = JsonConvert.DeserializeObject<List<Knot>>(json);

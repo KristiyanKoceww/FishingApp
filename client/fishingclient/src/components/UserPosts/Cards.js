@@ -11,7 +11,6 @@ const Cards = () => {
       )
       const content = await response.json();
       setPosts(content);
-
       console.log(content);
     })()
   }, []);
@@ -20,13 +19,12 @@ const Cards = () => {
 
     return (
       <div className="cards">
-         <h1 className='text-center'>User posts:</h1>
+         <h1 className='text-center'>Users posts:</h1>
         {posts.map((post) => {
           return(
             <Card
             accountName={post.User.FirstName}
             profilePicture={post.User.MainImageUrl}
-            storyBorder={true}
             image={post.ImageUrls}
             comments={post.Comments}
             likedByText="dadatlacak"

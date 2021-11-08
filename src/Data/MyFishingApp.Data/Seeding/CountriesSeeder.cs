@@ -21,7 +21,7 @@
 
             var countries = new List<Country>();
 
-            using (StreamReader r = File.OpenText(@"C:\Users\Skyshop\Desktop\Kris\JsonDb\Countries.json"))
+            using (StreamReader r = File.OpenText(@"C:\Users\User\Desktop\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Countries.json"))
             {
                 string json = r.ReadToEnd();
                 countries = JsonConvert.DeserializeObject<List<Country>>(json);
