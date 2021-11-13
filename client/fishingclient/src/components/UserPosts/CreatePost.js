@@ -7,6 +7,8 @@ const CreatePost = (props) => {
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState();
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [FormFiles, setFormFiles] = useState([]);
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -19,34 +21,14 @@ const CreatePost = (props) => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(jwt),
         })
-        // .then((res) => res.json())
-          .then((result) => setUserId(result))
-          .catch((err) => {
-            console.log(err);
-          });
+        .then((res) => res.json())
+        .then((result) => setUserId(result))
+        .catch((err) => {
+          console.log(err);
+        });
     };
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //     ( () => {
-  //         const jwt = localStorage.getItem('jwt');
-  //          fetch('https://localhost:44366/api/AppUsers/user',
-  //             {
-  //                 method: "POST",
-  //                 headers: { 'Content-Type': 'application/json' },
-  //                 body: JSON.stringify(jwt),
-  //                 credentials: 'include',
-  //             })
-  //             .then(res => res.json())
-  //             .then(result => setUserId(result));
-
-  //        console.log(userId);
-  //     })()
-  // }, []);
-
-  const [loading, setLoading] = useState(false);
-  const [FormFiles, setFormFiles] = useState([]);
 
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {

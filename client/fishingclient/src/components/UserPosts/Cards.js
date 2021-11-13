@@ -11,28 +11,27 @@ const Cards = () => {
       )
       const content = await response.json();
       setPosts(content);
-      console.log(content);
     })()
   }, []);
 
   const renderPosts = useMemo(() => {
-
     return (
       <div className="cards">
-         <h1 className='text-center'>Users posts:</h1>
+        <h1 className='text-center'>Публикации на потребители:</h1>
         {posts.map((post) => {
-          return(
+          return (
             <Card
-            accountName={post.User.FirstName}
-            profilePicture={post.User.MainImageUrl}
-            image={post.ImageUrls}
-            comments={post.Comments}
-            likedByText="dadatlacak"
-            likedByNumber={post.Votes.Count}
-            hours={post.CreatedOn}
-            content = {post.Content}
-            title = {post.Title}
-          />
+              id={post.Id}
+              accountName={post.User.FirstName}
+              profilePicture={post.User.MainImageUrl}
+              image={post.ImageUrls}
+              comments={post.Comments}
+              likedByText="dadatlacak"
+              likedByNumber={post.Votes.Count}
+              hours={post.CreatedOn}
+              content={post.Content}
+              title={post.Title}
+            />
           )
         })}
       </div>

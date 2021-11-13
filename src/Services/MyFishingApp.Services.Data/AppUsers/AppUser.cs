@@ -20,11 +20,14 @@
     public class AppUser : IAppUser
     {
         private readonly IRepository<ApplicationUser> appUserRepository;
+        private readonly IRepository<IdentityUserClaim<string>> claimRepository;
 
         public AppUser(
-            IRepository<ApplicationUser> appUserRepository)
+            IRepository<ApplicationUser> appUserRepository,
+            IRepository<IdentityUserClaim<string>> claimRepository)
         {
             this.appUserRepository = appUserRepository;
+            this.claimRepository = claimRepository;
         }
 
         public static Cloudinary Cloudinary()
@@ -64,6 +67,11 @@
             };
 
             user.Claims.Add(claim);
+            this.claimRepository.AddAsync(claim);
+
+            this.appUserRepository.SaveChangesAsync();
+            this.claimRepository.SaveChangesAsync();
+
         }
 
         public async Task CreateAsync(UserInputModel userInputModel)

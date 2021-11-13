@@ -4,11 +4,16 @@ import CardMenu from "./CardMenu";
 import Comment from "./Comment";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Card = (props) => {
   const [text, setText] = useState("");
+  const [showMore, setShowMore] = useState(false);
+  const [userId, setUserId] = useState();
+
   const {
+    id,
+    key,
     profilePicture,
     image,
     comments,
@@ -20,11 +25,29 @@ const Card = (props) => {
     accountName,
   } = props;
 
-  const submitComment = (e) => {
+  const submitComment = (e, id) => {
     e.preventDefault();
-    const userId = '161b2a1d-e05b-41db-8423-542d6afc706b';
-    const postId = 13;
 
+    const jwt = localStorage.getItem("jwt");
+    const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
+
+    const fetchData = () => {
+      fetch((fetchUrl),
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jwt),
+        })
+        .then((res) => res.json())
+        .then((result) => setUserId(result))
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchData();
+
+    const postId = id;
     const data = {
       Content: text,
       UserId: userId,
@@ -41,11 +64,11 @@ const Card = (props) => {
       .catch((error) => {
         console.error('Error:', error);
       });
+
+    setText('');
   }
-
-
   return (
-    <div className="card">
+    <div className="card" key={id}>
       <header>
         <Profile iconSize="big" image={profilePicture} accountName={accountName} />
       </header>
@@ -62,22 +85,33 @@ const Card = (props) => {
         </span>
       </div>
       <div className="comments">
-        {comments.map((comment) => {
-          return (
-            <Comment
-              key={comment.id}
-              accountName={comment.User.FirstName ? comment.User.FirstName : null}
-              comment={comment.Content}
-            />
-          );
-        })}
+        {comments?.slice(0, 5).map((comment) => (
+
+          <Comment
+            key={comment.id}
+            accountName={comment.User.FirstName ? comment.User.FirstName : null}
+            comment={comment.Content}
+          />
+        )
+        )}
+
+        {showMore && comments?.slice(5).map((comment) => (
+          <Comment
+            key={comment.id}
+            accountName={comment.User.FirstName ? comment.User.FirstName : null}
+            comment={comment.Content}
+          />
+        ))}
+
+        <button type="button" className="button" onClick={() => setShowMore(true)}>Show more comments</button>
       </div>
+      <div className="timePosted">Преди {(new Date().getHours(hours))} часа.</div>
       <div className="timePosted">Преди {hours} часа.</div>
-      <form onSubmit={submitComment}> 
-      <div className="addComment">
-        <textarea type="text" value={text} placeholder="Напишете коментар" className="commentText" onChange={(e) => setText(e.target.value)} />
-        <button className="btn btn-primary"  type="submit"  >Публикувай</button>
-      </div>
+      <form data={id} onSubmit={e => submitComment(e, id)}>
+        <div className="addComment">
+          <textarea type="text" value={text} placeholder="Напишете коментар" className="commentText" onChange={(e) => setText(e.target.value)} />
+          <button className="btn btn-primary" type="submit"  >Публикувай</button>
+        </div>
       </form>
     </div>
   );

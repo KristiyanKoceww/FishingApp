@@ -75,27 +75,14 @@ namespace MyFishingApp.Web.Controllers
             });
         }
 
-        [HttpPost("logout")]
-        public ActionResult Logout()
-        {
-            var jwt = Request.Headers.FirstOrDefault(x => x.Key == "jwt");
-            var jwt2 = Request.Cookies.FirstOrDefault(x => x.Key == "jwt");
-            Response.Cookies.Delete("jwt");
-            Response.Headers.Remove("jwt");
-            var logout = this.SignOut();
-            return Ok(
-            );
-
-        }
-
         [HttpPost("user")]
-        public ActionResult UserAuth([FromBody] string accessToken)
+        public string UserAuth([FromBody] string accessToken)
         {
             ClaimsPrincipal claimsPrincipal = this.jwtAuthService.GetPrincipalFromToken(accessToken);
             string id = claimsPrincipal.Claims.First(c => c.Type == "id").Value;
-            return Ok(
-                id.ToString()
-            ); 
+
+            var json = JsonConvert.SerializeObject(id);
+            return json;
 
         }
 

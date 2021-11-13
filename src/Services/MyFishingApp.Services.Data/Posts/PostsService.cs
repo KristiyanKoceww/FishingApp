@@ -138,8 +138,10 @@
         {
             var posts = this.postsRepository.All().Select(x => new Post
             {
+                Id = x.Id,
                 Title = x.Title,
                 Content = x.Content,
+                CreatedOn = x.CreatedOn,
                 Comments = x.Comments.Select(x => new Comment
                 {
                     Content = x.Content,
