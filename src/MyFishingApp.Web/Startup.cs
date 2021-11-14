@@ -23,7 +23,6 @@ using MyFishingApp.Services.Data.FishServ;
 using MyFishingApp.Services.Data.Knots;
 using MyFishingApp.Services.Data.Posts;
 using MyFishingApp.Services.Data.Votes;
-using MyFishingApp.Services.Data.Weather;
 using MyFishingApp.Services.Data.AppUsers;
 using CloudinaryDotNet;
 using Microsoft.IdentityModel.Tokens;
@@ -52,11 +51,6 @@ namespace MyFishingApp.Web
             services.AddIdentityCore<ApplicationUser>(IdentityOptionsProvider.GetIdentityOptions)
                 .AddRoles<ApplicationRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //services.AddAntiforgery(options =>
-            //{
-            //    options.HeaderName = "X-CSRF-TOKEN";
-            //});
-
             services.AddSingleton(this.configuration);
 
             services.AddScoped(typeof(IDeletableEntityRepository<>), typeof(EfDeletableEntityRepository<>));
@@ -71,7 +65,6 @@ namespace MyFishingApp.Web
             services.AddTransient<IKnotService, KnotService>();
             services.AddTransient<IPostsService, PostsService>();
             services.AddTransient<IVotesService, VotesService>();
-            services.AddTransient<IWeatherService, WeatherService>();
             services.AddTransient<IAppUser, AppUser>();
             services.AddTransient<IVotesService, VotesService>();
             services.AddTransient<IPostsService, PostsService>();
@@ -112,7 +105,6 @@ namespace MyFishingApp.Web
                 = new DefaultContractResolver());
 
             services.AddControllers();
-
 
             services.AddSwaggerGen(c =>
             {

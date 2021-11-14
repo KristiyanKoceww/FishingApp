@@ -10,7 +10,7 @@ const Login = () => {
     const submit = async (e) => {
         e.preventDefault();
 
-        const newUser = {
+        const user = {
             username,
             password,
         };
@@ -21,7 +21,7 @@ const Login = () => {
                 'Content-Type': 'application/json',
             },
             credentials: 'include',
-            body: JSON.stringify(newUser),
+            body: JSON.stringify(user),
         }).then(response => response.json()).then(res => {
 
             if (res.AccessToken) {

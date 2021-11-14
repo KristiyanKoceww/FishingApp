@@ -29,23 +29,23 @@ const Card = (props) => {
     e.preventDefault();
 
     const jwt = localStorage.getItem("jwt");
-    const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
+    // const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
 
-    const fetchData = () => {
-      fetch((fetchUrl),
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(jwt),
-        })
-        .then((res) => res.json())
-        .then((result) => setUserId(result))
-        .catch((err) => {
-          console.log(err);
-        });
-    };
+    // const fetchData = () => {
+    //   fetch((fetchUrl),
+    //     {
+    //       method: "POST",
+    //       headers: { "Content-Type": "application/json" },
+    //       body: JSON.stringify(jwt),
+    //     })
+    //     .then((res) => res.json())
+    //     .then((result) => setUserId(result))
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // };
 
-    fetchData();
+    // fetchData();
 
     const postId = id;
     const data = {
@@ -57,7 +57,7 @@ const Card = (props) => {
     fetch('https://localhost:44366/api/Comments/create', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(data)
     })

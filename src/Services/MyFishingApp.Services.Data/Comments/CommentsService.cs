@@ -23,8 +23,8 @@
             this.postRepository = postRepository;
         }
 
-        //public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
-        //{
+        // public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
+        // {
         //    var post = this.postRepository.All().Where(x => x.Id == postId).FirstOrDefault();
         //    if (post is null)
         //    {

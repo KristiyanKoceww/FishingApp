@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory , Redirect } from "react-router-dom";
 import "./Login.css";
 
 const GetUserById = () => {
@@ -8,37 +8,28 @@ const GetUserById = () => {
   const [user, setUser] = useState([]);
   const [redirect, setRedirect] = useState(false);
 
-   
   const submit = (e) => {
     e.preventDefault();
 
-    const myFunc = (() => {
-        (async () => {
-          const response = await fetch("https://localhost:44366/api/AppUsers/getUser/id?userId=" + userId,
-          )
-          const content = await response.json();
-          setUser(content);
-          setRedirect(true);
-        })()
-      });
+    const myFunc = () => {
+      (async () => {
+        const response = await fetch(
+          "https://localhost:44366/api/AppUsers/getUser/id?userId=" + userId
+        );
+        const content = await response.json();
+        setUser(content);
+        setRedirect(true);
+      })();
+    };
 
-      redirect();
+    myFunc();
 
-       
-      myFunc();
-      // fetch("https://localhost:44343/api/AppUsers/getUser/id?userId=" + userId)
-      //   .then((r) => r.json())
-      //   .then((res) => setUser(res));
-      
-      // console.log(user);
-      
-      // history.push("/UserDetails", { data: user });
-      setRedirect(true);
-      history.push("/UserDetails", { data: user });
+    setRedirect(true);
+    // history.push("/UserDetails", { data: user });
   };
-  //   if (redirect) {
-  //     return <Redirect to="/UserDetails" props={user} />;
-  //   }
+    if (redirect) {
+      return <Redirect to="/UserDetails" props={user} />;
+    }
   return (
     <main className="form-signin">
       <form onSubmit={submit}>

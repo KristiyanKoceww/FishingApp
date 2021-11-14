@@ -71,7 +71,6 @@
 
             this.appUserRepository.SaveChangesAsync();
             this.claimRepository.SaveChangesAsync();
-
         }
 
         public async Task CreateAsync(UserInputModel userInputModel)

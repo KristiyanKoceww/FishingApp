@@ -45,7 +45,7 @@ const DisplayAllFish = () => {
               <td>{d.Habittat}</td>
               <td>{d.Tips}</td>
               <td>{d.Description}</td>
-              <td><img alt="fish"  src={d.ImageUrls[0].ImageUrl} width='100px' /></td>
+              <td><img alt="fish" src={d.ImageUrls[0].ImageUrl} width='100px' /></td>
             </tr>
           )}
         </tbody>

@@ -21,6 +21,8 @@ import Footer from './components/UserPosts/Footer';
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 import AllKnots from './components/Knot/AllKnots'
 import KnotInfoPage from './components/Knot/KnotInfoPage';
+import WeatherCity from './components/WeatherForecast/WeatherCity';
+import Weather from './components/WeatherForecast/Weather';
 
 function App() {
   return (
@@ -45,6 +47,8 @@ function App() {
           <Route path='/Register' component={Register} />
           <Route path='/Logout' component={Logout} />
 
+          <Route path='/Weather' component={Weather} />
+
           <Route path='/AllFish' component={DisplayAllFish} />
           <Route path='/FishInfo' component={FishInfo} />
           <Route path='/FishInfoPage/:id' component={FishInfoPage} />
@@ -56,6 +60,7 @@ function App() {
       </Router>
       <main>
         <div className="container">
+        
         </div>
       </main>
       <Footer />

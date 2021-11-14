@@ -147,4 +147,9 @@ export const SidebarData = [
       },
     ]
   },
+  {
+    title: 'Weather',
+    path: '/Weather',
+    icon: <IoIcons.IoMdHelpCircle />,
+  },
 ];

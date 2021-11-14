@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.InputModels.PostInputModels;
 using MyFishingApp.Services.Data.Posts;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.IO;
+
 using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
@@ -25,7 +23,6 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreatePost([FromForm] CreatePostInputModel createPostInputModel)
         {
-
             try
             {
                 await this.postsService.CreateAsync(createPostInputModel);

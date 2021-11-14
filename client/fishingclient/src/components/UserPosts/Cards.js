@@ -5,9 +5,28 @@ const Cards = () => {
 
   const [posts, setPosts] = useState([]);
 
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch('https://localhost:44366/api/Posts/getAllPosts',
+  //     )
+  //     const content = await response.json();
+  //     setPosts(content);
+  //   })()
+  // }, []);
+
+
+  
   useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
     (async () => {
       const response = await fetch('https://localhost:44366/api/Posts/getAllPosts',
+      {
+               method: "GET",
+              headers: {
+                 "Content-Type": "application/json" ,
+                 'Authorization': 'Bearer ' + jwt
+                },
+            }
       )
       const content = await response.json();
       setPosts(content);

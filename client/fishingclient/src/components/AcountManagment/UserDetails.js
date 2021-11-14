@@ -3,9 +3,19 @@ import {useHistory} from 'react-router-dom';
 
 const UserDetails = (props) => {
 
+  const {
+    FirstName,
+    LastName,
+    Age,
+    PhoneNumber,
+    Email,
+    Username,
+    CreatedOn
+
+  } = props;
 const history = useHistory();
-const data = history.location.state.data;
-console.log(data);
+
+console.log(props);
 
   return (
     <div className="container mt-4 mb-4 p-3 d-flex justify-content-center">
@@ -21,8 +31,8 @@ console.log(data);
               alt="s"
             />
           </button>{" "}
-          <span className="name mt-3">{data.FirstName}</span>{" "}
-          <span className="idd">{props.LastName}</span>
+          <span className="name mt-3">{FirstName}</span>{" "}
+          <span className="idd">{LastName}</span>
           <div className="d-flex flex-row justify-content-center align-items-center gap-2">
             {" "}
             <span className="idd1">Age:{props.Age}</span>{" "}
@@ -41,7 +51,7 @@ console.log(data);
             <span>
              Email : {props.Email}
               <br />
-              <br />Username: {props.propsname}{" "}
+              <br />Username: {props.Username}{" "}
             </span>
           </div>
           <div className="gap-3 mt-3 icons d-flex flex-row justify-content-center align-items-center">

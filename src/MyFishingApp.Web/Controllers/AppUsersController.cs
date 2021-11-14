@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using MyFishingApp.Services.Data.AppUsers;
 using MyFishingApp.Services.Data.InputModels.AppUsersInputModels;
 using Newtonsoft.Json;
@@ -78,11 +77,14 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("user")]
         public string UserAuth([FromBody] string accessToken)
         {
+            //var header = Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
+            //var token = header.Value.ToString().Replace("Bearer ", "");
+
             ClaimsPrincipal claimsPrincipal = this.jwtAuthService.GetPrincipalFromToken(accessToken);
             string id = claimsPrincipal.Claims.First(c => c.Type == "id").Value;
 
-            var json = JsonConvert.SerializeObject(id);
-            return json;
+            var userId = JsonConvert.SerializeObject(id);
+            return userId;
 
         }
 

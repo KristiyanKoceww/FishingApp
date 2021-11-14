@@ -6,7 +6,7 @@ const KnotInfoPage = (props) => {
 
     const [knot, setKnot] = useState();
     const [isLoading, setisLoading] = useState(true);
-    const url = 'https://localhost:44366/api/Reservoir/getByName?knotName=';
+    const url = 'https://localhost:44366/api/Knot/getByName?knotName=';
     const { id } = useParams();
 
     useEffect(() => {
