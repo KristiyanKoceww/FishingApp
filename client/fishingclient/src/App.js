@@ -1,4 +1,4 @@
-// import './App.css';
+import './App.css';
 import './components/UserPosts/styles/App.scss'
 import Sidebar from './components/Navbar/Sidebar';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
@@ -21,7 +21,6 @@ import Footer from './components/UserPosts/Footer';
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 import AllKnots from './components/Knot/AllKnots'
 import KnotInfoPage from './components/Knot/KnotInfoPage';
-import WeatherCity from './components/WeatherForecast/WeatherCity';
 import Weather from './components/WeatherForecast/Weather';
 
 function App() {
@@ -58,11 +57,11 @@ function App() {
           <Route path='/UserDetails' component={UserDetails} />
         </Switch>
       </Router>
-      <main>
+      {/* <main>
         <div className="container">
         
         </div>
-      </main>
+      </main> */}
       <Footer />
     </div>
   );

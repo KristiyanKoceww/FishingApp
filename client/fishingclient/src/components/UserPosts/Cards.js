@@ -30,6 +30,7 @@ const Cards = () => {
       )
       const content = await response.json();
       setPosts(content);
+      console.log(content);
     })()
   }, []);
 
@@ -45,11 +46,11 @@ const Cards = () => {
               profilePicture={post.User.MainImageUrl}
               image={post.ImageUrls}
               comments={post.Comments}
-              likedByText="dadatlacak"
-              likedByNumber={post.Votes.Count}
+              likedByNumber={post.Votes.length}
               hours={post.CreatedOn}
               content={post.Content}
               title={post.Title}
+              vote = {post.Votes}
             />
           )
         })}

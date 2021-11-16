@@ -17,12 +17,12 @@ const Card = (props) => {
     profilePicture,
     image,
     comments,
-    likedByText,
     likedByNumber,
     hours,
     content,
     title,
     accountName,
+    vote,
   } = props;
 
   const submitComment = (e, id) => {
@@ -72,16 +72,19 @@ const Card = (props) => {
       <header>
         <Profile iconSize="big" image={profilePicture} accountName={accountName} />
       </header>
-      <p className='text-center'>{title}</p>
-      <p className='text-center'>  {content}</p>
-      <ImageSlider slides={image} />
+      <p className='title'>{title}</p>
+      <p className='content'>{content}</p>
 
-      <CardMenu />
+      {typeof image != "undefined" ? (<ImageSlider slides={image} />) : ("")}
+
+      <CardMenu postId={id} />
       <div className="likedBy">
         <Profile iconSize="small" image={profilePicture} />
         <span>
-          Харесано от <strong>{likedByText}</strong> и{" "}
-          <strong>{comments.Lenght} 50 други</strong>
+          {vote.length > 0 ? 
+          ("Харесано от " + vote[0].User.FirstName + " и " + (likedByNumber > 1  ? (likedByNumber + " други") : (likedByNumber + " друг"))  )
+           : ("Все още няма харесвания") }
+          
         </span>
       </div>
       <div className="comments">

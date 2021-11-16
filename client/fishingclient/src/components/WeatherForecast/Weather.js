@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import "./Weather.css";
 const Weather = () => {
   const api = {
-    key: "",
+    key: "12a4746d8befcc4c81d074e265b71afb",
     base: "https://api.openweathermap.org/data/2.5/",
+    wholeLink: "https://api.openweathermap.org/data/2.5/forecast?q={city name}&units=metric&appid={API key}"
   };
 
   const [query, setQuery] = useState("");
@@ -11,40 +12,39 @@ const Weather = () => {
 
   const search = (evt) => {
     if (evt.key === "Enter") {
-      fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
+      fetch(`${api.base}forecast?q=${query}&units=metric&lang=bg&appid=${api.key}`)
         .then((res) => res.json())
         .then((result) => {
           setWeather(result);
           console.log(result);
           setQuery("");
-          console.log(result);
         });
     }
   };
 
   const dateBuilder = (d) => {
     let months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "Януари",
+      "Февруари",
+      "Март",
+      "Април",
+      "Май",
+      "Юни",
+      "Юли",
+      "Август",
+      "Септември",
+      "Октомври",
+      "Ноември",
+      "Декември",
     ];
     let days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
+      "Неделя",
+      "Понеделник",
+      "Вторник",
+      "Сряда",
+      "Четвъртък",
+      "Петък",
+      "Събота",
     ];
 
     let day = days[d.getDay()];
@@ -56,38 +56,54 @@ const Weather = () => {
   };
 
   return (
-    <div>
-      <main>
-        <h1 className="title">Weather forecast</h1>
+    <div >
+      <main className={(typeof weather.city != "undefined") ? ((weather.list[0].main.temp > 16) ? 'warm' : 'cold') : 'warm'}>
+        <h1 className="title">Времето</h1>
         <div className="search-box">
           <input
             type="text"
             className="search-bar"
-            placeholder="Search..."
+            placeholder="Търси..."
             onChange={(e) => setQuery(e.target.value)}
             value={query}
             onKeyPress={search}
           />
         </div>
-        {typeof weather.main != "undefined" ? (
+        {typeof weather.city != "undefined" ? (
           <div>
             <div className="location-box">
               <div className="location">
-                {weather.name}, {weather.sys.country}
+                {weather.city.name}, {weather.city.country}
               </div>
               <div className="date">{dateBuilder(new Date())}</div>
             </div>
             <div className="weather-box">
-              <div className="temp">{Math.round(weather.main.temp)}°c</div>
-              <div className="weather">{weather.weather[0].description}</div>
+              <div className="temp">{Math.round(weather.list[0].main.temp)}°c , {weather.list[0].weather[0].description} </div>
+              <div className="weather">{weather.list[0].weather.description}</div>
+              <div className="real-feel">Усеща се : {weather.list[0].main.feels_like} °c</div>
             </div>
-            <div>{weather.weather[0].main}</div>
+            <div className="weather-info">
+              <div className="weather-info2">
+              <div >Облачност : {weather.list[0].clouds.all} %</div>
+              <div >Влажност : {weather.list[0].main.humidity} % </div>
+              <div >Атмосферно налягане : {weather.list[0].main.pressure} хПа. </div>
+              <div >Максимална температура : {weather.list[0].main.temp_max}  °c </div>
+              <div >Минимална температура : {weather.list[0].main.temp_min}  °c</div>
+              <div >Вятър : {weather.list[0].wind.speed} м/с. </div>
+              <div >Видимост : {weather.list[0].visibility} м. </div>
+            </div>
+            </div>
           </div>
+
         ) : (
-          ""
+          <div className="empty-body">
+            Моля, въведете град или държава за да разберете времето
+          </div>
+
         )}
       </main>
     </div>
+
   );
 };
 

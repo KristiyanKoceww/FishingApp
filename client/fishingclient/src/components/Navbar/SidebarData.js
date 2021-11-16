@@ -5,6 +5,11 @@ import * as RiIcons from 'react-icons/ri';
 
 export const SidebarData = [
   {
+    title: 'Home',
+    path: '/',
+    icon: <IoIcons.IoMdPeople />,
+  },
+  {
     title: 'Knots',
     path: '/',
     icon: <IoIcons.IoMdPeople />,

@@ -65,6 +65,7 @@ const CreatePost = (props) => {
 
         <div className="form-floating">
           <input
+            required
             type="text"
             className="form-control"
             onChange={(e) => setTitle(e.target.value)}
@@ -74,6 +75,7 @@ const CreatePost = (props) => {
 
         <div className="form-floating">
           <input
+            required
             type="text"
             className="form-control"
             onChange={(e) => setContent(e.target.value)}

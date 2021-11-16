@@ -54,7 +54,7 @@
                 User = user,
             };
 
-            if (createPostInputModel.FormFiles.Count > 0)
+            if (createPostInputModel.FormFiles != null)
             {
                 var cloudinary = Cloudinary();
                 foreach (var image in createPostInputModel.FormFiles)
@@ -155,6 +155,8 @@
                 }).ToList(),
                 Votes = x.Votes.Select(x => new Vote
                 {
+                    User = x.User,
+                    UserId = x.UserId,
                     Type = x.Type,
                 }).ToList(),
                 UserId = x.UserId,

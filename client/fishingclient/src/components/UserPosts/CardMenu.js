@@ -1,31 +1,54 @@
+import { useEffect, useState, useMountEffect } from "react";
 import "./styles/cardMenu.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 import { faCommentAlt } from '@fortawesome/free-solid-svg-icons'
 
-const CardMenu = () => {
+const CardMenu = (postId) => {
   let upVote = true;
-  let downVote= false;
+  let downVote = false;
+  const [userId, setUserId] = useState("");
 
-  const convertValue = (string) =>{
-    switch(string.toLowerCase().trim()){
-        case "true": case "yes": case "1": return true;
-        case "false": case "no": case "0": case null: return false;
-        default: return Boolean(string);
+  const jwt = localStorage.getItem("jwt");
+  const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
+
+  const fetchData = () => {
+    fetch((fetchUrl),
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(jwt),
+      })
+      .then((res) => res.json())
+      .then((result) => setUserId(result))
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+  const convertValue = (string) => {
+    switch (string.toLowerCase().trim()) {
+      case "true": case "yes": case "1": return true;
+      case "false": case "no": case "0": case null: return false;
+      default: return Boolean(string);
     }
-}
-  
-  const Vote = (e) => {
+  }
+
+  const Vote = (e, postId) => {
     e.preventDefault();
     const vote = convertValue(e.target.value);
-    const userId = '161b2a1d-e05b-41db-8423-542d6afc706b';
-    const postId = 25;
+    const id = postId.postId;
 
     const data = {
       IsUpVote: vote,
       UserId: userId,
-      PostId: postId
+      PostId: id,
     }
 
     fetch('https://localhost:44366/api/Votes/vote', {
@@ -44,18 +67,13 @@ const CardMenu = () => {
       <div>
         <FontAwesomeIcon icon={faThumbsUp} size="2x" />
         &nbsp;&nbsp;
-        <button onClick={Vote} value= {upVote} className="btn btn-primary">Харесвам</button>
+        <button onClick={(e) => Vote(e, postId)} value={upVote} className="btn btn-primary">Харесвам</button>
       </div>
       <div>
         <FontAwesomeIcon icon={faThumbsDown} size="2x" />
         &nbsp;&nbsp;
-        <button onClick={Vote} value= {downVote} className="btn btn-danger">Не харесвам</button>
+        <button onClick={(e) => Vote(e, postId)} value={downVote} className="btn btn-danger">Не харесвам</button>
       </div>
-      {/* <div>
-        <FontAwesomeIcon icon={faCommentAlt} size="2x" />
-        &nbsp;
-        <button className="btn btn-warning">Коментиране</button>
-      </div> */}
     </div>
   );
 }
