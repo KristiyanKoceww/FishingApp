@@ -26,10 +26,10 @@ const Login = () => {
 
             if (res.AccessToken) {
                 localStorage.setItem("jwt", res.AccessToken);
+                setRedirect(true);
             }
+            localStorage.setItem("userId", res.UserId);
         })
-
-        setRedirect(true);
     }
 
     if (redirect) {

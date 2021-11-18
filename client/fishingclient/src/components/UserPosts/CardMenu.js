@@ -1,35 +1,14 @@
-import { useEffect, useState, useMountEffect } from "react";
 import "./styles/cardMenu.scss";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import { faCommentAlt } from '@fortawesome/free-solid-svg-icons'
 
 const CardMenu = (postId) => {
   let upVote = true;
   let downVote = false;
-  const [userId, setUserId] = useState("");
 
   const jwt = localStorage.getItem("jwt");
-  const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
-
-  const fetchData = () => {
-    fetch((fetchUrl),
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(jwt),
-      })
-      .then((res) => res.json())
-      .then((result) => setUserId(result))
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const userId = localStorage.getItem("userId");
 
 
   const convertValue = (string) => {

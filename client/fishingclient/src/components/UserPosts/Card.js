@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 const Card = (props) => {
   const [text, setText] = useState("");
   const [showMore, setShowMore] = useState(false);
-  const [userId, setUserId] = useState();
+  const [testComments , setTestComments] = useState(props.comments);
 
   const {
     id,
@@ -29,23 +29,7 @@ const Card = (props) => {
     e.preventDefault();
 
     const jwt = localStorage.getItem("jwt");
-    // const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
-
-    // const fetchData = () => {
-    //   fetch((fetchUrl),
-    //     {
-    //       method: "POST",
-    //       headers: { "Content-Type": "application/json" },
-    //       body: JSON.stringify(jwt),
-    //     })
-    //     .then((res) => res.json())
-    //     .then((result) => setUserId(result))
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
-
-    // fetchData();
+    const userId = localStorage.getItem("userId");
 
     const postId = id;
     const data = {

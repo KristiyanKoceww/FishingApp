@@ -4,17 +4,6 @@ import React, { useEffect, useState, useMemo } from "react";
 const Cards = () => {
 
   const [posts, setPosts] = useState([]);
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch('https://localhost:44366/api/Posts/getAllPosts',
-  //     )
-  //     const content = await response.json();
-  //     setPosts(content);
-  //   })()
-  // }, []);
-
-
   
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -22,7 +11,7 @@ const Cards = () => {
       const response = await fetch('https://localhost:44366/api/Posts/getAllPosts',
       {
                method: "GET",
-              headers: {
+               headers: {
                  "Content-Type": "application/json" ,
                  'Authorization': 'Bearer ' + jwt
                 },
@@ -30,11 +19,11 @@ const Cards = () => {
       )
       const content = await response.json();
       setPosts(content);
-      console.log(content);
     })()
   }, []);
 
-  const renderPosts = useMemo(() => {
+  
+  // const renderPosts = useMemo(() => {
     return (
       <div className="cards">
         <h1 className='text-center'>Публикации на потребители:</h1>
@@ -56,12 +45,12 @@ const Cards = () => {
         })}
       </div>
     )
-  }, [posts])
+  // }, [posts])
 
-  return (
-    <div>
-      {renderPosts}
-    </div>
-  )
+  // return (
+  //   <div>
+  //     {renderPosts}
+  //   </div>
+  // )
 }
 export default Cards;
