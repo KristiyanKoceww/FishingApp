@@ -1,19 +1,27 @@
 import React, { useEffect, useState, useMemo } from "react";
-import Fish from './Fish'
+import Fish from "./Fish";
 
 const RenderAllFish = () => {
   const [fish, setFish] = useState([]);
 
   useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
     (async () => {
-      const response = await fetch('https://localhost:44366/api/Fish/getAllFish',
-      )
+      const response = await fetch(
+        "https://localhost:44366/api/Fish/getAllFish",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + jwt,
+          },
+        }
+      );
       const content = await response.json();
       setFish(content);
-    })()
+    })();
   }, []);
   const renderFish = useMemo(() => {
-
     return (
       <div className="container">
         <div className="row m-2">
@@ -22,14 +30,10 @@ const RenderAllFish = () => {
           })}
         </div>
       </div>
-    )
-  }, [fish])
+    );
+  }, [fish]);
 
-  return (
-    <div>
-      {renderFish}
-    </div>
-  )
-}
+  return <div>{renderFish}</div>;
+};
 
 export default RenderAllFish;

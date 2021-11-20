@@ -26,6 +26,7 @@ namespace MyFishingApp.Web.Controllers
             this.commentsService = commentsService;
         }
 
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreateComment(CommentsInputModel commentsInputModel)
         {
@@ -51,6 +52,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateComment(int commentId,CommentsInputModel commentsInputModel)
         {
@@ -59,6 +61,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteComment(int commentId)
         {

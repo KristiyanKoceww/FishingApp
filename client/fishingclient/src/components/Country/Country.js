@@ -9,7 +9,7 @@ const CreateCountry = () => {
 
   const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-
+  const jwt = localStorage.getItem("jwt");
   const onSubmit = async (e) => {
     e.preventDefault();
     const newCountry = {
@@ -20,6 +20,7 @@ const CreateCountry = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + jwt,
       },
       body: JSON.stringify(newCountry),
     }).catch((error) => {

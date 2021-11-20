@@ -15,12 +15,14 @@ const CreatePost = (props) => {
     const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
 
     const fetchData = () => {
-      fetch((fetchUrl),
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(jwt),
-        })
+      fetch(fetchUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+        body: JSON.stringify(jwt),
+      })
         .then((res) => res.json())
         .then((result) => setUserId(result))
         .catch((err) => {

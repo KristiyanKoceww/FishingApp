@@ -3,14 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using MyFishingApp.Services.Data.Countries;
 using MyFishingApp.Services.Data.InputModels;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CountriesController : ControllerBase

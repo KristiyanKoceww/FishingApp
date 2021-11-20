@@ -10,11 +10,18 @@ const GetUserById = () => {
 
   const submit = (e) => {
     e.preventDefault();
-
+    const jwt = localStorage.getItem("jwt");
     const myFunc = () => {
       (async () => {
         const response = await fetch(
-          "https://localhost:44366/api/AppUsers/getUser/id?userId=" + userId
+          "https://localhost:44366/api/AppUsers/getUser/id?userId=" + userId,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + jwt,
+            },
+          }
         );
         const content = await response.json();
         setUser(content);

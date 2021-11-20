@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
-    
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class VotesController : ControllerBase
@@ -24,6 +24,7 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("vote")]
         public async Task<IActionResult> Vote(VoteInputModel voteInputModel)
         {
+
             await this.votesService.VoteAsync(voteInputModel);
 
             return Ok();

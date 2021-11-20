@@ -1,20 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data;
-using MyFishingApp.Services.Data.Dam;
 using MyFishingApp.Services.Data.InputModels;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyFishingAppReact.Controllers
 {
 
-    //[Authorize]
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ReservoirController : ControllerBase

@@ -1,16 +1,25 @@
 import React, { useEffect, useState, useMemo } from "react";
-import Reservoir from './Reservoir'
+import Reservoir from "./Reservoir";
 
 const RenderAllReservoirs = () => {
   const [reservoir, setReservoir] = useState([]);
-
+ 
   useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
     (async () => {
-      const response = await fetch('https://localhost:44366/api/Reservoir/getAllReservoirs',
-      )
+      const response = await fetch(
+        "https://localhost:44366/api/Reservoir/getAllReservoirs",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + jwt,
+          },
+        }
+      );
       const content = await response.json();
       setReservoir(content);
-    })()
+    })();
   }, []);
   const renderReservoirs = useMemo(() => {
     return (
@@ -22,14 +31,10 @@ const RenderAllReservoirs = () => {
           })}
         </div>
       </div>
-    )
-  }, [reservoir])
+    );
+  }, [reservoir]);
 
-  return (
-    <div>
-      {renderReservoirs}
-    </div>
-  )
-}
+  return <div>{renderReservoirs}</div>;
+};
 
 export default RenderAllReservoirs;

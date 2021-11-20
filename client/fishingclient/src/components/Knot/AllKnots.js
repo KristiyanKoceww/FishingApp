@@ -5,8 +5,16 @@ const RenderAllKnots = () => {
   const [knots, setKnots] = useState([]);
 
   useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
     (async () => {
       const response = await fetch('https://localhost:44366/api/Knots/getAllKnots',
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + jwt,
+        },
+      }
       )
       const content = await response.json();
       setKnots(content);

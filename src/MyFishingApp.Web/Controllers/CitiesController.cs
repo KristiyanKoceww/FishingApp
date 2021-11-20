@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data.Cities;
 using MyFishingApp.Services.Data.InputModels;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers

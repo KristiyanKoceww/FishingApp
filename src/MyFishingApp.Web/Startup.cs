@@ -30,6 +30,11 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using MyFishingApp.Services.Data.NEWJWTSERVICE;
 using System;
+using System.Threading.Tasks;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using MyFishingApp.Services.Data.JwtService;
 
 namespace MyFishingApp.Web
 {
@@ -72,14 +77,17 @@ namespace MyFishingApp.Web
             services.AddScoped<JWTAuthService>();
             services.AddScoped<SignInManager>();
 
+            
             var jwtTokenConfig = configuration.GetSection("jwt").Get<JwtTokenConfig>();
             services.AddSingleton(jwtTokenConfig);
+
 
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(x =>
+            })
+            .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = true;
                 x.SaveToken = true;
@@ -95,7 +103,59 @@ namespace MyFishingApp.Web
                     ClockSkew = TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtTokenConfig.Secret))
                 };
+
+                x.Events = new JwtBearerEvents()
+                {
+                    
+                    OnTokenValidated = context =>
+                    {
+                        return Task.CompletedTask;
+                    },
+                    
+                    OnMessageReceived = context =>
+                    {
+                        if (context.Request.Headers.ContainsKey("authorization"))
+                        {
+                            var token = context.Request.Headers["authorization"].ToString();
+                            if (token.StartsWith("Bearer"))
+                            {
+                                context.Token = token.Substring(7).ToString();
+                            }
+                        }
+                        return Task.CompletedTask;
+                    },
+                    OnAuthenticationFailed = context =>
+                    {
+                        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        context.Response.ContentType = context.Request.Headers["Accept"].ToString();
+                        string _Message = "Authentication token is invalid.";
+
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("Token-Expired", "true");
+                            _Message = "Token has expired.";
+
+                            return context.Response.WriteAsync(JsonConvert.SerializeObject(new
+                            ProjectResponse
+                            {
+                                StatusCode = (int)HttpStatusCode.Unauthorized,
+                                Message = _Message
+                            }));
+                        }
+
+                        return context.Response.WriteAsync(JsonConvert.SerializeObject(new
+                        ProjectResponse
+                        {
+                            StatusCode = (int)HttpStatusCode.Unauthorized,
+                            Message = _Message
+                        }));
+                    }
+                };
             });
+
+
+
+
 
             services.AddCors();
 
@@ -111,6 +171,7 @@ namespace MyFishingApp.Web
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyFishingApp.Web", Version = "v1" });
             });
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -134,7 +195,7 @@ namespace MyFishingApp.Web
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MyFishingApp.Web v1"));
             }
 
-            app.UseCors(options => options.WithOrigins(new[] { 
+            app.UseCors(options => options.WithOrigins(new[] {
             "http://localhost:3000","http://localhost:8080","http://localhost:4200"}).AllowAnyMethod().AllowAnyHeader().AllowCredentials());
 
             app.UseHttpsRedirection();

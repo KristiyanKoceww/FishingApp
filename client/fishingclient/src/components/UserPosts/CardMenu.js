@@ -23,7 +23,7 @@ const CardMenu = (postId) => {
     e.preventDefault();
     const vote = convertValue(e.target.value);
     const id = postId.postId;
-
+    const jwt = localStorage.getItem("jwt");
     const data = {
       IsUpVote: vote,
       UserId: userId,
@@ -33,7 +33,8 @@ const CardMenu = (postId) => {
     fetch('https://localhost:44366/api/Votes/vote', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + jwt
       },
       body: JSON.stringify(data)
     })

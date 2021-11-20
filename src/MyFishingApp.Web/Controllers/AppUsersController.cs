@@ -78,8 +78,6 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("user")]
         public string UserAuth([FromBody] string accessToken)
         {
-            //var header = Request.Headers.FirstOrDefault(x => x.Key == "Authorization");
-            //var token = header.Value.ToString().Replace("Bearer ", "");
 
             ClaimsPrincipal claimsPrincipal = this.jwtAuthService.GetPrincipalFromToken(accessToken);
             string id = claimsPrincipal.Claims.First(c => c.Type == "id").Value;
@@ -106,6 +104,7 @@ namespace MyFishingApp.Web.Controllers
             });
         }
 
+        [Authorize]
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
@@ -113,7 +112,8 @@ namespace MyFishingApp.Web.Controllers
 
             return Ok();
         }
-        
+
+        [Authorize]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateUser([FromForm] UserInputModel userInputModel, string userId)
         {
@@ -136,6 +136,7 @@ namespace MyFishingApp.Web.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("getUser/id")]
         public string GetUserById(string userId)
         {

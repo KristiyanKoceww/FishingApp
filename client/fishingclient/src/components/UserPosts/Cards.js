@@ -21,7 +21,7 @@ const Cards = () => {
       setPosts(content);
     })()
   }, []);
-
+  
   
   // const renderPosts = useMemo(() => {
     return (
