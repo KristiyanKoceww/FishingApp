@@ -6,10 +6,7 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 const CardMenu = (postId) => {
   let upVote = true;
   let downVote = false;
-
-  const jwt = localStorage.getItem("jwt");
   const userId = localStorage.getItem("userId");
-
 
   const convertValue = (string) => {
     switch (string.toLowerCase().trim()) {

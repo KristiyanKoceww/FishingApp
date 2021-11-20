@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
 {
-    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class PostsController : ControllerBase
@@ -21,6 +20,7 @@ namespace MyFishingApp.Web.Controllers
             this.postsService = postsService;
         }
 
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> CreatePost([FromForm] CreatePostInputModel createPostInputModel)
         {
@@ -35,6 +35,7 @@ namespace MyFishingApp.Web.Controllers
             }
         }
 
+        [Authorize]
         [HttpPost("delete")]
         public async Task<IActionResult> DeletePost(int postId)
         {
@@ -43,6 +44,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("update")]
         public async Task<IActionResult> UpdatePost([FromForm] UpdatePostInputModel updatePostInputModel)
         {
@@ -58,6 +60,7 @@ namespace MyFishingApp.Web.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("getPostById/Id")]
         public string GetPostById(int postId)
         {
@@ -68,6 +71,7 @@ namespace MyFishingApp.Web.Controllers
             return json;
         }
 
+        [Authorize]
         [HttpGet("getPostCommentsByPostId/Id")]
         public string GetPostCommentsByPostId(int postId)
         {

@@ -30,7 +30,7 @@ const ReservoirInfoPage = (props) => {
       setisLoading(false);
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const renderReservoir = useMemo(() => {
     if (isLoading === true) {

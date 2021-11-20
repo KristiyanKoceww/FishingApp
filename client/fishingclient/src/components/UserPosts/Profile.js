@@ -3,7 +3,6 @@ import ProfileIcon from "./ProfileIcon";
 
 const Profile = (props) => {
   const {
-    username,
     caption,
     iconSize,
     captionSize,

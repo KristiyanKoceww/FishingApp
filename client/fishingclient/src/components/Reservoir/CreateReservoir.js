@@ -8,7 +8,6 @@ const CreateReservoir = () => {
   const [latitude, setLatitude] = useState(1);
   const [longitude, setLongitude] = useState(1);
   const [cityId, setCityId] = useState("");
-  const [fish, setFish] = useState([]);
   const [images, setImages] = useState([]);
 
   const saveFile = (e) => {

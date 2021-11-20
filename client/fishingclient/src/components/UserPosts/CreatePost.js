@@ -9,9 +9,9 @@ const CreatePost = (props) => {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [FormFiles, setFormFiles] = useState([]);
-
+  const jwt = localStorage.getItem("jwt");
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
+    
     const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
 
     const fetchData = () => {
@@ -54,6 +54,7 @@ const CreatePost = (props) => {
 
     fetch("https://localhost:44366/api/Posts/create", {
       method: "POST",
+      headers:{Authorization: "Bearer " + jwt,},
       body: formData,
     });
   };

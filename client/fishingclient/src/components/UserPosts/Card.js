@@ -4,16 +4,15 @@ import CardMenu from "./CardMenu";
 import Comment from "./Comment";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Card = (props) => {
   const [text, setText] = useState("");
   const [showMore, setShowMore] = useState(false);
-  const [testComments, setTestComments] = useState(props.comments);
+  // const [testComments, setTestComments] = useState(props.comments);
 
   const {
     id,
-    key,
     profilePicture,
     image,
     comments,

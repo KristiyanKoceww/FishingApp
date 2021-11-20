@@ -46,30 +46,6 @@ const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
   const [name, setName] = useState('user');
 
-
-  // const logout = async () => {
-  //   await fetch('https://localhost:44343/api/AppUsers/logout',
-  //     {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       credentials: 'include',
-  //     });
-  // }
-  // useEffect(() => {
-  //   (async () => {
-  //     const response = await fetch('https://localhost:44343/api/AppUsers/user',
-  //       {
-  //         headers: { 'Content-Type': 'application/json' },
-  //         credentials: 'include',
-  //       });
-
-  //     const content = await response.json();
-  //     setName(content.FirstName);
-  //   })()
-  // });
-
   const showSidebar = () => setSidebar(!sidebar);
 
   // if (name === '' || name === undefined) {

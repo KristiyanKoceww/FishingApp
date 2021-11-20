@@ -1,6 +1,6 @@
 import "./styles/cards.scss";
 import Card from "./Card";
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 const Cards = () => {
 
   const [posts, setPosts] = useState([]);
@@ -27,9 +27,10 @@ const Cards = () => {
     return (
       <div className="cards">
         <h1 className='text-center'>Публикации на потребители:</h1>
-        {posts.map((post) => {
+        {posts.map((post,id) => {
           return (
             <Card
+              key={id}
               id={post.Id}
               accountName={post.User.FirstName}
               profilePicture={post.User.MainImageUrl}

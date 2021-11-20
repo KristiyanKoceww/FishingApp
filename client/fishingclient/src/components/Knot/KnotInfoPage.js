@@ -27,7 +27,7 @@ const KnotInfoPage = (props) => {
       setisLoading(false);
     };
     fetchData();
-  }, []);
+  }, [id]);
 
   const renderKnot = useMemo(() => {
     if (isLoading === true) {
