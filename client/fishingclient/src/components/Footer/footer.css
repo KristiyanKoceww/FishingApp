@@ -1,0 +1,15 @@
+
+.footer {
+  color: whitesmoke;
+  background-color: black;
+  font-size: 0.7em;
+  margin-top: 2em;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 2em 0;
+  padding: 0;
+  list-style: none;
+}

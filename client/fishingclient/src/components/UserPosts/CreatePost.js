@@ -1,8 +1,9 @@
+import Button from "@restart/ui/esm/Button";
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import "../AcountManagment/Login.css";
 
-const CreatePost = (props) => {
+const CreatePost = ({ fetch }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [userId, setUserId] = useState();
@@ -11,7 +12,7 @@ const CreatePost = (props) => {
   const [FormFiles, setFormFiles] = useState([]);
   const jwt = localStorage.getItem("jwt");
   useEffect(() => {
-    
+
     const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
 
     const fetchData = () => {
@@ -54,14 +55,16 @@ const CreatePost = (props) => {
 
     fetch("https://localhost:44366/api/Posts/create", {
       method: "POST",
-      headers:{Authorization: "Bearer " + jwt,},
+      headers: { Authorization: "Bearer " + jwt, },
       body: formData,
     });
+
+    fetch();
   };
 
   return (
     <main className="form-signin">
-      <form onSubmit={uploadImage}>
+      <form >
         <h1 className="h3 mb-3 fw-normal">
           Share your thoughts and moments with friends
         </h1>
@@ -100,6 +103,7 @@ const CreatePost = (props) => {
           Post
         </button>
         <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+        <Button as={Link} to="/" floated="right" type="button" content="Cancel" onClick={uploadImage} />
       </form>
     </main>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
@@ -45,6 +45,7 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
   const [name, setName] = useState('user');
+  const [user,setUser] = useState([]);
 
   const showSidebar = () => setSidebar(!sidebar);
 
@@ -103,6 +104,24 @@ const Sidebar = () => {
   //     </>
   //   );
   // }
+  
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const jwt = localStorage.getItem("jwt");
+    const url = "https://localhost:44366/api/AppUsers/getUser/id?userId=";
+
+    fetch(url + userId,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + jwt
+        },
+      }
+    ).then(r => r.json()).then(result => setUser(result))
+console.log(user);
+  }, []);
+
   return (
     <>
       <IconContext.Provider value={{ color: '#fff' }}>

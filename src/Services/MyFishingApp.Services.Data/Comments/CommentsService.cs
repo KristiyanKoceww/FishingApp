@@ -14,54 +14,44 @@
     {
         private readonly IDeletableEntityRepository<Comment> commentsRepository;
         private readonly IDeletableEntityRepository<Post> postRepository;
+        private readonly IDeletableEntityRepository<ApplicationUser> appUsersRepository;
 
         public CommentsService(
             IDeletableEntityRepository<Comment> commentsRepository,
-            IDeletableEntityRepository<Post> postRepository)
+            IDeletableEntityRepository<Post> postRepository,
+            IDeletableEntityRepository<ApplicationUser> appUsersRepository)
         {
             this.commentsRepository = commentsRepository;
             this.postRepository = postRepository;
+            this.appUsersRepository = appUsersRepository;
         }
-
-        // public async Task CreateAsync(int postId, string userId, string content, int? parentId = null)
-        // {
-        //    var post = this.postRepository.All().Where(x => x.Id == postId).FirstOrDefault();
-        //    if (post is null)
-        //    {
-        //        throw new Exception("There is no post found by this id!");
-        //    }
-
-        //    var comment = new Comment
-        //    {
-        //        Content = content,
-        //        ParentId = parentId,
-        //        PostId = postId,
-        //        UserId = userId,
-        //    };
-
-        //    post.Comments.Add(comment);
-
-        //    this.postRepository.Update(post);
-        //    await this.commentsRepository.AddAsync(comment);
-        //    await this.commentsRepository.SaveChangesAsync();
-        //}
 
         public async Task CreateAsync(CommentsInputModel commentsInputModel)
         {
-            var comment = new Comment
+            var post = this.postRepository.All().Where(x => x.Id == commentsInputModel.PostId).FirstOrDefault();
+            var user = this.appUsersRepository.All().Where(x => x.Id == commentsInputModel.UserId).FirstOrDefault();
+            if (post is not null && user is not null)
             {
-                Content = commentsInputModel.Content,
-                PostId = commentsInputModel.PostId,
-                UserId = commentsInputModel.UserId,
-            };
+                var comment = new Comment
+                {
+                    Content = commentsInputModel.Content,
+                    PostId = commentsInputModel.PostId,
+                    UserId = commentsInputModel.UserId,
+                    User = user,
+                    Post = post,
+                };
 
-            if (commentsInputModel.ParentId is not null)
-            {
-                comment.ParentId = commentsInputModel.ParentId;
+                if (commentsInputModel.ParentId is not null)
+                {
+                    comment.ParentId = commentsInputModel.ParentId;
+                }
+
+                post.Comments.Add(comment);
+
+                await this.commentsRepository.AddAsync(comment);
+                await this.postRepository.SaveChangesAsync();
+                await this.commentsRepository.SaveChangesAsync();
             }
-
-            await this.commentsRepository.AddAsync(comment);
-            await this.commentsRepository.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int commentId)

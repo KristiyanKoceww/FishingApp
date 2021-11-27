@@ -43,10 +43,7 @@ namespace MyFishingApp.Web.Controllers
                     return this.BadRequest();
                 }
             }
-
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            //await this.commentsService.CreateAsync(commentsInputModel.PostId, userId, commentsInputModel.Content,commentsInputModel.ParentId);
+           
             await this.commentsService.CreateAsync(commentsInputModel);
 
             return Ok();

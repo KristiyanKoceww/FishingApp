@@ -1,67 +1,124 @@
 import './App.css';
-import './components/UserPosts/styles/App.scss'
-import Sidebar from './components/Navbar/Sidebar';
+
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import CreateKnot from './components/Knot/CreateKnot'
-import CreateCountry from './components/Country/Country';
-import CreateReservoir from './components/Reservoir/CreateReservoir';
-import Login from './components/AcountManagment/Login';
-import Register from './components/AcountManagment/Register';
-import CreatePost from './components/UserPosts/CreatePost';
-import Logout from './components/AcountManagment/Logout';
-import DisplayAllFish from './components/Fish/DisplayAllFish';
-import FishInfo from './components/Fish/FishInfo';
-import DeleteUser from './components/AcountManagment/DeleteUser';
-import GetUserById from './components/AcountManagment/GetUserById';
-import UserDetails from './components/AcountManagment/UserDetails';
-import FishInfoPage from './components/Fish/FishInfoPage';
-import AllReservoirs from './components/Reservoir/AllReservoirs'
+import { useState, useEffect } from 'react';
+
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+
+import Sidebar from './components/Navbar/Sidebar';
+
 import Cards from './components/UserPosts/Cards'
-import Footer from './components/UserPosts/Footer';
-import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
+
+import CreateKnot from './components/Knot/CreateKnot'
 import AllKnots from './components/Knot/AllKnots'
 import KnotInfoPage from './components/Knot/KnotInfoPage';
+
+import CreateCountry from './components/Country/Country';
+
+import Login from './components/AcountManagment/Login';
+import Logout from './components/AcountManagment/Logout';
+import Register from './components/AcountManagment/Register';
+
+import CreatePost from './components/UserPosts/CreatePost';
+
+import FishInfo from './components/Fish/FishInfo';
+import DisplayAllFish from './components/Fish/DisplayAllFish';
+import FishInfoPage from './components/Fish/FishInfoPage';
+
+import GetUserById from './components/AcountManagment/GetUserById';
+import DeleteUser from './components/AcountManagment/DeleteUser';
+import UserDetails from './components/AcountManagment/UserDetails';
+
+import CreateReservoir from './components/Reservoir/CreateReservoir';
+import AllReservoirs from './components/Reservoir/AllReservoirs'
+import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
+
 import Weather from './components/WeatherForecast/Weather';
 
+import Post from './components/Posts/Post';
+
 function App() {
+  const [posts, setPosts] = useState([]);
+  const jwt = localStorage.getItem("jwt");
+
+  const fetchPostData = async () => {
+    fetch('https://localhost:44366/api/Posts/getAllPosts',
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + jwt
+        },
+      })
+    .then(r => {
+      if (!r.ok) {
+        throw new Error(`HTTP error ${r.status}`);
+      }
+      return r.json();
+    })
+    .then(result => {
+      if (posts != result) {
+        setPosts(result)
+      }
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
+
+  useEffect(() => {
+
+    fetchPostData()
+
+  }, []);
+
+
   return (
-    <div className="App">
+    <div >
       <Router>
-        <Sidebar />
-        <Switch>
-        <Route path='/' exact component={Cards} />
-        
-          <Route path='/CreateKnot' component={CreateKnot} />
-          <Route path='/AllKnots' component={AllKnots} />
-          <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
+        <Header />
+        <main className="App">
 
-          <Route path='/CreateCountry' exact component={CreateCountry} />
-          <Route path='/CreatePost' component={CreatePost} />
+          <Switch>
+            {/* <Route path='/' exact component={Cards} /> */}
 
-          <Route path='/CreateReservoir' component={CreateReservoir} />
-          <Route path='/AllReservoirs' component={AllReservoirs} />
-          <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
+            <Route path='/CreateKnot' component={CreateKnot} />
+            <Route path='/AllKnots' component={AllKnots} />
+            <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
 
-          <Route path='/Login' component={Login} />
-          <Route path='/Register' component={Register} />
-          <Route path='/Logout' component={Logout} />
+            <Route path='/CreateCountry' exact component={CreateCountry} />
+            {/* <Route path='/CreatePost' component={CreatePost} /> */}
+            <Route path='/CreatePost' element={<CreatePost fetch={fetchPostData}/> } />
 
-          <Route path='/Weather' component={Weather} />
+            <Route path='/CreateReservoir' component={CreateReservoir} />
+            <Route path='/AllReservoirs' component={AllReservoirs} />
+            <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
 
-          <Route path='/AllFish' component={DisplayAllFish} />
-          <Route path='/FishInfo' component={FishInfo} />
-          <Route path='/FishInfoPage/:id' component={FishInfoPage} />
+            <Route path='/Login' component={Login} />
+            <Route path='/Register' component={Register} />
+            <Route path='/Logout' component={Logout} />
 
-          <Route path='/DeleteUser' component={DeleteUser} />
-          <Route path='/GetUserById' component={GetUserById} />
-          <Route path='/UserDetails' component={UserDetails} />
-        </Switch>
+            <Route path='/Weather' component={Weather} />
+
+            <Route path='/AllFish' component={DisplayAllFish} />
+            <Route path='/FishInfo' component={FishInfo} />
+            <Route path='/FishInfoPage/:id' component={FishInfoPage} />
+
+            <Route path='/DeleteUser' component={DeleteUser} />
+            <Route path='/GetUserById' component={GetUserById} />
+            <Route path='/UserDetails' component={UserDetails} />
+          </Switch>
+
+          {
+            posts.map(post => (
+              <Post postId={post.Id} keyToAppend={post.CreatedOn} username={post.User.FirstName} title={post.Title} content={post.Content} images={post.ImageUrls} avatarImage={post.User.MainImageUrl} />
+            ))
+          }
+
+        </main>
       </Router>
-      {/* <main>
-        <div className="container">
-        
-        </div>
-      </main> */}
       <Footer />
     </div>
   );

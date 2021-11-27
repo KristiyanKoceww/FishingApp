@@ -3,7 +3,7 @@ import Profile from "./Profile";
 import CardMenu from "./CardMenu";
 import Comment from "./Comment";
 import ImageSlider from "../ImageSlider/ImageSlider";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
 const Card = (props) => {
@@ -108,8 +108,7 @@ const Card = (props) => {
           Show more comments
         </button>
       </div>
-      <div className="timePosted">Преди {new Date().getHours(hours)} часа.</div>
-      <div className="timePosted">Преди {hours} часа.</div>
+      {/* <div className="timePosted">Преди {hours} часа.</div> */}
       <form data={id} onSubmit={(e) => submitComment(e, id)}>
         <div className="addComment">
           <textarea

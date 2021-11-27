@@ -42,11 +42,11 @@ const Login = () => {
 
                 <div className="form-floating">
                     <input type="text" className="form-control" placeholder="name@example.com" onChange={e => setUsername(e.target.value)} />
-                    <label for="floatingInput">Username</label>
+                    <label htmlFor="floatingInput">Username</label>
                 </div>
                 <div className="form-floating">
                     <input type="password" className="form-control" placeholder="Password" onChange={e => setPassword(e.target.value)} />
-                    <label for="floatingPassword">Password</label>
+                    <label htmlFor="floatingPassword">Password</label>
                 </div>
                 <div className="checkbox mb-3">
                     <label>

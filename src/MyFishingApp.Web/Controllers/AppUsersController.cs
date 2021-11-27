@@ -136,7 +136,7 @@ namespace MyFishingApp.Web.Controllers
             }
         }
 
-        [Authorize]
+        [AllowAnonymous]
         [HttpGet("getUser/id")]
         public string GetUserById(string userId)
         {

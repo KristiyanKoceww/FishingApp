@@ -4,13 +4,10 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Security.Claims;
-    using System.Text;
     using System.Threading.Tasks;
 
     using CloudinaryDotNet;
     using CloudinaryDotNet.Actions;
-    using Microsoft.AspNetCore.Http;
     using MyFishingApp.Data.Common.Repositories;
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels.PostInputModels;
@@ -117,13 +114,18 @@
 
         public ICollection<Comment> GetAllCommentsToPost(int postId)
         {
-            var post = this.postsRepository.All().Where(x => x.Id == postId).FirstOrDefault();
+            var post = this.GetById(postId);
             var comments = post.Comments.Select(x => new Comment()
             {
+                Id = x.Id,
                 Content = x.Content,
                 User = x.User,
                 UserId = x.UserId,
                 PostId = x.PostId,
+                Post = x.Post,
+                CreatedOn = x.CreatedOn,
+                Parent = x.Parent,
+                ParentId = x.ParentId,
             }).ToList();
 
             if (comments.Count == 0)
@@ -144,10 +146,14 @@
                 CreatedOn = x.CreatedOn,
                 Comments = x.Comments.Select(x => new Comment
                 {
+                    Id = x.Id,
                     Content = x.Content,
                     User = x.User,
                     UserId = x.UserId,
                     PostId = x.PostId,
+                    CreatedOn = x.CreatedOn,
+                    Parent = x.Parent,
+                    ParentId = x.ParentId,
                 }).ToList(),
                 ImageUrls = x.ImageUrls.Select(x => new ImageUrls
                 {
@@ -155,6 +161,8 @@
                 }).ToList(),
                 Votes = x.Votes.Select(x => new Vote
                 {
+                    Id = x.Id,
+                    CreatedOn = x.CreatedOn,
                     User = x.User,
                     UserId = x.UserId,
                     Type = x.Type,
@@ -173,10 +181,14 @@
                 Content = x.Content,
                 Comments = x.Comments.Select(x => new Comment
                 {
+                    Id = x.Id,
                     Content = x.Content,
                     User = x.User,
                     UserId = x.UserId,
                     PostId = x.PostId,
+                    CreatedOn = x.CreatedOn,
+                    Parent = x.Parent,
+                    ParentId = x.ParentId,
                 }).ToList(),
                 ImageUrls = x.ImageUrls.Select(x => new ImageUrls
                 {

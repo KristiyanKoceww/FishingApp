@@ -10,10 +10,14 @@
     public class VotesService : IVotesService
     {
         private readonly IRepository<Vote> votesRepository;
+        private readonly IRepository<Post> postRepository;
 
-        public VotesService(IRepository<Vote> votesRepository)
+        public VotesService(
+            IRepository<Vote> votesRepository,
+            IRepository<Post> postRepository)
         {
             this.votesRepository = votesRepository;
+            this.postRepository = postRepository;
         }
 
         public int GetVotes(int postId)

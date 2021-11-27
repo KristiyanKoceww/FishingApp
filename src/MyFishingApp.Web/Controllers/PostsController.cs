@@ -71,7 +71,7 @@ namespace MyFishingApp.Web.Controllers
             return json;
         }
 
-        [Authorize]
+        
         [HttpGet("getPostCommentsByPostId/Id")]
         public string GetPostCommentsByPostId(int postId)
         {
@@ -82,6 +82,7 @@ namespace MyFishingApp.Web.Controllers
             return json;
         }
 
+        [AllowAnonymous]
         [HttpGet("getAllPosts")]
         public string GetAllPosts()
         {

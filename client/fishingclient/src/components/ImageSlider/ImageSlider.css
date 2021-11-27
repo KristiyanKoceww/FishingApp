@@ -1,14 +1,25 @@
 .slider {
   position: relative;
   height: 40vh;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  
+
+  /* position:relative;
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 50px; */
 }
 
 .image {
-  width: 500px;
-  height: 350px; 
+  width: 400px;
+  max-width: 500px;
+  height: 300px; 
+  height:auto !important;
+  max-height: 300px;
   border-radius: 10px;
 }
 
