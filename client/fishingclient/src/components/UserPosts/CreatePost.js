@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Redirect, Link, useHistory } from "react-router-dom";
 import "../AcountManagment/Login.css";
 
-const CreatePost = ({ onChange }) => {
+const CreatePost = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [redirect, setRedirect] = useState(false);
@@ -20,10 +20,6 @@ const CreatePost = ({ onChange }) => {
     }
   };
 
-  const handleChange = (result) => {
-    history.push('/');
-    onChange(result)
-  }
   const uploadImage = async (e) => {
     e.preventDefault();
 
@@ -32,7 +28,7 @@ const CreatePost = ({ onChange }) => {
       const element = FormFiles[index];
       formData.append("FormFiles", element);
     }
-
+    
     formData.append("title", title);
     formData.append("userId", userId);
     formData.append("content", content);
@@ -41,13 +37,21 @@ const CreatePost = ({ onChange }) => {
       method: "POST",
       headers: { Authorization: "Bearer " + jwt, },
       body: formData,
-    }).then(r => r.json()).then(result => handleChange(result))
+    }).then(r => r.json()).then(result => {
+      props.onCreate(result);
+
+    });
 
   };
 
+  const handleSubmit = async (e) => {
+    await uploadImage(e);
+  }
+  
+
   return (
     <main className="form-signin">
-      <form onSubmit={uploadImage}>
+      <form onSubmit={(e) => handleSubmit(e)}>
         <h1 className="h3 mb-3 fw-normal">
           Share your thoughts and moments with friends
         </h1>

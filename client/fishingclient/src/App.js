@@ -46,13 +46,16 @@ function App() {
   const [posts, setPosts] = useState([]);
   const [createFormToggle, setCreateFormToggle] = useState(false);
   const jwt = localStorage.getItem("jwt");
-
-
+  
   
   const updatePosts = (post) => {
-    setPosts({
-      ...posts, post
-    })
+    let newState = [];
+    newState.push(...posts);
+    newState.push(post);
+    setPosts(newState);
+
+    // setPosts(...posts,post);
+
     setCreateFormToggle();
   }
 
@@ -90,7 +93,7 @@ function App() {
 
     fetchPostData()
 
-  }, []);
+  }, [updatePosts]);
 
 
   return (
@@ -131,12 +134,12 @@ function App() {
 
           <Button className='p-button-primary' icon='pi pi-plus' label="Add post" icon="pi pi-check" iconPos="right" onClick={toggleForm} />
           {createFormToggle &&
-            <CreatePost onCreate={updatePosts} toggleForm={createFormToggle} />
+            <CreatePost onCreate={updatePosts}/>
           }
 
           {
             posts.map(post => (
-              <Post postId={post.Id} keyToAppend={post.CreatedOn} username={post.User.FirstName} title={post.Title} content={post.Content} images={post.ImageUrls} avatarImage={post.User.MainImageUrl} />
+              <Post key={post.Id} postId={post.Id} keyToAppend={post.CreatedOn} username={post.User.FirstName} title={post.Title} content={post.Content} images={post.ImageUrls} avatarImage={post.User.MainImageUrl} />
             ))
           }
 
