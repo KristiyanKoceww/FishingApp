@@ -1,37 +1,17 @@
 import Button from "@restart/ui/esm/Button";
 import React, { useState, useEffect } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect, Link, useHistory } from "react-router-dom";
 import "../AcountManagment/Login.css";
 
-const CreatePost = ({ fetch }) => {
+const CreatePost = ({ onChange }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [userId, setUserId] = useState();
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
   const [FormFiles, setFormFiles] = useState([]);
   const jwt = localStorage.getItem("jwt");
-  useEffect(() => {
-
-    const fetchUrl = `https://localhost:44366/api/AppUsers/user`;
-
-    const fetchData = () => {
-      fetch(fetchUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + jwt,
-        },
-        body: JSON.stringify(jwt),
-      })
-        .then((res) => res.json())
-        .then((result) => setUserId(result))
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-    fetchData();
-  }, []);
+  const userId = localStorage.getItem("userId");
+  const history = useHistory();
 
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
@@ -40,6 +20,10 @@ const CreatePost = ({ fetch }) => {
     }
   };
 
+  const handleChange = (result) => {
+    history.push('/');
+    onChange(result)
+  }
   const uploadImage = async (e) => {
     e.preventDefault();
 
@@ -57,14 +41,13 @@ const CreatePost = ({ fetch }) => {
       method: "POST",
       headers: { Authorization: "Bearer " + jwt, },
       body: formData,
-    });
+    }).then(r => r.json()).then(result => handleChange(result))
 
-    fetch();
   };
 
   return (
     <main className="form-signin">
-      <form >
+      <form onSubmit={uploadImage}>
         <h1 className="h3 mb-3 fw-normal">
           Share your thoughts and moments with friends
         </h1>
@@ -103,7 +86,7 @@ const CreatePost = ({ fetch }) => {
           Post
         </button>
         <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-        <Button as={Link} to="/" floated="right" type="button" content="Cancel" onClick={uploadImage} />
+        {/* <Button as={Link} to="/" floated="right" type="submit" content="Cancel" >Submit</Button> */}
       </form>
     </main>
   );

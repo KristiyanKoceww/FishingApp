@@ -1,14 +1,13 @@
 import './App.css';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
-import Sidebar from './components/Navbar/Sidebar';
 
-import Cards from './components/UserPosts/Cards'
+import Sidebar from './components/Navbar/Sidebar';
 
 import CreateKnot from './components/Knot/CreateKnot'
 import AllKnots from './components/Knot/AllKnots'
@@ -42,6 +41,13 @@ function App() {
   const [posts, setPosts] = useState([]);
   const jwt = localStorage.getItem("jwt");
 
+
+  const updatePosts = (post) => {
+    setPosts({
+      ...posts, post
+    })
+  }
+
   const fetchPostData = async () => {
     fetch('https://localhost:44366/api/Posts/getAllPosts',
       {
@@ -51,22 +57,21 @@ function App() {
           'Authorization': 'Bearer ' + jwt
         },
       })
-    .then(r => {
-      if (!r.ok) {
-        throw new Error(`HTTP error ${r.status}`);
-      }
-      return r.json();
-    })
-    .then(result => {
-      if (posts != result) {
-        setPosts(result)
-      }
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      .then(r => {
+        if (!r.ok) {
+          throw new Error(`HTTP error ${r.status}`);
+        }
+        return r.json();
+      })
+      .then(result => {
+        if (posts != result) {
+          setPosts(result)
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
-
 
   useEffect(() => {
 
@@ -80,7 +85,6 @@ function App() {
       <Router>
         <Header />
         <main className="App">
-
           <Switch>
             {/* <Route path='/' exact component={Cards} /> */}
 
@@ -90,7 +94,7 @@ function App() {
 
             <Route path='/CreateCountry' exact component={CreateCountry} />
             {/* <Route path='/CreatePost' component={CreatePost} /> */}
-            <Route path='/CreatePost' element={<CreatePost fetch={fetchPostData}/> } />
+            <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
             <Route path='/CreateReservoir' component={CreateReservoir} />
             <Route path='/AllReservoirs' component={AllReservoirs} />
@@ -110,6 +114,7 @@ function App() {
             <Route path='/GetUserById' component={GetUserById} />
             <Route path='/UserDetails' component={UserDetails} />
           </Switch>
+
 
           {
             posts.map(post => (

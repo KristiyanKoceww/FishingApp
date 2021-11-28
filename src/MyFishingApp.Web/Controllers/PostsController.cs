@@ -26,8 +26,8 @@ namespace MyFishingApp.Web.Controllers
         {
             try
             {
-                await this.postsService.CreateAsync(createPostInputModel);
-                return Ok();
+               var post =  await this.postsService.CreateAsync(createPostInputModel);
+                return Ok(post);
             }
             catch (Exception ex)
             {

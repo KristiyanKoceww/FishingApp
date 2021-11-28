@@ -117,32 +117,33 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
         }
     }
 
-    useEffect(() => {
-        if (postId) {
-            const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
-            fetch(url + postId,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        'Authorization': 'Bearer ' + jwt
-                    },
-                })
-                .then(r => {
-                    if (!r.ok) {
-                        throw new Error(`HTTP error ${r.status}`);
-                    }
-                    return r.json();
-                })
-                .then(result => setComments(result))
-                .catch(error => {
+    // useEffect(() => {
+    //     if (postId) {
+    //         const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
+    //         fetch(url + postId,
+    //             {
+    //                 method: "GET",
+    //                 headers: {
+    //                     "Content-Type": "application/json",
+    //                     'Authorization': 'Bearer ' + jwt
+    //                 },
+    //             })
+    //             .then(r => {
+    //                 if (!r.ok) {
+    //                     throw new Error(`HTTP error ${r.status}`);
+    //                 }
+    //                 return r.json();
+    //             })
+    //             .then(result => setComments(result))
+    //             .catch(error => {
 
-                });
-        };
+    //             });
+    //     };
 
-    }, [postId])
+    // }, [postId])
 
     return (
+        
         <div className="post" key={keyToAppend}>
             <div className="post__header">
                 <Avatar
@@ -172,7 +173,7 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
                 </div>
             </div>
 
-            <div className="post__comments">
+            {/* <div className="post__comments">
 
                 {comments.map((comment) =>
                     <div>
@@ -186,7 +187,7 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
                         </div>
                     </div>
                 )}
-            </div>
+            </div> */}
 
             <form className="post__commentBox">
                 <input

@@ -34,7 +34,7 @@
             return cloudinary;
         }
 
-        public async Task<int> CreateAsync(CreatePostInputModel createPostInputModel)
+        public async Task<Post> CreateAsync(CreatePostInputModel createPostInputModel)
         {
             var user = this.appUsersRepository.All().Where(x => x.Id == createPostInputModel.UserId).FirstOrDefault();
 
@@ -94,7 +94,7 @@
 
             await this.postsRepository.AddAsync(post);
             await this.postsRepository.SaveChangesAsync();
-            return post.Id;
+            return post;
         }
 
         public async Task DeleteAsync(int postId)
