@@ -7,8 +7,8 @@ import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
 
-const Post = ({ postId, keyToAppend, username, title, content, images, avatarImage }) => {
-    const [comments, setComments] = useState([]);
+const Post = ({ postId, keyToAppend, username, title, content, images, avatarImage, comments }) => {
+    // const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
 
     const jwt = localStorage.getItem("jwt");
@@ -173,7 +173,7 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
                 </div>
             </div>
 
-            {/* <div className="post__comments">
+            <div className="post__comments">
 
                 {comments.map((comment) =>
                     <div>
@@ -187,7 +187,7 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
                         </div>
                     </div>
                 )}
-            </div> */}
+            </div>
 
             <form className="post__commentBox">
                 <input
