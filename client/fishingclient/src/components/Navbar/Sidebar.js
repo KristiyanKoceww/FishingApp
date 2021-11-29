@@ -105,22 +105,22 @@ const Sidebar = () => {
   //   );
   // }
   
-  useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    const jwt = localStorage.getItem("jwt");
-    const url = "https://localhost:44366/api/AppUsers/getUser/id?userId=";
+//   useEffect(() => {
+//     const userId = localStorage.getItem("userId");
+//     const jwt = localStorage.getItem("jwt");
+//     const url = "https://localhost:44366/api/AppUsers/getUser/id?userId=";
 
-    fetch(url + userId,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + jwt
-        },
-      }
-    ).then(r => r.json()).then(result => setUser(result))
-console.log(user);
-  }, []);
+//     fetch(url + userId,
+//       {
+//         method: "GET",
+//         headers: {
+//           "Content-Type": "application/json",
+//           'Authorization': 'Bearer ' + jwt
+//         },
+//       }
+//     ).then(r => r.json()).then(result => setUser(result))
+// console.log(user);
+//   }, []);
 
   return (
     <>

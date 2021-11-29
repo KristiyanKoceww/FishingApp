@@ -1,17 +1,14 @@
-import Button from "@restart/ui/esm/Button";
-import React, { useState, useEffect } from "react";
-import { Redirect, Link, useHistory } from "react-router-dom";
+import React, { useState } from "react";
 import "../AcountManagment/Login.css";
 
 const CreatePost = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [redirect, setRedirect] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [FormFiles, setFormFiles] = useState([]);
+
   const jwt = localStorage.getItem("jwt");
   const userId = localStorage.getItem("userId");
-  const history = useHistory();
+
 
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
@@ -28,7 +25,7 @@ const CreatePost = (props) => {
       const element = FormFiles[index];
       formData.append("FormFiles", element);
     }
-    
+
     formData.append("title", title);
     formData.append("userId", userId);
     formData.append("content", content);
@@ -47,7 +44,7 @@ const CreatePost = (props) => {
   const handleSubmit = async (e) => {
     await uploadImage(e);
   }
-  
+
 
   return (
     <main className="form-signin">
@@ -90,7 +87,6 @@ const CreatePost = (props) => {
           Post
         </button>
         <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
-        {/* <Button as={Link} to="/" floated="right" type="submit" content="Cancel" >Submit</Button> */}
       </form>
     </main>
   );

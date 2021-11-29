@@ -24,7 +24,8 @@ import Login from './components/AcountManagment/Login';
 import Logout from './components/AcountManagment/Logout';
 import Register from './components/AcountManagment/Register';
 
-import CreatePost from './components/UserPosts/CreatePost';
+import CreatePost from './components/Posts/CreatePost';
+import Post from './components/Posts/Post';
 
 import FishInfo from './components/Fish/FishInfo';
 import DisplayAllFish from './components/Fish/DisplayAllFish';
@@ -40,7 +41,7 @@ import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 
 import Weather from './components/WeatherForecast/Weather';
 
-import Post from './components/Posts/Post';
+
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -50,14 +51,25 @@ function App() {
   
   const updatePosts = (post) => {
     let newState = [];
-    newState.push(...posts);
-    newState.push(post);
+    newState.push(...posts,post);
     setPosts(newState);
-
-    // setPosts(...posts,post);
-
+    // not working ? 
+    //setPosts(...posts,post);
     setCreateFormToggle();
   }
+
+  // const updatePostComments = (post) => {
+  //   // let postInArr = posts.find(x => x.id === post.Id);
+  //   // postInArr = post;
+  //   // let index = posts.findIndex(x => x.Id === post.Id);
+  //   // posts.splice(index, 1)
+
+  //   let myObj = posts.find(obj => obj.Id === post.Id);
+
+  //   console.log();
+
+  //   // updatePosts(post);
+  // }
 
   const toggleForm = () => {
     setCreateFormToggle(!createFormToggle);
@@ -90,10 +102,8 @@ function App() {
   }
 
   useEffect(() => {
-
     fetchPostData()
-
-  }, [updatePosts]);
+  }, []);
 
 
   return (
@@ -109,7 +119,7 @@ function App() {
             <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
 
             <Route path='/CreateCountry' exact component={CreateCountry} />
-            {/* <Route path='/CreatePost' component={CreatePost} /> */}
+
             <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
             <Route path='/CreateReservoir' component={CreateReservoir} />
@@ -139,7 +149,8 @@ function App() {
 
           {
             posts.map(post => (
-              <Post key={post.Id} postId={post.Id} keyToAppend={post.CreatedOn} username={post.User.FirstName} title={post.Title} content={post.Content} images={post.ImageUrls} avatarImage={post.User.MainImageUrl} />
+               <Post key={post.Id} postId={post.Id} keyToAppend={post.CreatedOn} username={post.User.FirstName} title={post.Title} content={post.Content} images={post.ImageUrls} avatarImage={post.User.MainImageUrl} comments={post.Comments} />
+              // <Post key={post.Id} post={post} />
             ))
           }
 
