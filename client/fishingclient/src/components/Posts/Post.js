@@ -6,8 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
 
-
-const Post = ({ postId, keyToAppend, username, title, content, images, avatarImage, comments }) => {
+const Post = (post) => {
     // const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
 
@@ -26,12 +25,10 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
 
     const postComment = (event) => {
         event.preventDefault();
-        const userId = localStorage.getItem("userId");
-
         const data = {
             Content: comment,
             UserId: userId,
-            PostId: postId,
+            PostId: post.Id,
         };
 
         fetch("https://localhost:44366/api/Comments/create", {
@@ -143,39 +140,39 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
     // }, [postId])
 
     return (
-        
-        <div className="post" key={keyToAppend}>
+
+        <div className="post">
             <div className="post__header">
                 <Avatar
                     className="post__avatar"
                     alt="avatar"
-                    src={avatarImage}
+                    src={post.User.MainImageUrl}
                 />
-                <h3 className="username">{username}</h3>
+                <h3 className="username">{post.Username}</h3>
 
             </div>
-            <h1 className="title">{title}</h1>
-            <p className="content">{content}</p>
+            <h1 className="title">{post.Title}</h1>
+            <p className="content">{post.Content}</p>
             <div className="slider">
-                {typeof images != "undefined" ? <ImageSlider slides={images} /> : ""}
+                {typeof post.ImageUrls != "undefined" ? <ImageSlider slides={post.ImageUrls} /> : ""}
             </div>
 
             <div className="post__likebuttons">
                 <div className="post__like">
                     <FontAwesomeIcon icon={faThumbsUp} size="2x" />
                     &nbsp;&nbsp;
-                    <button onClick={(e) => Vote(e, postId)} value={upVote} className="btn__like">Like</button>
+                    <button onClick={(e) => Vote(e, post.Id)} value={upVote} className="btn__like">Like</button>
                 </div>
                 <div className="post__unlike">
                     <FontAwesomeIcon icon={faThumbsDown} size="2x" />
                     &nbsp;&nbsp;
-                    <button onClick={(e) => Vote(e, postId)} value={downVote} className="btn__unlike">Dislike</button>
+                    <button onClick={(e) => Vote(e, post.Id)} value={downVote} className="btn__unlike">Dislike</button>
                 </div>
             </div>
 
             <div className="post__comments">
 
-                {comments.map((comment) =>
+                {post.Comments.map((comment) =>
                     <div>
                         <div className="post__bubble">
                             <strong className="post__user">{comment.User.FirstName}:</strong> <div className="post__content">{comment.Content}</div>
@@ -207,6 +204,4 @@ const Post = ({ postId, keyToAppend, username, title, content, images, avatarIma
         </div>
     )
 }
-
-
 export default Post;

@@ -26,6 +26,7 @@ import Register from './components/AcountManagment/Register';
 
 import CreatePost from './components/Posts/CreatePost';
 import Post from './components/Posts/Post';
+import Posts from './components/Posts/Posts'
 
 import FishInfo from './components/Fish/FishInfo';
 import DisplayAllFish from './components/Fish/DisplayAllFish';
@@ -41,20 +42,16 @@ import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 
 import Weather from './components/WeatherForecast/Weather';
 
-
-
 function App() {
   const [posts, setPosts] = useState([]);
   const [createFormToggle, setCreateFormToggle] = useState(false);
   const jwt = localStorage.getItem("jwt");
-  
-  
+
+
   const updatePosts = (post) => {
     let newState = [];
-    newState.push(...posts,post);
+    newState.push(...posts, post);
     setPosts(newState);
-    // not working ? 
-    //setPosts(...posts,post);
     setCreateFormToggle();
   }
 
@@ -74,7 +71,7 @@ function App() {
   const toggleForm = () => {
     setCreateFormToggle(!createFormToggle);
   }
-  
+
 
   const fetchPostData = async () => {
     fetch('https://localhost:44366/api/Posts/getAllPosts',
@@ -94,6 +91,7 @@ function App() {
       .then(result => {
         if (posts != result) {
           setPosts(result)
+          console.log(result);
         }
       })
       .catch(error => {
@@ -105,15 +103,21 @@ function App() {
     fetchPostData()
   }, []);
 
-
   return (
     <div >
       <Router>
         <Header />
         <main className="App">
-          <Switch>
-            {/* <Route path='/' exact component={Cards} /> */}
 
+          <Button className='p-button-primary' icon='pi pi-plus' label="Add post" icon="pi pi-check" iconPos="right" onClick={toggleForm} />
+          {createFormToggle &&
+            <CreatePost onCreate={updatePosts} />
+          }
+
+          <Switch>
+            {
+              posts ? <Route path='/' exact render={() => <Posts posts={posts} />} /> : <div>Loading...</div>
+            }
             <Route path='/CreateKnot' component={CreateKnot} />
             <Route path='/AllKnots' component={AllKnots} />
             <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
@@ -140,20 +144,6 @@ function App() {
             <Route path='/GetUserById' component={GetUserById} />
             <Route path='/UserDetails' component={UserDetails} />
           </Switch>
-
-
-          <Button className='p-button-primary' icon='pi pi-plus' label="Add post" icon="pi pi-check" iconPos="right" onClick={toggleForm} />
-          {createFormToggle &&
-            <CreatePost onCreate={updatePosts}/>
-          }
-
-          {
-            posts.map(post => (
-               <Post key={post.Id} postId={post.Id} keyToAppend={post.CreatedOn} username={post.User.FirstName} title={post.Title} content={post.Content} images={post.ImageUrls} avatarImage={post.User.MainImageUrl} comments={post.Comments} />
-              // <Post key={post.Id} post={post} />
-            ))
-          }
-
         </main>
       </Router>
       <Footer />
