@@ -2,10 +2,9 @@
     max-width: 500px;
     background-color: whitesmoke;
     border: 1px solid lightgray;
-    margin-bottom: 45px;
+    margin-bottom:  45px !important;
     border-radius: 1em;
-
-    margin-left: 550px;
+    margin: auto;
 }
 
 .post__header {
@@ -48,9 +47,8 @@
 }
 
 .slider {
-    margin-bottom: -40px;
-    margin-top: -40px;
-  
+    margin-bottom: 10px !important;
+    margin: auto;
 }
 
 .post>.post__header>.username {
@@ -113,6 +111,7 @@
     font-size: 11px;
     cursor: pointer;
     margin-left: 5px;
+    height: 20px;
 }
 
 .post__buttons>.button {

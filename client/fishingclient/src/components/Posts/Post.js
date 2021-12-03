@@ -148,7 +148,7 @@ const Post = (post) => {
                     alt="avatar"
                     src={post.User.MainImageUrl}
                 />
-                <h3 className="username">{post.Username}</h3>
+                <h3 className="username">{post.User.FirstName}</h3>
 
             </div>
             <h1 className="title">{post.Title}</h1>

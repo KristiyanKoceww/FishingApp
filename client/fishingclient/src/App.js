@@ -6,12 +6,6 @@ import { useState, useEffect } from 'react';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
-// primereact
-import { Button } from 'primereact/button'
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import "primereact/resources/primereact.min.css";
-import 'primeicons/primeicons.css';
-
 import Sidebar from './components/Navbar/Sidebar';
 
 import CreateKnot from './components/Knot/CreateKnot'
@@ -44,9 +38,7 @@ import Weather from './components/WeatherForecast/Weather';
 
 function App() {
   const [posts, setPosts] = useState([]);
-  const [createFormToggle, setCreateFormToggle] = useState(false);
   const jwt = localStorage.getItem("jwt");
-
 
   const updatePosts = (post) => {
     let newState = [];
@@ -67,11 +59,6 @@ function App() {
 
   //   // updatePosts(post);
   // }
-
-  const toggleForm = () => {
-    setCreateFormToggle(!createFormToggle);
-  }
-
 
   const fetchPostData = async () => {
     fetch('https://localhost:44366/api/Posts/getAllPosts',
@@ -108,15 +95,9 @@ function App() {
       <Router>
         <Header />
         <main className="App">
-
-          <Button className='p-button-primary' icon='pi pi-plus' label="Add post" icon="pi pi-check" iconPos="right" onClick={toggleForm} />
-          {createFormToggle &&
-            <CreatePost onCreate={updatePosts} />
-          }
-
           <Switch>
             {
-              posts ? <Route path='/' exact render={() => <Posts posts={posts} />} /> : <div>Loading...</div>
+              posts ? <Route path='/' exact render={() => <Posts posts={posts} updatePosts={updatePosts}  />} /> : <div>Loading...</div>
             }
             <Route path='/CreateKnot' component={CreateKnot} />
             <Route path='/AllKnots' component={AllKnots} />
