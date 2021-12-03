@@ -2,6 +2,7 @@ import { React, useState } from 'react'
 import { Button } from 'primereact/button'
 import Post from "./Post"
 import CreatePost from './CreatePost';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import './Posts.css'
 
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
@@ -25,9 +26,22 @@ const Posts = (props) => {
                 }
             </div>
 
-            {props.posts.map((post) => {
-                return <Post {...post} />
-            })}
+            <InfiniteScroll
+                dataLength={props.posts.length}
+                next={props.fetchData}
+                hasMore={props.hasMore}
+                loader={<h4>Loading...</h4>}
+                endMessage={
+                    <p style={{ textAlign: 'center' }}>
+                        <b>Yay! You have seen it all</b>
+                    </p>
+                }
+            >
+                {props.posts.map((item) => {
+                    return <Post {...item} />;
+                })}
+
+            </InfiniteScroll>
         </div>
     );
 }

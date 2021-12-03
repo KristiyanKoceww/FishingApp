@@ -92,5 +92,16 @@ namespace MyFishingApp.Web.Controllers
 
             return json;
         }
+
+        [AllowAnonymous]
+        [HttpGet("GetPosts")]
+        public string GetPosts(int id)
+        {
+            var post = this.postsService.GetPosts(id,2);
+
+            var json = JsonConvert.SerializeObject(post);
+
+            return json;
+        }
     }
 }

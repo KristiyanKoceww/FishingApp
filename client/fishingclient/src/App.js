@@ -19,7 +19,6 @@ import Logout from './components/AcountManagment/Logout';
 import Register from './components/AcountManagment/Register';
 
 import CreatePost from './components/Posts/CreatePost';
-import Post from './components/Posts/Post';
 import Posts from './components/Posts/Posts'
 
 import FishInfo from './components/Fish/FishInfo';
@@ -42,9 +41,8 @@ function App() {
 
   const updatePosts = (post) => {
     let newState = [];
-    newState.push(...posts, post);
+    newState.unshift(...posts, post);
     setPosts(newState);
-    setCreateFormToggle();
   }
 
   // const updatePostComments = (post) => {
@@ -60,35 +58,53 @@ function App() {
   //   // updatePosts(post);
   // }
 
-  const fetchPostData = async () => {
-    fetch('https://localhost:44366/api/Posts/getAllPosts',
+  const [hasMore, sethasMore] = useState(true);
+  const [page, setpage] = useState(1);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      const res = await fetch(
+        `https://localhost:44366/api/Posts/GetPosts?id=0`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + jwt
+          },
+        }
+      );
+      const data = await res.json();
+      setPosts(data);
+    };
+
+    getPosts();
+  }, []);
+
+  const fetchPosts = async () => {
+    const res = await fetch(
+      `https://localhost:44366/api/Posts/GetPosts?id=${page}`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer ' + jwt
         },
-      })
-      .then(r => {
-        if (!r.ok) {
-          throw new Error(`HTTP error ${r.status}`);
-        }
-        return r.json();
-      })
-      .then(result => {
-        if (posts != result) {
-          setPosts(result)
-          console.log(result);
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }
+      }
+    );
+    const data = await res.json();
+    return data;
+  };
 
-  useEffect(() => {
-    fetchPostData()
-  }, []);
+  const fetchData = async () => {
+    const postsFromServer = await fetchPosts();
+
+    setPosts([...posts, ...postsFromServer]);
+
+    if (postsFromServer.length === 0 || postsFromServer.length < 1) {
+      sethasMore(false);
+    }
+    setpage(page + 1);
+  };
 
   return (
     <div >
@@ -97,7 +113,7 @@ function App() {
         <main className="App">
           <Switch>
             {
-              posts ? <Route path='/' exact render={() => <Posts posts={posts} updatePosts={updatePosts}  />} /> : <div>Loading...</div>
+              posts ? <Route path='/' exact render={() => <Posts posts={posts} updatePosts={updatePosts} hasMore={hasMore} fetchData={fetchData} />} /> : <div>Loading...</div>
             }
             <Route path='/CreateKnot' component={CreateKnot} />
             <Route path='/AllKnots' component={AllKnots} />

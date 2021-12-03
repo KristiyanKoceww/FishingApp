@@ -22,5 +22,7 @@
         ICollection<Comment> GetAllCommentsToPost(int postId);
 
         IEnumerable<Post> GetAllPosts();
+
+        IEnumerable<Post> GetPosts(int pageNumber, int pageSize);
     }
 }
