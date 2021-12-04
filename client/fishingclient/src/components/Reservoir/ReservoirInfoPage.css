@@ -26,4 +26,12 @@
     font-size: 30px;
     font-family: "Times New Roman";
 }
-
+.image{
+    width: 70%;
+    height: 500px;
+}
+.slider{
+    width: 100%;
+    height: 600px;
+    margin-right: auto;
+}

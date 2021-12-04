@@ -1,0 +1,38 @@
+.createPost{
+    background-color:rgb(62, 136, 247); 
+    width: 50%;
+    margin: auto;
+    margin-top:100px;
+    top:15%;
+}
+.title__post{
+    font-weight: 600;
+    color: black;
+    font-size: 29px;
+    font-family: 'Times New Roman', Times, serif;
+    padding: 10px;
+    justify-content: center;
+   
+}
+
+.choose__files{
+    margin: auto;
+    /* background-color: rgb(16, 240, 54);  */
+    padding: 10px;
+}
+
+.choose__button{
+    background-color: whitesmoke !important;
+    color:black !important;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.submit__button{
+    background-color: rgb(16, 240, 54) !important;
+    color:black !important;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+}
+.submit__form{
+    margin: auto;
+    padding: 10px;
+    background-color: rgb(16, 240, 54);
+}

@@ -3,6 +3,7 @@ import ImageSlider from "../ImageSlider/ImageSlider";
 import { useParams, Link } from "react-router-dom";
 import "./ReservoirInfoPage.css";
 import Map from "../GoogleMap/Map";
+
 const ReservoirInfoPage = (props) => {
   const [reservoir, setReservoir] = useState();
   const [isLoading, setisLoading] = useState(true);
@@ -23,7 +24,11 @@ const ReservoirInfoPage = (props) => {
         },
       })
         .then((res) => res.json())
-        .then((result) => setReservoir(result))
+        .then((result) => {
+          setReservoir(result),
+            setLatitude(reservoir.Latitude),
+            setLongitude(reservoir.Longitude);
+        })
         .catch((err) => {
           console.log(err);
         });
@@ -32,12 +37,17 @@ const ReservoirInfoPage = (props) => {
     fetchData();
   }, [id]);
 
+  const zoomOutProperties = {
+    duration: 4000,
+    transitionDuration: 800,
+    infinite: true,
+    scale: 0.4,
+  };
+
   const renderReservoir = useMemo(() => {
     if (isLoading === true) {
       return <h1>Loading...</h1>;
     } else {
-      setLatitude(reservoir.Latitude);
-      setLongitude(reservoir.Longitude);
       return (
         <div className="container2">
           <Link className="btn btn-primary" to={"/AllReservoirs/"}>
@@ -46,7 +56,9 @@ const ReservoirInfoPage = (props) => {
           </Link>
           <div className="row m-2">
             <h1 className="text-center">{reservoir.Name}</h1>
-            <ImageSlider slides={reservoir.ImageUrls} />
+            <div className="slider">
+              <ImageSlider slides={reservoir.ImageUrls} />
+            </div>
             <div className="Description">
               Description:
               <div className="Description2">{reservoir.Description}</div>
@@ -64,7 +76,8 @@ const ReservoirInfoPage = (props) => {
             <div className="city">
               City:
               <div className="city2">
-                {reservoir.Name} is located in {reservoir.City.Name},
+                {reservoir.Name} is located in{" "}
+                {reservoir.City.Name ? reservoir.City.Name : "No name"},
                 {reservoir.City.CountryName}.{reservoir.City.Name} is{" "}
                 {reservoir.City.Description}
               </div>

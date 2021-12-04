@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-// import "../AcountManagment/Login.css";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import TitleIcon from "@mui/icons-material/Title";
+import TextsmsIcon from "@mui/icons-material/Textsms";
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import "./CreatePost.css";
 
 const CreatePost = (props) => {
   const [title, setTitle] = useState("");
@@ -8,7 +14,6 @@ const CreatePost = (props) => {
 
   const jwt = localStorage.getItem("jwt");
   const userId = localStorage.getItem("userId");
-
 
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
@@ -32,63 +37,96 @@ const CreatePost = (props) => {
 
     fetch("https://localhost:44366/api/Posts/create", {
       method: "POST",
-      headers: { Authorization: "Bearer " + jwt, },
+      headers: { Authorization: "Bearer " + jwt },
       body: formData,
-    }).then(r => r.json()).then(result => {
-      props.onCreate(result);
-
-    });
-
+    })
+      .then((r) => r.json())
+      .then((result) => {
+        props.onCreate(result);
+      });
   };
 
   const handleSubmit = async (e) => {
     await uploadImage(e);
-  }
-
+    setContent("");
+    setTitle("");
+    setFormFiles([]);
+  };
 
   return (
-    <main className="form-signin">
+    <div className="createPost">
       <form onSubmit={(e) => handleSubmit(e)}>
-        <h1 className="h3 mb-3 fw-normal">
-          Share your thoughts and moments with friends
+        <h1 className="title__post">
+          <ConnectWithoutContactIcon /> Share your thoughts and moments with
+          friends
         </h1>
 
-        <div className="form-floating">
-          <input
-            required
-            type="text"
-            className="form-control"
+        <div>
+          <TextField
+            className="textFieldTitle"
+            label="Title"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setTitle(e.target.value)}
-          />
-          <label>Post title</label>
-        </div>
-
-        <div className="form-floating">
-          <input
             required
-            type="text"
-            className="form-control"
-            onChange={(e) => setContent(e.target.value)}
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TitleIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>Content</label>
         </div>
+        <br />
+        <div>
+          <TextField
+            label="What are your thoughts?"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
+            onChange={(e) => setContent(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TextsmsIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+        <br />
 
-        <div className="form-floating">
+        <label htmlFor="btn-upload">
           <input
+            id="btn-upload"
+            name="btn-upload"
+            style={{ display: "none" }}
             multiple
             type="file"
-            className="form-control"
             onChange={saveFile}
           />
-          <label>Image/s</label>
-        </div>
-
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Post
-        </button>
-        <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+          <div className="choose__files">
+            <Button
+              className="choose__button"
+              variant="outlined"
+              component="span"
+            >
+              Choose Files
+            </Button>{" "}
+            <Button className="submit__button" type="submit" variant="outlined">
+              Submit
+            </Button>
+          </div>
+        </label>
+        <br />
       </form>
-    </main>
+    </div>
   );
 };
 

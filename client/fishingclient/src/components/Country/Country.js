@@ -1,21 +1,24 @@
-import React, { Fragment, useState } from "react";
+import React, { useState } from "react";
+import PublicIcon from '@mui/icons-material/Public';
+import { TextField } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+import TitleIcon from "@mui/icons-material/Title";
+import './Country.css'
+
+import { Button } from "primereact/button";
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 const CreateCountry = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-  });
-
-  const { name } = formData;
-
-  const onChange = (e) =>
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [name, setName] = useState("");
   const jwt = localStorage.getItem("jwt");
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    const newCountry = {
-      name,
-    };
-
+    let newCountry = {
+      Name: name
+    }
     fetch("https://localhost:44366/api/Countries/create", {
       method: "POST",
       headers: {
@@ -23,38 +26,52 @@ const CreateCountry = () => {
         Authorization: "Bearer " + jwt,
       },
       body: JSON.stringify(newCountry),
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.error("Error:", error);
     });
   };
 
   return (
-    <Fragment>
-      <div className="d-flex justify-content-center">
-        <h1 className="large text-primary">Create new country</h1>
-      </div>
-      <div className="d-flex justify-content-center">
-        <form className="form" onSubmit={(e) => onSubmit(e)}>
-          <div className="form-group">
-            <input
-              onChange={onChange}
-              type="text"
-              placeholder="Country name"
-              name="name"
-              value={name}
-              required
-            />
-          </div>
+    <div className="createCountry">
+      <form onSubmit={onSubmit}>
+        <h1 className="title__country"> <PublicIcon /> {" "} Please enter name of country</h1>
 
-          <input
-            onChange={onChange}
-            type="submit"
-            className="btn btn-primary"
-            value="Create"
+        <div>
+          <TextField
+            className="textFieldTitle"
+            label="Country name"
+            variant="filled"
+            size="large"
+            fullWidth
+            onChange={(e) => setName(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TitleIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-        </form>
-      </div>
-    </Fragment>
+        </div>
+        <br />
+        {/* <Button className="createCountryButton" type="submit" variant="outlined">
+              Submit
+            </Button> */}
+
+            <Button
+          className="createCountryButton"
+          icon="pi pi-plus"
+          label="Create post"
+          icon="pi pi-check"
+          iconPos="left"
+          label="Submit"
+          type="submit"
+        />
+      </form>
+    </div>
   );
 };
 

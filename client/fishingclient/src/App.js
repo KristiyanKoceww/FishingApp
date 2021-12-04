@@ -51,7 +51,7 @@ function App() {
   //   // let index = posts.findIndex(x => x.Id === post.Id);
   //   // posts.splice(index, 1)
 
-  //   let myObj = posts.find(obj => obj.Id === post.Id);
+  //   let myObj = posts.find(obj => obj.Id === post.Id)aa;
 
   //   console.log();
 
