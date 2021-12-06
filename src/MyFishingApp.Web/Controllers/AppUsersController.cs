@@ -68,6 +68,7 @@ namespace MyFishingApp.Web.Controllers
 
             return Ok(new LoginResult
             {
+                User = result.User,
                 UserId = result.User.Id,
                 UserName = result.User.UserName,
                 AccessToken = result.AccessToken,

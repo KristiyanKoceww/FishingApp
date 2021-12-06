@@ -2,7 +2,7 @@ import Sidebar from '../Navbar/Sidebar';
 
 const Header = () =>{
     
-    return( <Sidebar/>)
+    return( <Sidebar />)
 }
 
 export default Header;

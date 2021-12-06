@@ -13,11 +13,11 @@
     transform: translate(-50%, -50%);
 }
 
-.container {
-  /* background-image: url("../../background.jpg");
+/* .container {
+  background-image: url("../../background.jpg");
     background-size: cover;
-    background-position: 100%; */
-}
+    background-position: 100%;
+} */
 
 .infiniteScroll{
     padding: 50px;

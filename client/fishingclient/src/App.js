@@ -1,7 +1,7 @@
 import './App.css';
 
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
@@ -34,6 +34,7 @@ import AllReservoirs from './components/Reservoir/AllReservoirs'
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 
 import Weather from './components/WeatherForecast/Weather';
+import { UserContext } from './components/AcountManagment/UserContext';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -45,13 +46,16 @@ function App() {
     setPosts(newState);
   }
 
+  const [appUser, setAppUser] = useState({});
+  const value = useMemo(() => ({ appUser, setAppUser }), [appUser, setAppUser]);
+
   // const updatePostComments = (post) => {
   //   // let postInArr = posts.find(x => x.id === post.Id);
   //   // postInArr = post;
   //   // let index = posts.findIndex(x => x.Id === post.Id);
   //   // posts.splice(index, 1)
 
-  //   let myObj = posts.find(obj => obj.Id === post.Id)aa;
+  //   let myObj = posts.find(obj => obj.Id === post.Id);
 
   //   console.log();
 
@@ -107,44 +111,46 @@ function App() {
   };
 
   return (
-    <div >
-      <Router>
-        <Header />
-        <main className="App">
-          <Switch>
-            {
-              posts ? <Route path='/' exact render={() => <Posts posts={posts} updatePosts={updatePosts} hasMore={hasMore} fetchData={fetchData} />} /> : <div>Loading...</div>
-            }
-            <Route path='/CreateKnot' component={CreateKnot} />
-            <Route path='/AllKnots' component={AllKnots} />
-            <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
+    <UserContext.Provider value={value}>
+      <div >
+        <Router>
+          <Header />
+          <main className="App">
+            <Switch>
+              {
+                posts ? <Route path='/' exact render={() => <Posts posts={posts} updatePosts={updatePosts} hasMore={hasMore} fetchData={fetchData} />} /> : <div>Loading...</div>
+              }
+              <Route path='/CreateKnot' component={CreateKnot} />
+              <Route path='/AllKnots' component={AllKnots} />
+              <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
 
-            <Route path='/CreateCountry' exact component={CreateCountry} />
+              <Route path='/CreateCountry' exact component={CreateCountry} />
 
-            <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
+              <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
-            <Route path='/CreateReservoir' component={CreateReservoir} />
-            <Route path='/AllReservoirs' component={AllReservoirs} />
-            <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
+              <Route path='/CreateReservoir' component={CreateReservoir} />
+              <Route path='/AllReservoirs' component={AllReservoirs} />
+              <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
 
-            <Route path='/Login' component={Login} />
-            <Route path='/Register' component={Register} />
-            <Route path='/Logout' component={Logout} />
+              <Route path='/Login' component={Login} />
+              <Route path='/Register' component={Register} />
+              <Route path='/Logout' component={Logout} />
 
-            <Route path='/Weather' component={Weather} />
+              <Route path='/Weather' component={Weather} />
 
-            <Route path='/AllFish' component={DisplayAllFish} />
-            <Route path='/FishInfo' component={FishInfo} />
-            <Route path='/FishInfoPage/:id' component={FishInfoPage} />
+              <Route path='/AllFish' component={DisplayAllFish} />
+              <Route path='/FishInfo' component={FishInfo} />
+              <Route path='/FishInfoPage/:id' component={FishInfoPage} />
 
-            <Route path='/DeleteUser' component={DeleteUser} />
-            <Route path='/GetUserById' component={GetUserById} />
-            <Route path='/UserDetails' component={UserDetails} />
-          </Switch>
-        </main>
-      </Router>
-      <Footer />
-    </div>
+              <Route path='/DeleteUser' component={DeleteUser} />
+              <Route path='/GetUserById' component={GetUserById} />
+              <Route path='/UserDetails' component={UserDetails} />
+            </Switch>
+          </main>
+        </Router>
+        <Footer />
+      </div>
+    </UserContext.Provider >
   );
 }
 

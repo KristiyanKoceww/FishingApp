@@ -1,11 +1,15 @@
 import './Login.css'
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
+import { UserContext } from './UserContext';
 
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
+
+    const {appUser,setAppUser} = useContext(UserContext);
+    
 
     const submit = async (e) => {
         e.preventDefault();
@@ -14,7 +18,7 @@ const Login = () => {
             username,
             password,
         };
-        
+
         await fetch('https://localhost:44366/api/AppUsers/login', {
             method: 'POST',
             headers: {
@@ -28,7 +32,10 @@ const Login = () => {
                 localStorage.setItem("jwt", res.AccessToken);
                 setRedirect(true);
             }
+
+            // remove this
             localStorage.setItem("userId", res.UserId);
+            setAppUser(res.User);
         })
     }
 
