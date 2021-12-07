@@ -1,15 +1,22 @@
-
-.footer {
-  color: whitesmoke;
+footer {
+  /* text-align: center; */
+  padding: 3px;
   background-color: black;
-  font-size: 0.7em;
-  margin-top: 2em;
+  color: white;
+  width: 100%;
+  position: relative;
+  bottom: 0;
 }
 
-.links {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 0 2em 0;
-  padding: 0;
-  list-style: none;
+.info{
+  font-weight: 600;
+  color:whitesmoke;
+  font-family: 'Times New Roman', Times, serif;
+  padding:5px;
+  margin-left: 10px;
+}
+
+.links{
+  padding:5px;
+  text-align: center;
 }

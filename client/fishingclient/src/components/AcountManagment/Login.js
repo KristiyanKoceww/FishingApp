@@ -3,13 +3,13 @@ import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { UserContext } from './UserContext';
 
+
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [redirect, setRedirect] = useState(false);
 
     const {appUser,setAppUser} = useContext(UserContext);
-    
 
     const submit = async (e) => {
         e.preventDefault();

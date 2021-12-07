@@ -5,8 +5,10 @@ import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
 import SubMenu from './SubMenu';
+import './Sidebar.css'
 import { IconContext } from 'react-icons/lib';
 import { UserContext } from '../AcountManagment/UserContext';
+import Button from "react-bootstrap/Button";
 
 const Nav = styled.div`
   background: #15171c;
@@ -44,16 +46,11 @@ const SidebarWrap = styled.div`
 
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
-
   const { appUser, setAppUser } = useContext(UserContext);
-
-  console.log(appUser);
-
-
 
   const showSidebar = () => setSidebar(!sidebar);
 
-  if (Object.keys(appUser).length ===0) {
+  if (Object.keys(appUser ? appUser : {}).length === 0) {
     return (
       <>
         <IconContext.Provider value={{ color: '#fff' }}>
@@ -61,12 +58,15 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <h1 className="text-center">Hello anonymous</h1>
-            <div>
-              <Link to="/Login">Login</Link>
-            </div>
-            <div>
-              <Link to="/Register">Register</Link>
+            <h1 className="hello__msg">Hello, guest</h1>
+            <div className="login_center">
+              <Link to="/Login">
+                <Button className="login" type="button">Login</Button>
+              </Link>
+              {" "}
+              <Link to="/Register">
+                <Button className="register" type="button">Register</Button>
+              </Link>
             </div>
           </Nav>
           <SidebarNav sidebar={sidebar}>
@@ -91,9 +91,16 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <h1 className="text-center">Hello {appUser.FirstName}</h1>
-            <Link to="/">Home</Link>
-            <Link to="/Logout" >Logout</Link>
+            <h1 className="hello__msg">Hello, {appUser.FirstName}</h1>
+            <div className="logout_center">
+              <Link to="/">
+                <Button className="home" type="button">Home</Button>
+              </Link>
+              {" "}
+              <Link to="/Logout">
+                <Button className="logout" type="button">Logout</Button>
+              </Link>
+            </div>
           </Nav>
           <SidebarNav sidebar={sidebar}>
             <SidebarWrap>
@@ -109,29 +116,6 @@ const Sidebar = () => {
       </>
     );
   }
-
-  // return (
-  //   <>
-  //     <IconContext.Provider value={{ color: '#fff' }}>
-  //       <Nav>
-  //         <NavIcon to='#'>
-  //           <FaIcons.FaBars onClick={showSidebar} />
-  //         </NavIcon>
-  //         <h1 className="text-center">Hello {}</h1>
-  //       </Nav>
-  //       <SidebarNav sidebar={sidebar}>
-  //         <SidebarWrap>
-  //           <NavIcon to='#'>
-  //             <AiIcons.AiOutlineClose onClick={showSidebar} />
-  //           </NavIcon>
-  //           {SidebarData.map((item, index) => {
-  //             return <SubMenu item={item} key={index} />;
-  //           })}
-  //         </SidebarWrap>
-  //       </SidebarNav>
-  //     </IconContext.Provider>
-  //   </>
-  // );
 };
 
 export default Sidebar;

@@ -3,8 +3,9 @@ import { Button } from "primereact/button";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import InfiniteScroll from "react-infinite-scroll-component";
-import "./Posts.css";
+import { ScrollToTop } from '../Scroll/ScrollToTop';
 
+import "./Posts.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -46,6 +47,7 @@ const Posts = (props) => {
             return <Post {...item} />;
           })}
         </InfiniteScroll>
+        <ScrollToTop />
       </div>
     </div>
   );

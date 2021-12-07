@@ -84,17 +84,16 @@ const Weather = () => {
             </div>
             <div className="weather-info">
               <div className="weather-info2">
-              <div >Облачност : {weather.list[0].clouds.all} %</div>
-              <div >Влажност : {weather.list[0].main.humidity} % </div>
-              <div >Атмосферно налягане : {weather.list[0].main.pressure} хПа. </div>
-              <div >Максимална температура : {weather.list[0].main.temp_max}  °c </div>
-              <div >Минимална температура : {weather.list[0].main.temp_min}  °c</div>
-              <div >Вятър : {weather.list[0].wind.speed} м/с. </div>
-              <div >Видимост : {weather.list[0].visibility} м. </div>
-            </div>
+                <div >Облачност : {weather.list[0].clouds.all} %</div>
+                <div >Влажност : {weather.list[0].main.humidity} % </div>
+                <div >Атмосферно налягане : {weather.list[0].main.pressure} хПа. </div>
+                <div >Максимална температура : {weather.list[0].main.temp_max}  °c </div>
+                <div >Минимална температура : {weather.list[0].main.temp_min}  °c</div>
+                <div >Вятър : {weather.list[0].wind.speed} м/с. </div>
+                <div >Видимост : {weather.list[0].visibility} м. </div>
+              </div>
             </div>
           </div>
-
         ) : (
           <div className="empty-body">
             Моля, въведете град или държава за да разберете времето
@@ -103,7 +102,6 @@ const Weather = () => {
         )}
       </main>
     </div>
-
   );
 };
 

@@ -1,9 +1,9 @@
 .Nav {
-   
-    height: 80px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+
+  height: 80px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .NavIcon {
@@ -28,6 +28,48 @@
   margin-top: 5rem;
 }
 
-.SidebarWrap{
+.SidebarWrap {
   width: 100%;
+}
+
+.login {
+  background-color: rgb(245, 245, 245) !important;
+  color: black !important;
+  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+}
+
+.register {
+  background-color: rgb(245, 245, 245) !important;
+  color: black !important;
+  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+}
+
+.home {
+  background-color: rgb(245, 245, 245) !important;
+  color: black !important;
+  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+}
+
+.logout {
+  background-color: rgb(245, 245, 245) !important;
+  color: black !important;
+  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+}
+
+.login_center {
+  position: absolute;
+  right: 10px;
+}
+
+.logout_center {
+  position: absolute;
+  right: 10px;
+}
+
+.hello__msg {
+  color: greenyellow;
+  font-weight: 600;
+  font-size: 37px;
+  right: 180px;
+  position: absolute;
 }

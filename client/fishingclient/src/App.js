@@ -34,20 +34,28 @@ import AllReservoirs from './components/Reservoir/AllReservoirs'
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 
 import Weather from './components/WeatherForecast/Weather';
+import ProtectedRoute from './components/AcountManagment/ProtectedRoute';
+
 import { UserContext } from './components/AcountManagment/UserContext';
+
+
 
 function App() {
   const [posts, setPosts] = useState([]);
+  const [appUser, setAppUser] = useState({});
+  const [page, setpage] = useState(1);
+  const [hasMore, sethasMore] = useState(true);
+
   const jwt = localStorage.getItem("jwt");
+
+  const isAuthenticated = Object.keys(appUser ? appUser : {}).length !== 0;
+  const value = useMemo(() => ({ appUser, setAppUser }), [appUser, setAppUser]);
 
   const updatePosts = (post) => {
     let newState = [];
     newState.unshift(...posts, post);
     setPosts(newState);
   }
-
-  const [appUser, setAppUser] = useState({});
-  const value = useMemo(() => ({ appUser, setAppUser }), [appUser, setAppUser]);
 
   // const updatePostComments = (post) => {
   //   // let postInArr = posts.find(x => x.id === post.Id);
@@ -62,8 +70,6 @@ function App() {
   //   // updatePosts(post);
   // }
 
-  const [hasMore, sethasMore] = useState(true);
-  const [page, setpage] = useState(1);
 
   useEffect(() => {
     const getPosts = async () => {
@@ -109,7 +115,6 @@ function App() {
     }
     setpage(page + 1);
   };
-
   return (
     <UserContext.Provider value={value}>
       <div >
@@ -124,7 +129,8 @@ function App() {
               <Route path='/AllKnots' component={AllKnots} />
               <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
 
-              <Route path='/CreateCountry' exact component={CreateCountry} />
+              {/* <Route path='/CreateCountry' exact component={CreateCountry} /> */}
+              <ProtectedRoute path="/CreateCountry" component={CreateCountry} auth={isAuthenticated}/>
 
               <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
@@ -145,6 +151,8 @@ function App() {
               <Route path='/DeleteUser' component={DeleteUser} />
               <Route path='/GetUserById' component={GetUserById} />
               <Route path='/UserDetails' component={UserDetails} />
+
+              
             </Switch>
           </main>
         </Router>
