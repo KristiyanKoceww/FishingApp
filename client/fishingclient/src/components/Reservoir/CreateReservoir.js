@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import "./CreateReservoir.css";
 
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import TitleIcon from "@mui/icons-material/Title";
+import ShortTextIcon from '@mui/icons-material/ShortText';
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import DescriptionIcon from '@mui/icons-material/Description';
+
 const CreateReservoir = () => {
   const [name, setName] = useState("");
   const [type, setType] = useState("");
@@ -17,7 +25,7 @@ const CreateReservoir = () => {
     }
   };
 
-  const uploadImage = async (e) => {
+  const CreateRes= async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -42,82 +50,238 @@ const CreateReservoir = () => {
   };
 
   return (
-    <main className="form-signin">
-      <form onSubmit={uploadImage}>
-        <h1 className="h3 mb-3 fw-normal">Fill data to create new reservoir</h1>
 
-        <div className="form-floating">
-          <input
-            type="text"
-            className="form-control"
+<div className="CreateReservoir">
+      <form onSubmit={(e) => CreateRes(e)}>
+        <h1 className="ReservoirTitle">
+          <ConnectWithoutContactIcon /> Fill data to create new reservoir
+        </h1>
+
+        <div>
+          <TextField
+            className="textFieldTitle"
+            label="Reservoir name"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setName(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TitleIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>Reservoir name</label>
         </div>
-
-        <div className="form-floating">
-          <input
-            type="text"
-            className="form-control"
+        <br />
+        <div>
+          <TextField
+            label="Type"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setType(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ShortTextIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>Type</label>
         </div>
-
-        <div className="form-floating">
-          <textarea
-            className="form-control"
-            rows="100"
+        <br />
+        <div>
+          <TextField
+            label="Description"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setDescription(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DescriptionIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>Description</label>
         </div>
-
-        <div className="form-floating">
-          <input
-            type="text"
-            step="any"
-            className="form-control"
+        <br />
+        <div>
+          <TextField
+            label="Latitude"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setLatitude(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ShortTextIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>Latitude</label>
         </div>
+        <br />
 
-        <div className="form-floating">
-          <input
-            type="text"
-            step="any"
-            className="form-control"
+        <div>
+          <TextField
+            label="Longitude"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setLongitude(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ShortTextIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>Longitude</label>
         </div>
-
-        <div className="form-floating">
-          <input
-            type="text"
-            className="form-control"
+        <br />
+        <div>
+          <TextField
+            label="City id"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setCityId(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ShortTextIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label>City ID</label>
         </div>
+        <br />
 
-        <div className="form-floating">
+        <label htmlFor="btn-upload">
           <input
+            id="btn-upload"
+            name="btn-upload"
+            style={{ display: "none" }}
             multiple
             type="file"
-            className="form-control"
             onChange={saveFile}
           />
-          <label>Image/s</label>
-        </div>
-
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Submit
-        </button>
-        <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+          <div className="choose__files">
+            <Button
+              className="choose__button"
+              variant="outlined"
+              component="span"
+            >
+              Choose Files
+            </Button>{" "}
+            <Button className="submit__button" type="submit" variant="outlined">
+              Submit
+            </Button>
+          </div>
+        </label>
+        <br />
       </form>
-    </main>
+    </div>
+
+
+    // <main className="form-signin">
+    //   <form onSubmit={uploadImage}>
+    //     <h1 className="h3 mb-3 fw-normal">Fill data to create new reservoir</h1>
+
+    //     <div className="form-floating">
+    //       <input
+    //         type="text"
+    //         className="form-control"
+    //         onChange={(e) => setName(e.target.value)}
+    //       />
+    //       <label>Reservoir name</label>
+    //     </div>
+
+    //     <div className="form-floating">
+    //       <input
+    //         type="text"
+    //         className="form-control"
+    //         onChange={(e) => setType(e.target.value)}
+    //       />
+    //       <label>Type</label>
+    //     </div>
+
+    //     <div className="form-floating">
+    //       <textarea
+    //         className="form-control"
+    //         rows="100"
+    //         onChange={(e) => setDescription(e.target.value)}
+    //       />
+    //       <label>Description</label>
+    //     </div>
+
+    //     <div className="form-floating">
+    //       <input
+    //         type="text"
+    //         step="any"
+    //         className="form-control"
+    //         onChange={(e) => setLatitude(e.target.value)}
+    //       />
+    //       <label>Latitude</label>
+    //     </div>
+
+    //     <div className="form-floating">
+    //       <input
+    //         type="text"
+    //         step="any"
+    //         className="form-control"
+    //         onChange={(e) => setLongitude(e.target.value)}
+    //       />
+    //       <label>Longitude</label>
+    //     </div>
+
+    //     <div className="form-floating">
+    //       <input
+    //         type="text"
+    //         className="form-control"
+    //         onChange={(e) => setCityId(e.target.value)}
+    //       />
+    //       <label>City ID</label>
+    //     </div>
+
+    //     <div className="form-floating">
+    //       <input
+    //         multiple
+    //         type="file"
+    //         className="form-control"
+    //         onChange={saveFile}
+    //       />
+    //       <label>Image/s</label>
+    //     </div>
+
+    //     <button className="w-100 btn btn-lg btn-primary" type="submit">
+    //       Submit
+    //     </button>
+    //     <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    //   </form>
+    // </main>
   );
 };
 

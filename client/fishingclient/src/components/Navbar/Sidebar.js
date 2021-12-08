@@ -9,6 +9,7 @@ import './Sidebar.css'
 import { IconContext } from 'react-icons/lib';
 import { UserContext } from '../AcountManagment/UserContext';
 import Button from "react-bootstrap/Button";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Nav = styled.div`
   background: #15171c;
@@ -58,8 +59,12 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <h1 className="hello__msg">Hello, guest</h1>
+            <h1 className="hello__msg"> <AccountCircleIcon /> Hello, guest</h1>
             <div className="login_center">
+            <Link to="/">
+                <Button className="home" type="button">Home</Button>
+              </Link>
+              {" "}
               <Link to="/Login">
                 <Button className="login" type="button">Login</Button>
               </Link>
@@ -91,7 +96,7 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <h1 className="hello__msg">Hello, {appUser.FirstName}</h1>
+            <h1 className="hello__msg"><AccountCircleIcon /> Hello, {appUser.FirstName}</h1>
             <div className="logout_center">
               <Link to="/">
                 <Button className="home" type="button">Home</Button>

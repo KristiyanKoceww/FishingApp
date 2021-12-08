@@ -125,28 +125,28 @@ function App() {
               {
                 posts ? <Route path='/' exact render={() => <Posts posts={posts} updatePosts={updatePosts} hasMore={hasMore} fetchData={fetchData} />} /> : <div>Loading...</div>
               }
-              <Route path='/CreateKnot' component={CreateKnot} />
-              <Route path='/AllKnots' component={AllKnots} />
-              <Route path='/KnotInfoPage/:id' component={KnotInfoPage} />
+              <ProtectedRoute path='/CreateKnot' component={CreateKnot} auth={isAuthenticated} />
+              <ProtectedRoute path='/AllKnots' component={AllKnots} auth={isAuthenticated} />
+              <ProtectedRoute path='/KnotInfoPage/:id' component={KnotInfoPage} auth={isAuthenticated} />
 
               {/* <Route path='/CreateCountry' exact component={CreateCountry} /> */}
               <ProtectedRoute path="/CreateCountry" component={CreateCountry} auth={isAuthenticated}/>
 
               <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
-              <Route path='/CreateReservoir' component={CreateReservoir} />
-              <Route path='/AllReservoirs' component={AllReservoirs} />
-              <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
+              <ProtectedRoute path='/CreateReservoir' component={CreateReservoir} auth={isAuthenticated} />
+              <ProtectedRoute path='/AllReservoirs' component={AllReservoirs} auth={isAuthenticated} />
+              <ProtectedRoute path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} auth={isAuthenticated} />
 
               <Route path='/Login' component={Login} />
               <Route path='/Register' component={Register} />
               <Route path='/Logout' component={Logout} />
 
-              <Route path='/Weather' component={Weather} />
+              <ProtectedRoute path='/Weather' component={Weather} auth={isAuthenticated} />
 
-              <Route path='/AllFish' component={DisplayAllFish} />
-              <Route path='/FishInfo' component={FishInfo} />
-              <Route path='/FishInfoPage/:id' component={FishInfoPage} />
+              <ProtectedRoute path='/AllFish' component={DisplayAllFish} auth={isAuthenticated} />
+              <ProtectedRoute path='/FishInfo' component={FishInfo} auth={isAuthenticated} />
+              <ProtectedRoute path='/FishInfoPage/:id' component={FishInfoPage} auth={isAuthenticated} />
 
               <Route path='/DeleteUser' component={DeleteUser} />
               <Route path='/GetUserById' component={GetUserById} />

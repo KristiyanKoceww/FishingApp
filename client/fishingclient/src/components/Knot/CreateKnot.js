@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import { TextField } from "@mui/material";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import TitleIcon from "@mui/icons-material/Title";
+import ShortTextIcon from '@mui/icons-material/ShortText';
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
+import DescriptionIcon from '@mui/icons-material/Description';
+import './CreateKnot.css'
 
 const CreateKnot = () => {
   const [name, setName] = useState("");
@@ -36,58 +44,98 @@ const CreateKnot = () => {
   };
 
   return (
-    <main className="form-signin">
-      <form onSubmit={onSubmit}>
-        <h1 className="h3 mb-3 fw-normal">Please fill in data. </h1>
-        <h5>Fields with * are required.</h5>
+    <div className="CreateKnot">
+      <form onSubmit={(e) => onSubmit(e)}>
+        <h1 className="KnotTittle">
+          <ConnectWithoutContactIcon /> Please , fill the data.
+        </h1>
 
-        <div className="form-floating">
-          <input
-            required
-            type="text"
-            className="form-control"
+        <div>
+          <TextField
+            className="textFieldTitle"
+            label="Knot name"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setName(e.target.value)}
-          />
-          <label htmlFor="floatingInput">* Name</label>
-        </div>
-
-        <div className="form-floating">
-          <input
             required
-            type="text"
-            className="form-control"
-            onChange={(e) => setType(e.target.value)}
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <TitleIcon />
+                </InputAdornment>
+              ),
+            }}
           />
-          <label htmlFor="floatingInput">* Knot type</label>
         </div>
-
-        <div className="form-floating">
-          <input
-            required
-            type="text"
-            className="form-control"
+        <br />
+        <div>
+          <TextField
+            label="Description"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
             onChange={(e) => setDescription(e.target.value)}
-          />
-          <label htmlFor="floatingInput">* Description</label>
-        </div>
-
-        <div className="form-floating">
-          <input
             required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <DescriptionIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+        <br />
+        <div>
+          <TextField
+            label="Type"
+            id="filled-hidden-label-small"
+            variant="filled"
+            size="large"
+            fullWidth
+            onChange={(e) => setType(e.target.value)}
+            required
+            multiline
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <ShortTextIcon />
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
+        <br />
+
+        <label htmlFor="btn-upload">
+          <input
+            id="btn-upload"
+            name="btn-upload"
+            style={{ display: "none" }}
             multiple
             type="file"
-            className="form-control"
             onChange={saveFile}
           />
-          <label htmlFor="floatingInput">Images</label>
-        </div>
-
-        <button className="w-100 btn btn-lg btn-primary" type="submit">
-          Submit
-        </button>
-        <p className="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+          <div className="choose__files">
+            <Button
+              className="choose__button"
+              variant="outlined"
+              component="span"
+            >
+              Choose Files
+            </Button>{" "}
+            <Button className="submit__button" type="submit" variant="outlined">
+              Submit
+            </Button>
+          </div>
+        </label>
+        <br />
       </form>
-    </main>
+    </div>
   );
 };
 
