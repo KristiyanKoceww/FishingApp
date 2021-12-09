@@ -1,0 +1,45 @@
+.Register {
+  margin: auto;
+  width: 29%;
+}
+
+.title__register {
+  font-weight: 700;
+  font-size: 30px;
+  color: black;
+  padding: 10px;
+  margin: auto !important;
+}
+
+.password {
+  width: 50% !important;
+}
+.passwordInput {
+  width: 100%;
+}
+
+.username {
+  width: 50% !important;
+}
+
+.ProfilePictureButton {
+  width: 100%;
+  color: black !important;
+  font-weight: 600 !important;
+}
+.UploadProfilePicture {
+  width: 100%;
+}
+.submit__button {
+  color: black;
+  font-weight: 600 !important;
+  font-family: "Times New Roman", Times, serif;
+  margin: auto !important;
+  width: 50%;
+  background-color: rgb(85, 243, 23);
+}
+
+.submit {
+  width: 100%;
+  text-align: center;
+}

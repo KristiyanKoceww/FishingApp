@@ -14,9 +14,9 @@ import KnotInfoPage from './components/Knot/KnotInfoPage';
 
 import CreateCountry from './components/Country/Country';
 
-import Login from './components/AcountManagment/Login';
+import Login from './components/AcountManagment/Login/Login';
 import Logout from './components/AcountManagment/Logout';
-import Register from './components/AcountManagment/Register';
+import Register from './components/AcountManagment/Register/Register';
 
 import CreatePost from './components/Posts/CreatePost';
 import Posts from './components/Posts/Posts'

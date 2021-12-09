@@ -1,21 +1,26 @@
-.createCountry {
+.Login {
   margin: auto;
   width: 20%;
-  
 }
 
-.title__country {
+.title__login {
   font-weight: 700;
   font-size: 30px;
   color: black;
   padding: 10px;
-  margin:auto!important;
+  margin: auto !important;
 }
 
-.createCountryButton {
-  width: 100%;
-  margin: auto;
+.LoginButton {
   color: black !important;
   font-weight: 600 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  margin: auto;
+  width: 100%;
   background-color: rgb(85, 243, 23) !important;
+}
+
+.LoginButtonDiv {
+  margin: auto;
+  width: 100%;
 }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useHistory , Redirect } from "react-router-dom";
-import "./Login.css";
 
 const GetUserById = () => {
   const history = useHistory();
