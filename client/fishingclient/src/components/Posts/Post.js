@@ -1,15 +1,17 @@
-import { React, useEffect, useState } from 'react'
+import { React, useEffect, useState, useContext } from 'react'
 import Avatar from '@mui/material/Avatar';
 import ImageSlider from '../ImageSlider/ImageSlider';
 import './Post.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { UserContext } from '../AcountManagment/UserContext';
 
 const Post = (post) => {
     // const [comments, setComments] = useState([]);
     const [comment, setComment] = useState('');
-
+    const { appUser, setAppUser } = useContext(UserContext);
     const jwt = localStorage.getItem("jwt");
     const userId = localStorage.getItem("userId");
     const upVote = true;
@@ -157,6 +159,11 @@ const Post = (post) => {
                 {typeof post.ImageUrls != "undefined" ? <ImageSlider slides={post.ImageUrls} /> : ""}
             </div>
 
+            <div className="likescount">
+            <FavoriteBorderIcon /> {post.Votes.filter(vote => vote.Type === 1).length} likes
+            </div>
+
+            {Object.keys(appUser ? appUser : {}).length !== 0 ? 
             <div className="post__likebuttons">
                 <div className="post__like">
                     <FontAwesomeIcon icon={faThumbsUp} size="2x" />
@@ -169,6 +176,7 @@ const Post = (post) => {
                     <button onClick={(e) => Vote(e, post.Id)} value={downVote} className="btn__unlike">Dislike</button>
                 </div>
             </div>
+            : null }
 
             <div className="post__comments">
 
@@ -177,15 +185,17 @@ const Post = (post) => {
                         <div className="post__bubble">
                             <strong className="post__user">{comment.User.FirstName}:</strong> <div className="post__content">{comment.Content}</div>
                         </div>
+                        {Object.keys(appUser ? appUser : {}).length !== 0 ? 
                         <div className="post__buttons">
                             <button type="submit" onClick={(e) => reply(e, comment.Id)} className="button" >Reply</button>
                             <button type="submit" onClick={(e) => edit(e, comment.Id)} className="button2">Edit</button>
                             <button type="submit" onClick={(e) => deleteComment(e, comment.Id)} className="button3">Delete</button>
-                        </div>
+                        </div> : <br/> }
                     </div>
                 )}
             </div>
 
+            {Object.keys(appUser ? appUser : {}).length !== 0 ? 
             <form className="post__commentBox">
                 <input
                     className="post__input"
@@ -201,6 +211,7 @@ const Post = (post) => {
                     onClick={postComment}
                 >Submit</button>
             </form>
+            : null }
         </div>
     )
 }

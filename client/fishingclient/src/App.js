@@ -35,6 +35,8 @@ import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 
 import Weather from './components/WeatherForecast/Weather';
 import ProtectedRoute from './components/AcountManagment/ProtectedRoute';
+import Privacy from './components/PrivacyPolicy/Privacy'
+import FacebookLoginUser from './components/Facebooklogin/FacebookLogin'
 
 import { UserContext } from './components/AcountManagment/UserContext';
 
@@ -135,8 +137,11 @@ function App() {
               <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
               <ProtectedRoute path='/CreateReservoir' component={CreateReservoir} auth={isAuthenticated} />
-              <ProtectedRoute path='/AllReservoirs' component={AllReservoirs} auth={isAuthenticated} />
-              <ProtectedRoute path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} auth={isAuthenticated} />
+              {/* <ProtectedRoute path='/AllReservoirs' component={AllReservoirs} auth={isAuthenticated} />
+              <ProtectedRoute path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} auth={isAuthenticated} /> */}
+
+              <Route path='/AllReservoirs' component={AllReservoirs} />
+              <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
 
               <Route path='/Login' component={Login} />
               <Route path='/Register' component={Register} />
@@ -152,6 +157,8 @@ function App() {
               <Route path='/GetUserById' component={GetUserById} />
               <Route path='/UserDetails' component={UserDetails} />
 
+              <Route path='/Privacy' component={Privacy} />
+              <Route path='/FacebookLoginUser' component={FacebookLoginUser} />
               
             </Switch>
           </main>

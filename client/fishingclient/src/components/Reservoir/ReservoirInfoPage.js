@@ -1,48 +1,40 @@
 import React, { useEffect, useState, useMemo } from "react";
-import ImageSlider from "../ImageSlider/ImageSlider";
 import { useParams, Link } from "react-router-dom";
-import "./ReservoirInfoPage.css";
+
+import ImageSlider from "../ImageSlider/ImageSlider";
 import Map from "../GoogleMap/Map";
+import "./ReservoirInfoPage.css";
 
 const ReservoirInfoPage = (props) => {
   const [reservoir, setReservoir] = useState();
   const [isLoading, setisLoading] = useState(true);
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const url = "https://localhost:44366/api/Reservoir/getByName?reservoirName=";
+
   const { id } = useParams();
+  const jwt = localStorage.getItem("jwt");
+  const url = "https://localhost:44366/api/Reservoir/getByName?reservoirName=";
+
+  const fetchData = () => {
+    const fetchUrl = url + id;
+    fetch(fetchUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + jwt,
+      },
+    })
+      .then((res) => res.json())
+      .then((result) => {
+        setReservoir(result)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    setisLoading(false);
+  };
 
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    const fetchData = () => {
-      const fetchUrl = url + id;
-      fetch(fetchUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + jwt,
-        },
-      })
-        .then((res) => res.json())
-        .then((result) => {
-          setReservoir(result),
-            setLatitude(reservoir.Latitude),
-            setLongitude(reservoir.Longitude);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      setisLoading(false);
-    };
     fetchData();
   }, [id]);
-
-  const zoomOutProperties = {
-    duration: 4000,
-    transitionDuration: 800,
-    infinite: true,
-    scale: 0.4,
-  };
 
   const renderReservoir = useMemo(() => {
     if (isLoading === true) {
@@ -86,7 +78,7 @@ const ReservoirInfoPage = (props) => {
           <hr />
           <h1 className="text-center">{reservoir.Name} location:</h1>
           <div className="d-flex justify-content-center">
-            {/* <Map props={latitude,longitude} /> */}
+            <Map props={reservoir} /> 
           </div>
         </div>
       );

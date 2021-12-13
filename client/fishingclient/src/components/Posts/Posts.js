@@ -1,9 +1,11 @@
-import { React, useState } from "react";
+import { React, useState, useContext } from "react";
+import { Link } from 'react-router-dom';
 import { Button } from "primereact/button";
 import Post from "./Post";
 import CreatePost from "./CreatePost";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ScrollToTop } from '../Scroll/ScrollToTop';
+import { UserContext } from '../AcountManagment/UserContext';
 
 import "./Posts.css";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
@@ -12,6 +14,7 @@ import "primeicons/primeicons.css";
 
 const Posts = (props) => {
   const [createFormToggle, setCreateFormToggle] = useState(false);
+  const { appUser, setAppUser } = useContext(UserContext);
 
   const toggleForm = () => {
     setCreateFormToggle(!createFormToggle);
@@ -19,6 +22,7 @@ const Posts = (props) => {
 
   return (
     <div className="container">
+      {Object.keys(appUser ? appUser : {}).length !== 0 ? 
       <div className="toggleDiv">
         <Button
           className="toggleFormButton"
@@ -30,6 +34,9 @@ const Posts = (props) => {
         />
         {createFormToggle && <CreatePost onCreate={props.updatePosts} />}
       </div>
+       : <div className="logintocreatepost">
+         <Link to="/Login">Login</Link> to create post
+         </div>}
 
       <div className="infiniteScroll">
         <InfiniteScroll
