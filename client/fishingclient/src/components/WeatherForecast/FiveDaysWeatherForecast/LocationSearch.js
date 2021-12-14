@@ -6,10 +6,10 @@ import TextField from '@mui/material/TextField';
 const LocationSearch = ({ onCityFound }) => {
     const [cityName, setCityName] = useState('');
 
-    const apiKey = 'SAF0EojAtfJ9Q38hIzuvP8Ekuq4i4xwm';
+    const api = process.env.REACT_APP_WEATHER_API_KEY;
 
     const getLocation = (name) => {
-        const url = `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${apiKey}&q=${name}`
+        const url = `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${api}&q=${name}`
         fetch(url)
             .then(res => res.json())
             .then(res => res.find(l => l.Country.ID === 'BG'))

@@ -3,17 +3,16 @@ import { Link } from "react-router-dom";
 import "./Weather.css";
 const Weather = () => {
   const api = {
-    key: "12a4746d8befcc4c81d074e265b71afb",
     base: "https://api.openweathermap.org/data/2.5/",
     wholeLink: "https://api.openweathermap.org/data/2.5/forecast?q={city name}&units=metric&appid={API key}"
   };
-
+  const apiKey = process.env.REACT_APP_CURRENTWEATHER_API_KEY;
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
 
   const search = (evt) => {
     if (evt.key === "Enter") {
-      fetch(`${api.base}forecast?q=${query}&units=metric&lang=bg&appid=${api.key}`)
+      fetch(`${api.base}forecast?q=${query}&units=metric&lang=bg&appid=${apiKey}`)
         .then((res) => res.json())
         .then((result) => {
           setWeather(result);
