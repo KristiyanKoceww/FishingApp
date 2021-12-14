@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Weather.css";
 const Weather = () => {
   const api = {
@@ -91,6 +92,7 @@ const Weather = () => {
                 <div >Минимална температура : {weather.list[0].main.temp_min}  °c</div>
                 <div >Вятър : {weather.list[0].wind.speed} м/с. </div>
                 <div >Видимост : {weather.list[0].visibility} м. </div>
+                <div><Link to="/FiveDaysWeatherForecast" className="fivedays">Click here for 5 days weather forecast</Link></div>
               </div>
             </div>
           </div>

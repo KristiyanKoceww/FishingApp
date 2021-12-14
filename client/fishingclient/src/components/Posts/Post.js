@@ -16,7 +16,7 @@ const Post = (post) => {
     const userId = localStorage.getItem("userId");
     const upVote = true;
     const downVote = false;
-
+    
     const convertValue = (string) => {
         switch (string.toLowerCase().trim()) {
             case "true": case "yes": case "1": return true;
@@ -76,17 +76,16 @@ const Post = (post) => {
     }
 
     const edit = (e, id) => {
-        e.preventDefault();
-
         // NEED TO OPEN AGAIN INPUT TEXT FIELD TO INSERT EDITED COMMENT
         const url = 'https://localhost:44366/api/Comments/update?commentId='
         const data = {
             commentId: id,
-            postId: postId,
+            postId: post.Id,
             userId: userId,
             content: comment,
             parentId: comment.ParentId
         }
+
 
         fetch(url + id,
             {
@@ -98,6 +97,8 @@ const Post = (post) => {
                 body: json.stringify(data),
             })
     }
+
+
 
     const deleteComment = (e, id) => {
         e.preventDefault();
@@ -160,23 +161,23 @@ const Post = (post) => {
             </div>
 
             <div className="likescount">
-            <FavoriteBorderIcon /> {post.Votes.filter(vote => vote.Type === 1).length} likes
+                <FavoriteBorderIcon /> {post.Votes.filter(vote => vote.Type === 1).length} likes
             </div>
 
-            {Object.keys(appUser ? appUser : {}).length !== 0 ? 
-            <div className="post__likebuttons">
-                <div className="post__like">
-                    <FontAwesomeIcon icon={faThumbsUp} size="2x" />
-                    &nbsp;&nbsp;
-                    <button onClick={(e) => Vote(e, post.Id)} value={upVote} className="btn__like">Like</button>
+            {Object.keys(appUser ? appUser : {}).length !== 0 ?
+                <div className="post__likebuttons">
+                    <div className="post__like">
+                        <FontAwesomeIcon icon={faThumbsUp} size="2x" />
+                        &nbsp;&nbsp;
+                        <button onClick={(e) => Vote(e, post.Id)} value={upVote} className="btn__like">Like</button>
+                    </div>
+                    <div className="post__unlike">
+                        <FontAwesomeIcon icon={faThumbsDown} size="2x" />
+                        &nbsp;&nbsp;
+                        <button onClick={(e) => Vote(e, post.Id)} value={downVote} className="btn__unlike">Dislike</button>
+                    </div>
                 </div>
-                <div className="post__unlike">
-                    <FontAwesomeIcon icon={faThumbsDown} size="2x" />
-                    &nbsp;&nbsp;
-                    <button onClick={(e) => Vote(e, post.Id)} value={downVote} className="btn__unlike">Dislike</button>
-                </div>
-            </div>
-            : null }
+                : null}
 
             <div className="post__comments">
 
@@ -185,33 +186,33 @@ const Post = (post) => {
                         <div className="post__bubble">
                             <strong className="post__user">{comment.User.FirstName}:</strong> <div className="post__content">{comment.Content}</div>
                         </div>
-                        {Object.keys(appUser ? appUser : {}).length !== 0 ? 
-                        <div className="post__buttons">
-                            <button type="submit" onClick={(e) => reply(e, comment.Id)} className="button" >Reply</button>
-                            <button type="submit" onClick={(e) => edit(e, comment.Id)} className="button2">Edit</button>
-                            <button type="submit" onClick={(e) => deleteComment(e, comment.Id)} className="button3">Delete</button>
-                        </div> : <br/> }
+                        {Object.keys(appUser ? appUser : {}).length !== 0 ?
+                            <div className="post__buttons">
+                                <button type="submit" onClick={(e) => reply(e, comment.Id)} className="button" >Reply</button>
+                                <button type="submit" onClick={(e) => edit(e, comment.Id)} className="button2">Edit</button>
+                                <button type="submit" onClick={(e) => deleteComment(e, comment.Id)} className="button3">Delete</button>
+                            </div> : <br />}
                     </div>
                 )}
             </div>
 
-            {Object.keys(appUser ? appUser : {}).length !== 0 ? 
-            <form className="post__commentBox">
-                <input
-                    className="post__input"
-                    type="text"
-                    placeholder="Add a comment..."
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                />
-                <button
-                    className="post__button"
-                    disabled={!comment}
-                    type="submit"
-                    onClick={postComment}
-                >Submit</button>
-            </form>
-            : null }
+            {Object.keys(appUser ? appUser : {}).length !== 0 ?
+                <form className="post__commentBox">
+                    <input
+                        className="post__input"
+                        type="text"
+                        placeholder="Add a comment..."
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                    />
+                    <button
+                        className="post__button"
+                        disabled={!comment}
+                        type="submit"
+                        onClick={postComment}
+                    >Submit</button>
+                </form>
+                : null}
         </div>
     )
 }

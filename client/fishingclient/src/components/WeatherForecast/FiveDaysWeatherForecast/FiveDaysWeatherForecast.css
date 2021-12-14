@@ -1,0 +1,24 @@
+.infoText{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 600;
+    font-size: 60px;
+    color: black;
+}
+.WeatherInfo {
+    display: flex;
+    justify-content: center;
+}
+
+.day {
+    margin: 15px;
+    display: flex;
+    padding: 10px;
+    background-color: grey;
+    border-radius: 5px;
+    box-shadow: 0px 0px 3px black;
+    color: whitesmoke;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}

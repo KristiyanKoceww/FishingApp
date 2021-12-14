@@ -33,10 +33,14 @@ import CreateReservoir from './components/Reservoir/CreateReservoir';
 import AllReservoirs from './components/Reservoir/AllReservoirs'
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
 
-import Weather from './components/WeatherForecast/Weather';
+import Weather from './components/WeatherForecast/CurrentDayWeatherForecast/Weather';
+import FiveDaysWeatherForecast from './components/WeatherForecast/FiveDaysWeatherForecast/FiveDaysWeatherForecast'
+
 import ProtectedRoute from './components/AcountManagment/ProtectedRoute';
 import Privacy from './components/PrivacyPolicy/Privacy'
 import FacebookLoginUser from './components/Facebooklogin/FacebookLogin'
+
+import Error from './Error' 
 
 import { UserContext } from './components/AcountManagment/UserContext';
 
@@ -131,23 +135,20 @@ function App() {
               <ProtectedRoute path='/AllKnots' component={AllKnots} auth={isAuthenticated} />
               <ProtectedRoute path='/KnotInfoPage/:id' component={KnotInfoPage} auth={isAuthenticated} />
 
-              {/* <Route path='/CreateCountry' exact component={CreateCountry} /> */}
               <ProtectedRoute path="/CreateCountry" component={CreateCountry} auth={isAuthenticated}/>
 
               <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
               <ProtectedRoute path='/CreateReservoir' component={CreateReservoir} auth={isAuthenticated} />
-              {/* <ProtectedRoute path='/AllReservoirs' component={AllReservoirs} auth={isAuthenticated} />
-              <ProtectedRoute path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} auth={isAuthenticated} /> */}
-
-              <Route path='/AllReservoirs' component={AllReservoirs} />
-              <Route path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} />
+              <ProtectedRoute path='/AllReservoirs' component={AllReservoirs} auth={isAuthenticated} />
+              <ProtectedRoute path='/ReservoirInfoPage/:id' component={ReservoirInfoPage} auth={isAuthenticated} />
 
               <Route path='/Login' component={Login} />
               <Route path='/Register' component={Register} />
               <Route path='/Logout' component={Logout} />
 
               <ProtectedRoute path='/Weather' component={Weather} auth={isAuthenticated} />
+              <Route path='/FiveDaysWeatherForecast' component={FiveDaysWeatherForecast} />
 
               <ProtectedRoute path='/AllFish' component={DisplayAllFish} auth={isAuthenticated} />
               <ProtectedRoute path='/FishInfo' component={FishInfo} auth={isAuthenticated} />
@@ -157,13 +158,15 @@ function App() {
               <Route path='/GetUserById' component={GetUserById} />
               <Route path='/UserDetails' component={UserDetails} />
 
-              <Route path='/Privacy' component={Privacy} />
               <Route path='/FacebookLoginUser' component={FacebookLoginUser} />
+
+              <Route path='/Privacy' component={Privacy} />
+              <Route path='/Error' component={Error} />
               
             </Switch>
           </main>
-        </Router>
         <Footer />
+        </Router>
       </div>
     </UserContext.Provider >
   );

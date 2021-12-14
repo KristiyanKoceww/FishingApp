@@ -1,0 +1,10 @@
+.dayOfWeek{
+    color:black;
+    font-weight: 600;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+}
+
+.weatherIcon{
+    margin-left: 20px;
+}

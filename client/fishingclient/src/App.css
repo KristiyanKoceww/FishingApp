@@ -3,3 +3,8 @@
     background-size: cover;
     background-position: 100%;
 } */
+
+.App{
+   
+    height: 100% !important;
+}

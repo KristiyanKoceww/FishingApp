@@ -15,21 +15,21 @@ const Footer = () => {
         </div>
       </div>
       <div className="links">
-        <a to="/">
+        <Link to="/">
           <Button className="home" type="button">Home</Button>
-        </a>
+        </Link>
         {" "}
-        <a to="/Pricacy">
+        <Link to="/Privacy">
           <Button className="home" type="button">Privacy</Button>
-        </a>
+        </Link>
         {" "}
-        <a to="/Aboutus">
+        <Link to="/Aboutus">
           <Button className="home" type="button">About us</Button>
-        </a>
+        </Link>
         {" "}
-        <a to="/Details">
+        <Link to="/Details">
           <Button className="home" type="button">Details</Button>
-        </a>
+        </Link>
       </div>
     </footer>
   )
