@@ -57,11 +57,33 @@ function App() {
   const isAuthenticated = Object.keys(appUser ? appUser : {}).length !== 0;
   const value = useMemo(() => ({ appUser, setAppUser }), [appUser, setAppUser]);
 
+  
   const updatePosts = (post) => {
     let newState = [];
-    newState.unshift(...posts, post);
+    newState.unshift(post,...posts);
     setPosts(newState);
   }
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+    const jwt = localStorage.getItem("jwt");
+    if (userId && jwt) {
+      fetch(
+        `https://localhost:44366/api/AppUsers/getUser/id?userId=${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            'Authorization': 'Bearer ' + jwt
+          },
+        }
+      )
+      .then(r=> r.json())
+      .then(result => {
+        setAppUser(result)
+      });
+    }
+  }, []);
 
   // const updatePostComments = (post) => {
   //   // let postInArr = posts.find(x => x.id === post.Id);
