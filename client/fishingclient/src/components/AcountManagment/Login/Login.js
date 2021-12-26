@@ -38,6 +38,7 @@ const Login = () => {
       .then((res) => {
         if (res.AccessToken) {
           localStorage.setItem("jwt", res.AccessToken);
+          localStorage.setItem("refresh",res.RefreshToken);
           setRedirect(true);
         }
 

@@ -40,11 +40,11 @@ import ProtectedRoute from './components/AcountManagment/ProtectedRoute';
 import Privacy from './components/PrivacyPolicy/Privacy'
 import FacebookLoginUser from './components/Facebooklogin/FacebookLogin'
 
-import Error from './Error' 
+import Error from './Error'
+
+import IdleMonitor from './components/AcountManagment/SessionManagment/ExtendSession'
 
 import { UserContext } from './components/AcountManagment/UserContext';
-
-
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -57,10 +57,10 @@ function App() {
   const isAuthenticated = Object.keys(appUser ? appUser : {}).length !== 0;
   const value = useMemo(() => ({ appUser, setAppUser }), [appUser, setAppUser]);
 
-  
+
   const updatePosts = (post) => {
     let newState = [];
-    newState.unshift(post,...posts);
+    newState.unshift(post, ...posts);
     setPosts(newState);
   }
 
@@ -78,26 +78,12 @@ function App() {
           },
         }
       )
-      .then(r=> r.json())
-      .then(result => {
-        setAppUser(result)
-      });
+        .then(r => r.json())
+        .then(result => {
+          setAppUser(result)
+        });
     }
   }, []);
-
-  // const updatePostComments = (post) => {
-  //   // let postInArr = posts.find(x => x.id === post.Id);
-  //   // postInArr = post;
-  //   // let index = posts.findIndex(x => x.Id === post.Id);
-  //   // posts.splice(index, 1)
-
-  //   let myObj = posts.find(obj => obj.Id === post.Id);
-
-  //   console.log();
-
-  //   // updatePosts(post);
-  // }
-
 
   useEffect(() => {
     const getPosts = async () => {
@@ -143,6 +129,10 @@ function App() {
     }
     setpage(page + 1);
   };
+
+
+
+  
   return (
     <UserContext.Provider value={value}>
       <div >
@@ -157,7 +147,7 @@ function App() {
               <ProtectedRoute path='/AllKnots' component={AllKnots} auth={isAuthenticated} />
               <ProtectedRoute path='/KnotInfoPage/:id' component={KnotInfoPage} auth={isAuthenticated} />
 
-              <ProtectedRoute path="/CreateCountry" component={CreateCountry} auth={isAuthenticated}/>
+              <ProtectedRoute path="/CreateCountry" component={CreateCountry} auth={isAuthenticated} />
 
               <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
 
@@ -184,14 +174,14 @@ function App() {
 
               <Route path='/Privacy' component={Privacy} />
               <Route path='/Error' component={Error} />
-              
+
             </Switch>
+            <IdleMonitor/>
           </main>
-        <Footer />
+          <Footer />
         </Router>
       </div>
     </UserContext.Provider >
   );
 }
-
 export default App;

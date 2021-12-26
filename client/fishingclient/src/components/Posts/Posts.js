@@ -50,8 +50,8 @@ const Posts = (props) => {
             </p>
           }
         >
-          {props.posts.map((item) => {
-            return <Post {...item} />;
+          {props.posts.map((item,index) => {
+            return <Post key={index} {...item} />;
           })}
         </InfiniteScroll>
         <ScrollToTop />
