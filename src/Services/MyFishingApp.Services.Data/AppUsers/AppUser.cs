@@ -135,10 +135,6 @@
 
                 user.MainImageUrl = uploadResult.SecureUrl.AbsoluteUri;
             }
-            else
-            {
-                user.MainImageUrl = "https://res.cloudinary.com/kocewwcloud/image/upload/v1639749727/FishApp/DefaultProfilePicture/Default_profile_picture_cyg6fr.png";
-            }
 
             this.BuildClaims(user);
 

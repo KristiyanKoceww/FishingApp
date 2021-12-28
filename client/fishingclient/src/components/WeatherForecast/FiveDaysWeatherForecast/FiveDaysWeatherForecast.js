@@ -8,8 +8,8 @@ const FiveDaysWeatherForecast = () => {
     const [text, setText] = useState('');
     const [locationKey, setLocationKey] = useState();
 
-    const apiKey = process.env.REACT_APP_WEATHERFORFIVEDAYS;
-    console.log('5 days' , apiKey);
+    const api = process.env.REACT_APP_WEATHER_API_KEY;
+   
 
     const padNUm = (num) => {
         const stringNUm = num + '';
@@ -34,7 +34,7 @@ const FiveDaysWeatherForecast = () => {
             'Saturday',
         ]
         if (locationKey) {
-            fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${apiKey}&details=true&metric=true`)
+            fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${api}&details=true&metric=true`)
                 .then((res) => res.json())
                 .then((result) => {
                    

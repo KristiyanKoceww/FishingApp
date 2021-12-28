@@ -1,7 +1,7 @@
 import { useGoogleMaps } from "react-hook-google-maps";
 
 const Map = (props) => {
-  const api = process.env.REACT_APP_GOOGLEMAPS;
+  const api = process.env.REACT_APP_GOOGLEMAPS_API_KEY;
     const { ref, map, google } = useGoogleMaps(api,
       {
         center: { lat: props.props.Latitude, lng: props.props.Longitude },
