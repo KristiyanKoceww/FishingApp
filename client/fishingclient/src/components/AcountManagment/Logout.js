@@ -5,6 +5,7 @@ import { UserContext } from './UserContext';
 
 const Logout = (e) => {
   localStorage.removeItem("jwt");
+  localStorage.removeItem("refresh");
   localStorage.removeItem("userId");
   const {appUser,setAppUser} = useContext(UserContext);
   setAppUser(null);

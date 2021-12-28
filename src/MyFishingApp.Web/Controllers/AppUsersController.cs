@@ -99,9 +99,11 @@ namespace MyFishingApp.Web.Controllers
 
             return Ok(new LoginResult
             {
+                User= result.User,
+                UserId= result.User.Id,
                 UserName = result.User.Email,
                 AccessToken = result.AccessToken,
-                RefreshToken = result.RefreshToken
+                RefreshToken = result.RefreshToken,
             });
         }
 
