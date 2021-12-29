@@ -35,5 +35,8 @@
 
         [Required]
         public string CityId { get; set; }
+
+        [Required]
+        public virtual City City { get; set; }
     }
 }

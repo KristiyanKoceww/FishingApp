@@ -66,7 +66,7 @@
             {
                 foreach (var fish in createReservoirInputModel.Fish)
                 {
-                    reservoir.Fishs.Add(fish);
+                    reservoir.Fish.Add(fish);
                 }
             }
 
@@ -147,7 +147,7 @@
                     Latitude = x.Latitude,
                     Longitude = x.Longitude,
                     City = x.City,
-                    Fishs = x.Fishs,
+                    Fish = x.Fish,
                     Id = x.Id,
                 }).ToList();
 
@@ -187,7 +187,7 @@
                     Longitude = x.Longitude,
                     Latitude = x.Latitude,
                     City = x.City,
-                    Fishs = x.Fishs,
+                    Fish = x.Fish,
                     Id = x.Id,
                 })
                 .FirstOrDefault();

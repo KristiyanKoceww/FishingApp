@@ -12,7 +12,7 @@
         public Reservoir()
         {
             this.Id = Guid.NewGuid().ToString();
-            this.Fishs = new HashSet<Fish>();
+            this.Fish = new HashSet<Fish>();
             this.ImageUrls = new HashSet<ImageUrls>();
         }
 
@@ -31,9 +31,11 @@
         [Required]
         public double Longitude { get; set; }
 
+        public string CityId { get; set; }
+
         public virtual City City { get; set; }
 
-        public virtual ICollection<Fish> Fishs { get; set; }
+        public virtual ICollection<Fish> Fish { get; set; }
 
         public virtual ICollection<ImageUrls> ImageUrls { get; set; }
     }

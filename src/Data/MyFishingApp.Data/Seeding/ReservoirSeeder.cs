@@ -10,26 +10,26 @@
     using MyFishingApp.Data.Models;
     using Newtonsoft.Json;
 
-    public class CitiesSeeder : ISeeder
+    public class ReservoirSeeder : ISeeder
     {
         public async Task SeedAsync(ApplicationDbContext dbContext, IServiceProvider serviceProvider)
         {
-            if (dbContext.Cities.Any())
+            if (dbContext.Reservoirs.Any())
             {
                 return;
             }
 
-            var cities = new List<City>();
+            var reservoirs = new List<Reservoir>();
 
-            using (StreamReader r = File.OpenText(@"C:\Cities.json"))
+            using (StreamReader r = File.OpenText(@"C:\Users\Skyshop\source\repos\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Reservoirs.json"))
             {
                 string json = r.ReadToEnd();
-                cities = JsonConvert.DeserializeObject<List<City>>(json);
+                reservoirs = JsonConvert.DeserializeObject<List<Reservoir>>(json);
             }
 
-            for (int i = 0; i < cities.Count; i++)
+            for (int i = 0; i < reservoirs.Count; i++)
             {
-                dbContext.Cities.Add(cities[i]);
+                dbContext.Reservoirs.Add(reservoirs[i]);
             }
 
             await dbContext.SaveChangesAsync();

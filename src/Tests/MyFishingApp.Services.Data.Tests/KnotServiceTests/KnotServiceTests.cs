@@ -12,6 +12,7 @@
     using MyFishingApp.Data.Repositories;
     using MyFishingApp.Services.Data.InputModels;
     using MyFishingApp.Services.Data.Knots;
+    using MyFishingApp.Services.Data.InputModels.KnotInputModels;
     using Xunit;
 
     public class KnotServiceTests
@@ -216,12 +217,12 @@
 
             var knotService = new KnotService(repository);
 
-            var model = new KnotInputModel
+            var model = new UpdateKnotInputModel
             {
                 Name = "Simple Knot",
             };
 
-            await knotService.UpdateKnotAsync(model, "1");
+            await knotService.UpdateKnotAsync(model);
 
             var res = repository.All().FirstOrDefault();
 
@@ -247,12 +248,12 @@
 
             var knotService = new KnotService(repository);
 
-            var model = new KnotInputModel
+            var model = new UpdateKnotInputModel
             {
                 Name = "Simple Knot",
             };
 
-            await Assert.ThrowsAsync<Exception>(() => knotService.UpdateKnotAsync(model, "2"));
+            await Assert.ThrowsAsync<Exception>(() => knotService.UpdateKnotAsync(model));
         }
 
         [Fact]

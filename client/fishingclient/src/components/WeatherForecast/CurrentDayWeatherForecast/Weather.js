@@ -6,7 +6,7 @@ const Weather = () => {
     base: "https://api.openweathermap.org/data/2.5/",
     wholeLink: "https://api.openweathermap.org/data/2.5/forecast?q={city name}&units=metric&appid={API key}"
   };
-  const apiKey = process.env.REACT_APP_CURRENTWEATHER_API_KEY;
+  const apiKey = process.env.REACT_APP_WEATHER;
   const [query, setQuery] = useState("");
   const [weather, setWeather] = useState({});
 

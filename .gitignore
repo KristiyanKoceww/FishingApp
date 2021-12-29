@@ -4,3 +4,5 @@
 
 /src/MyFishingApp.Web/appsettings.Production.json
 /src/MyFishingApp.Web/appsettings.Development.json
+/client/fishingclient/.env.development
+/client/fishingclient/.env.production

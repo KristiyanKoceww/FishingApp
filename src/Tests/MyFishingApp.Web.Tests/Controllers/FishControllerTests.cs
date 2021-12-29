@@ -74,7 +74,7 @@
           => MyController<FishController>
           .Instance()
           .WithData(new Fish() { Id = "2151", Name = "White fish" })
-          .Calling(c => c.UpdateFish(new FishInputModel() { Name = "Grey fish" }, "2151"))
+          .Calling(c => c.UpdateFish(new UpdateFishInputModel() { Name = "Grey fish" }))
           .ShouldReturn()
           .Ok();
 
@@ -83,7 +83,7 @@
            => MyController<FishController>
            .Instance()
            .WithData(new Fish() { Id = "2151", Name = "White fish" })
-          .Calling(c => c.UpdateFish(new FishInputModel() { Name = "Grey fish" }, "2151341tatdgaga1"))
+          .Calling(c => c.UpdateFish(new UpdateFishInputModel() { Name = "Grey fish" }))
            .ShouldThrow()
             .Exception();
 

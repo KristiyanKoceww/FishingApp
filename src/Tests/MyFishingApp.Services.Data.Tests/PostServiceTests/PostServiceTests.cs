@@ -155,7 +155,7 @@
                 Title = "new test",
             };
 
-            await postService.UpdateAsync(1, model);
+            await postService.UpdateAsync(model);
             var post = postsRepository.All().Where(x => x.Id == 1).FirstOrDefault();
 
             Assert.NotNull(post);
@@ -180,7 +180,7 @@
                 Content = "test",
                 Title = "new test",
             };
-            await Assert.ThrowsAsync<Exception>(() => postService.UpdateAsync(1, model));
+            await Assert.ThrowsAsync<Exception>(() => postService.UpdateAsync(model));
         }
 
         public class MyTestPost : IMapFrom<Post>

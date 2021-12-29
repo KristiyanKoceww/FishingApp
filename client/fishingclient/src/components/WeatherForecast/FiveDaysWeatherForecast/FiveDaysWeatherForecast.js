@@ -8,8 +8,7 @@ const FiveDaysWeatherForecast = () => {
     const [text, setText] = useState('');
     const [locationKey, setLocationKey] = useState();
 
-    const api = process.env.REACT_APP_WEATHER_API_KEY;
-   
+    const api = process.env.REACT_APP_WEATHERFORFIVEDAYS;
 
     const padNUm = (num) => {
         const stringNUm = num + '';

@@ -2,6 +2,7 @@
 {
     using MyFishingApp.Data.Models;
     using MyFishingApp.Services.Data.InputModels;
+    using MyFishingApp.Services.Data.InputModels.KnotInputModels;
     using MyFishingApp.Web.Controllers;
     using MyTested.AspNetCore.Mvc;
     using Xunit;
@@ -74,7 +75,7 @@
           => MyController<KnotsController>
           .Instance()
           .WithData(new Knot() { Id = "2151", Name = "Knot" })
-          .Calling(c => c.UpdateKnot(new KnotInputModel() { Name = "new Knot" }, "2151"))
+          .Calling(c => c.UpdateKnot(new UpdateKnotInputModel() { Name = "new Knot" }))
           .ShouldReturn()
           .Ok();
 
@@ -83,7 +84,7 @@
            => MyController<KnotsController>
            .Instance()
            .WithData(new Knot() { Id = "2151", Name = "White fish" })
-          .Calling(c => c.UpdateKnot(new KnotInputModel() { Name = "New Knot" }, "2151341tatdgaga1"))
+          .Calling(c => c.UpdateKnot(new UpdateKnotInputModel() { Name = "New Knot" }))
            .ShouldThrow()
             .Exception();
 

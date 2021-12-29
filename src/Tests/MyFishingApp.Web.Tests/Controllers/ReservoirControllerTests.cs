@@ -74,7 +74,7 @@
           => MyController<ReservoirController>
           .Instance()
            .WithData(new Reservoir() { Id = "2151", Name = "Iskar" })
-          .Calling(c => c.UpdateReservoir("2151", new UpdateReservoirInputModel() { Name = "new Iskar", Description = "gaga", Latitude = 124, Longitude = 122, Type = "big" }))
+          .Calling(c => c.UpdateReservoir(new UpdateReservoirInputModel() { Name = "new Iskar", Description = "gaga", Latitude = "124", Longitude = "122", Type = "big" }))
           .ShouldReturn()
           .Ok();
 
@@ -83,7 +83,7 @@
            => MyController<ReservoirController>
            .Instance()
            .WithData(new Reservoir() { Id = "2151", Name = "Iskar" })
-          .Calling(c => c.UpdateReservoir("2151gasdgas1", new UpdateReservoirInputModel() { Name = "new Iskar" }))
+          .Calling(c => c.UpdateReservoir(new UpdateReservoirInputModel() { Name = "new Iskar" }))
            .ShouldThrow()
             .Exception();
 

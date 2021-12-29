@@ -20,9 +20,10 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             var country = new Country()
             {
@@ -43,14 +44,14 @@
                 Name = "Iskar",
                 City = city,
                 Description = "Very big",
-                Latitude = 222,
-                Longitude = 222,
+                Latitude = "222",
+                Longitude = "222",
                 Type = "Large",
             };
 
             await reservoirService.CreateReservoir(model);
 
-            var result = repository.All().FirstOrDefaultAsync();
+            var result = reservoirRepository.All().FirstOrDefaultAsync();
 
             Assert.Equal("Iskar", result.Result.Name);
         }
@@ -61,9 +62,10 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             var model = new CreateReservoirInputModel
             {
@@ -85,12 +87,14 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
 
-            repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
-            repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
-            await repository.SaveChangesAsync();
-            var reservoirService = new ReservoirService(repository);
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
+
+            reservoirRepository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
+            reservoirRepository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
+            await reservoirRepository.SaveChangesAsync();
 
             var res = reservoirService.GetById("1");
             var res2 = reservoirService.GetById("2");
@@ -105,8 +109,10 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             Assert.Throws<Exception>(() => reservoirService.GetById("1"));
         }
@@ -123,9 +129,12 @@
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
 
-            var res = reservoirService.GetAllReservoirs(1, 12);
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
+
+            var res = reservoirService.GetAllReservoirs();
 
             Assert.Equal(2, res.Count());
         }
@@ -137,9 +146,12 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
 
-            Assert.Throws<Exception>(() => reservoirService.GetAllReservoirs(1, 2));
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
+
+            Assert.Throws<Exception>(() => reservoirService.GetAllReservoirs());
         }
 
         [Fact]
@@ -154,11 +166,14 @@
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             await reservoirService.DeleteReservoir("1");
 
-            Assert.Equal(1, repository.All().Count());
+            Assert.Equal(1, reservoirRepository.All().Count());
         }
 
         [Fact]
@@ -173,7 +188,10 @@
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             await Assert.ThrowsAsync<Exception>(() => reservoirService.DeleteReservoir("3"));
         }
@@ -188,14 +206,17 @@
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             var model = new UpdateReservoirInputModel
             {
                 Name = "Dunav",
             };
 
-            await reservoirService.UpdateReservoir(model, "1");
+            await reservoirService.UpdateReservoir(model);
             var res = repository.All().FirstOrDefault();
 
             Assert.Equal("Dunav", res.Name);
@@ -212,14 +233,17 @@
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
 
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             var model = new UpdateReservoirInputModel
             {
                 Name = "Dunav",
             };
 
-            await Assert.ThrowsAsync<Exception>(() => reservoirService.UpdateReservoir(model, "3"));
+            await Assert.ThrowsAsync<Exception>(() => reservoirService.UpdateReservoir(model));
         }
 
         [Fact]
@@ -233,7 +257,10 @@
             repository.AddAsync(new Reservoir { Id = "1", Name = "Iskar" }).GetAwaiter().GetResult();
             repository.AddAsync(new Reservoir { Id = "2", Name = "Dunav" }).GetAwaiter().GetResult();
             await repository.SaveChangesAsync();
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             var res = reservoirService.GetByName("Iskar");
             var res2 = reservoirService.GetByName("Dunav");
@@ -249,7 +276,10 @@
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var repository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
-            var reservoirService = new ReservoirService(repository);
+            var reservoirRepository = new EfDeletableEntityRepository<Reservoir>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+
+            var reservoirService = new ReservoirService(reservoirRepository, cityRepository);
 
             Assert.Throws<Exception>(() => reservoirService.GetByName("myReservoir"));
         }

@@ -57,7 +57,7 @@
           => MyController<PostsController>
           .Instance()
           .WithData(new Post() { Id = 1, Content = "my content", Title = "my title" })
-          .Calling(c => c.UpdatePost(1, new UpdatePostInputModel() { Content = "my content222", Title = "my title222" }))
+          .Calling(c => c.UpdatePost(new UpdatePostInputModel() { Content = "my content222", Title = "my title222" }))
           .ShouldReturn()
           .Ok();
 
@@ -66,7 +66,7 @@
            => MyController<PostsController>
            .Instance()
             .WithData(new Post() { Id = 1, Content = "my content", Title = "my title" })
-          .Calling(c => c.UpdatePost(00, new UpdatePostInputModel() { Content = "my content222", Title = "my title222" }))
+          .Calling(c => c.UpdatePost(new UpdatePostInputModel() { Content = "my content222", Title = "my title222" }))
            .ShouldThrow()
             .Exception();
 

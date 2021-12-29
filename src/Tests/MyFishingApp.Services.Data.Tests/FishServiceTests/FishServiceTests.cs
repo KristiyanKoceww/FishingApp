@@ -286,7 +286,7 @@
 
             await repository.SaveChangesAsync();
 
-            var model = new FishInputModel
+            var model = new UpdateFishInputModel
             {
                 Name = "Ton",
                 Habittat = "Natural",
@@ -297,7 +297,7 @@
                 Tips = "Very hard to catch",
             };
 
-            await fishService.UpdateFish(model, "1");
+            await fishService.UpdateFish(model);
 
             var fish = repository.All().FirstOrDefault();
 
@@ -329,7 +329,7 @@
 
             await repository.SaveChangesAsync();
 
-            var model = new FishInputModel
+            var model = new UpdateFishInputModel
             {
                 Name = "Ton",
                 Habittat = "Natural",
@@ -340,7 +340,7 @@
                 Tips = "Very hard to catch",
             };
 
-            await Assert.ThrowsAsync<Exception>(() => fishService.UpdateFish(model, "2"));
+            await Assert.ThrowsAsync<Exception>(() => fishService.UpdateFish(model));
         }
 
         [Fact]

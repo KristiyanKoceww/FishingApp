@@ -19,8 +19,9 @@
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
-            var repository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
-            var service = new VotesService(repository);
+            var voteRepository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
+            var postRepository = new EfRepository<Post>(new ApplicationDbContext(options.Options));
+            var service = new VotesService(voteRepository, postRepository);
 
             var input = new VoteInputModel()
             {
@@ -55,8 +56,9 @@
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
-            var repository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
-            var service = new VotesService(repository);
+            var voteRepository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
+            var postRepository = new EfRepository<Post>(new ApplicationDbContext(options.Options));
+            var service = new VotesService(voteRepository, postRepository);
 
             var input = new VoteInputModel()
             {
@@ -91,8 +93,9 @@
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
-            var repository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
-            var service = new VotesService(repository);
+            var voteRepository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
+            var postRepository = new EfRepository<Post>(new ApplicationDbContext(options.Options));
+            var service = new VotesService(voteRepository, postRepository);
 
             var input = new VoteInputModel()
             {
@@ -121,8 +124,9 @@
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
-            var repository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
-            var service = new VotesService(repository);
+            var voteRepository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
+            var postRepository = new EfRepository<Post>(new ApplicationDbContext(options.Options));
+            var service = new VotesService(voteRepository, postRepository);
 
             var input = new VoteInputModel()
             {
@@ -132,7 +136,7 @@
             };
 
             await service.VoteAsync(input);
-            var votes = repository.All().Count();
+            var votes = voteRepository.All().Count();
             Assert.Equal(1, votes);
         }
     }

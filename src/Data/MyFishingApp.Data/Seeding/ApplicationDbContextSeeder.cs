@@ -30,6 +30,7 @@
                               new CitiesSeeder(),
                               new CountriesSeeder(),
                               new KnotsSeeder(),
+                              new ReservoirSeeder(),
                           };
 
             foreach (var seeder in seeders)
