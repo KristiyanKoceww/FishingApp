@@ -21,7 +21,7 @@
 
             var reservoirs = new List<Reservoir>();
 
-            using (StreamReader r = File.OpenText(@"C:\Users\Skyshop\source\repos\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Reservoirs.json"))
+            using (StreamReader r = File.OpenText(@"C:\Users\User\Desktop\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Reservoirs.json"))
             {
                 string json = r.ReadToEnd();
                 reservoirs = JsonConvert.DeserializeObject<List<Reservoir>>(json);

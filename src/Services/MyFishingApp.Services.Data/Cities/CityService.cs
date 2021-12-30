@@ -88,7 +88,13 @@
             {
                 Id = x.Id,
                 Name = x.Name,
+                CountryName = x.CountryName,
                 CountryId = x.CountryId,
+                CreatedOn = x.CreatedOn,
+                Description = x.Description,
+                IsDeleted = x.IsDeleted,
+                DeletedOn = x.DeletedOn,
+                ModifiedOn = x.ModifiedOn,
             }).ToList();
 
             if (cities.Count > 0)

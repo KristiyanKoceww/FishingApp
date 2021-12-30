@@ -6,7 +6,7 @@ import TextField from '@mui/material/TextField';
 const LocationSearch = ({ onCityFound }) => {
     const [cityName, setCityName] = useState('');
 
-    const api = process.env.REACT_APP_WEATHER_API_KEY;
+    const api = process.env.REACT_APP_WEATHERFORFIVEDAYS;
 
     const getLocation = (name) => {
         const url = `http://dataservice.accuweather.com/locations/v1/cities/search?apikey=${api}&q=${name}`

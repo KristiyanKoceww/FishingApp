@@ -45,6 +45,7 @@ import Error from './Error'
 import IdleMonitor from './components/AcountManagment/SessionManagment/ExtendSession'
 
 import { UserContext } from './components/AcountManagment/UserContext';
+import AppAdmin from './components/AdminDashboard/AppAdmin';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -130,9 +131,6 @@ function App() {
     setpage(page + 1);
   };
 
-
-
-  
   return (
     <UserContext.Provider value={value}>
       <div >
@@ -160,7 +158,7 @@ function App() {
               <Route path='/Logout' component={Logout} />
 
               <ProtectedRoute path='/Weather' component={Weather} auth={isAuthenticated} />
-              <Route path='/FiveDaysWeatherForecast' component={FiveDaysWeatherForecast} />
+              <ProtectedRoute path='/FiveDaysWeatherForecast' component={FiveDaysWeatherForecast} auth={isAuthenticated} />
 
               <ProtectedRoute path='/AllFish' component={DisplayAllFish} auth={isAuthenticated} />
               <ProtectedRoute path='/FishInfo' component={FishInfo} auth={isAuthenticated} />
@@ -175,8 +173,10 @@ function App() {
               <Route path='/Privacy' component={Privacy} />
               <Route path='/Error' component={Error} />
 
+              <Route path='/AppAdmin' component={AppAdmin} />
+
             </Switch>
-            <IdleMonitor/>
+            {isAuthenticated ? <IdleMonitor/> : null}
           </main>
           <Footer />
         </Router>

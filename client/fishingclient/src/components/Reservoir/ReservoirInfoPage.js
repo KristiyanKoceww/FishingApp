@@ -68,9 +68,9 @@ const ReservoirInfoPage = (props) => {
             <div className="city">
               City:
               <div className="city2">
-                {reservoir.Name} is located in{" "}
+                {reservoir.Name} се намира в{" "}
                 {reservoir.City.Name ? reservoir.City.Name : "No name"},
-                {reservoir.City.CountryName}.{reservoir.City.Name} is{" "}
+                {reservoir.City.CountryName}.
                 {reservoir.City.Description}
               </div>
             </div>

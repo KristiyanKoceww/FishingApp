@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data.Cities;
 using MyFishingApp.Services.Data.InputModels;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyFishingApp.Web.Controllers
@@ -44,13 +47,17 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpGet("getCities")]
-        public string GetAllCities()
+        public City[] GetAllCities()
         {
             var cities = this.cityService.GetAllCities();
+            var count = cities.ToList().Count;
+
+            Response.Headers.Add("Access-Control-Expose-Headers", "X-Total-Count");
+            Response.Headers.Add("X-Total-Count", count.ToString());
 
             var json = JsonConvert.SerializeObject(cities);
 
-            return json;
+            return cities.ToArray();
         }
 
         [HttpGet("getCityById/id")]

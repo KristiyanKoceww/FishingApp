@@ -10,8 +10,8 @@ using MyFishingApp.Data;
 namespace MyFishingApp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211228172402_AddOneMoreProperty")]
-    partial class AddOneMoreProperty
+    [Migration("20211230120444_RemoveCityFromReservoir")]
+    partial class RemoveCityFromReservoir
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -581,9 +581,6 @@ namespace MyFishingApp.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("CityId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -615,8 +612,6 @@ namespace MyFishingApp.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CityId");
 
                     b.HasIndex("IsDeleted");
 
@@ -773,15 +768,6 @@ namespace MyFishingApp.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MyFishingApp.Data.Models.Reservoir", b =>
-                {
-                    b.HasOne("MyFishingApp.Data.Models.City", "City")
-                        .WithMany()
-                        .HasForeignKey("CityId");
-
-                    b.Navigation("City");
                 });
 
             modelBuilder.Entity("MyFishingApp.Data.Models.Vote", b =>

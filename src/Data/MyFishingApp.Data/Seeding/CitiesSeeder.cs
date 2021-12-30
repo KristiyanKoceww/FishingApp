@@ -21,7 +21,7 @@
 
             var cities = new List<City>();
 
-            using (StreamReader r = File.OpenText(@"C:\Cities.json"))
+            using (StreamReader r = File.OpenText(@"C:\Users\User\Desktop\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Cities.json"))
             {
                 string json = r.ReadToEnd();
                 cities = JsonConvert.DeserializeObject<List<City>>(json);

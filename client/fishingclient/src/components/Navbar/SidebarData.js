@@ -10,6 +10,11 @@ export const SidebarData = [
     icon: <IoIcons.IoMdPeople />,
   },
   {
+    title: "Admin panel",
+    path: "/AppAdmin",
+    icon: <IoIcons.IoMdPeople />,
+  },
+  {
     title: "Knots",
     path: "/",
     icon: <IoIcons.IoMdPeople />,
@@ -154,7 +159,23 @@ export const SidebarData = [
   },
   {
     title: "Weather",
-    path: "/Weather",
+    path: "/",
     icon: <IoIcons.IoMdHelpCircle />,
+
+    iconClosed: <RiIcons.RiArrowDownSFill />,
+    iconOpened: <RiIcons.RiArrowUpSFill />,
+
+    subNav: [
+      {
+        title: "Current Weather Forecast",
+        path: "/Weather",
+        icon: <IoIcons.IoIosPaper />,
+      },
+      {
+        title: "5-days Weather Forecast",
+        path: "/FiveDaysWeatherForecast",
+        icon: <IoIcons.IoIosPaper />,
+      },
+    ],
   },
 ];

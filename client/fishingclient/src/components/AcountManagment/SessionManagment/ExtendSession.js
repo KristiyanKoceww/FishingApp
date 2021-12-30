@@ -28,7 +28,7 @@ const IdleMonitor = () => {
         if (!!idleLogoutEvent) clearTimeout(idleLogoutEvent);
 
         idleEvent = setTimeout(() => setIdleModal(true), idleTimeout); //show session warning modal.
-        idleLogoutEvent = setTimeout(() => logOut, idleLogout); //Call logged out on session expire.
+        idleLogoutEvent = setTimeout(() => logOut(), idleLogout); //Call logged out on session expire.
     };
 
     const extendSession = () => {
@@ -45,7 +45,7 @@ const IdleMonitor = () => {
         })
             .then((response) => response.json())
             .then((res) => {
-                if (res.AccessToken && res.refreshToken) {
+                if (res.AccessToken && res.RefreshToken) {
                     localStorage.setItem("jwt", res.AccessToken);
                     localStorage.setItem("refresh", res.RefreshToken);
                     setIdleModal(false);
@@ -55,7 +55,7 @@ const IdleMonitor = () => {
                 console.log(error);
                 // setIdleModal(false);
                 // history.push("/Login")
-              });
+            });
     }
 
     const logOut = () => {
@@ -83,7 +83,7 @@ const IdleMonitor = () => {
     return (
 
         <Modal isOpen={idleModal} toggle={() => setIdleModal(false)}>
-            <ModalHeader toggle={() => setIdleModal(false)}>
+            <ModalHeader>
                 Session expire warning
             </ModalHeader>
             <ModalBody>
