@@ -5,7 +5,7 @@ import { useParams, Link } from "react-router-dom";
 const KnotInfoPage = (props) => {
   const [knot, setKnot] = useState();
   const [isLoading, setisLoading] = useState(true);
-  const url = "https://localhost:44366/api/Knot/getByName?knotName=";
+  const url = "https://localhost:44366/api/Knots/getKnotByName?knotName=";
   const { id } = useParams();
 
   useEffect(() => {
@@ -20,7 +20,10 @@ const KnotInfoPage = (props) => {
         },
       })
         .then((res) => res.json())
-        .then((result) => setKnot(result))
+        .then((result) =>{
+          setKnot(result);
+          console.log(result);
+        } )
         .catch((err) => {
           console.log(err);
         });
@@ -47,6 +50,9 @@ const KnotInfoPage = (props) => {
               <div className="Description2">{knot.Description}</div>
               <hr />
             </div>
+            <div>Type: {knot.Type}</div>
+            <div>Video: </div>
+            <div><iframe width="1024" height="500" src="https://www.youtube.com/embed/watch?v=8BYhymQptAo&list=RD8BYhymQptAo&start_radio=1?" > </iframe></div>
             <hr />
           </div>
           <hr />

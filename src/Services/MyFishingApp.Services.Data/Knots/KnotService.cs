@@ -147,7 +147,18 @@
 
         public Knot GetByName(string knotName)
         {
-            var knot = this.knotRepository.All().Where(x => x.Name == knotName).FirstOrDefault();
+            var knot = this.knotRepository.All().Where(x => x.Name == knotName)
+                .Select(x => new Knot
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    Type = x.Type,
+                    VideoUrl = x.VideoUrl,
+                    ImageUrls = x.ImageUrls,
+                    CreatedOn = x.CreatedOn,
+                })
+                .FirstOrDefault();
             if (knot is not null)
             {
                 return knot;

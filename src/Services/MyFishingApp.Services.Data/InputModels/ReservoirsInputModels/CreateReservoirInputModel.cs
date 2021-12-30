@@ -36,7 +36,7 @@
         [Required]
         public string CityId { get; set; }
 
-        [Required]
+        //[Required]
         public virtual City City { get; set; }
     }
 }

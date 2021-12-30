@@ -35,25 +35,25 @@
 .login {
   background-color: rgb(245, 245, 245) !important;
   color: black !important;
-  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+  /* box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.952), 0 6px 20px 0 rgba(255, 255, 255, 0.973); */
 }
 
 .register {
   background-color: rgb(245, 245, 245) !important;
   color: black !important;
-  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+  /* box-shadow: 0 8px 16px 0 rgba(253, 253, 253, 0.952), 0 6px 20px 0 rgba(255, 255, 255, 0.973); */
 }
 
 .home {
   background-color: rgb(245, 245, 245) !important;
   color: black !important;
-  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+  /* box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.952), 0 6px 20px 0 rgba(255, 255, 255, 0.973); */
 }
 
 .logout {
   background-color: rgb(245, 245, 245) !important;
   color: black !important;
-  box-shadow: 0 8px 16px 0 rgba(219, 3, 3, 0.952), 0 6px 20px 0 rgba(233, 7, 7, 0.973);
+  /* box-shadow: 0 8px 16px 0 rgba(255, 255, 255, 0.952), 0 6px 20px 0 rgba(247, 247, 247, 0.973); */
 }
 
 .login_center {
@@ -67,7 +67,7 @@
 }
 
 .hello__msg {
-  color: greenyellow;
+  color: 	rgb(245, 245, 245);
   font-weight: 600;
   font-size: 37px;
   right: 250px;

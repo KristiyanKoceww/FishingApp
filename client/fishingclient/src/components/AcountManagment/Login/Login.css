@@ -12,12 +12,12 @@
 }
 
 .LoginButton {
-  color: black !important;
+  color: whitesmoke !important;
   font-weight: 600 !important;
   font-family: 'Times New Roman', Times, serif !important;
   margin: auto;
   width: 100%;
-  background-color: rgb(85, 243, 23) !important;
+  background-color: #087AEA !important;
 }
 
 .LoginButtonDiv {

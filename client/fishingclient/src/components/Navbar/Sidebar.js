@@ -12,7 +12,7 @@ import Button from "react-bootstrap/Button";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Nav = styled.div`
-  background: #15171c;
+  background: #087AEA;
   height: 80px;
   display: flex;
   justify-content: flex-start;
@@ -29,7 +29,7 @@ const NavIcon = styled(Link)`
 `;
 
 const SidebarNav = styled.nav`
-  background: #15171c;
+  background: #087AEA;
   width: 250px;
   height: 100vh;
   display: flex;

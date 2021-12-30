@@ -7,10 +7,11 @@
 .toggleDiv > .toggleFormButton{
     margin: 0;
     position: absolute;
-    top:15%;
+    top:20%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+    background-color: #087AEA;
 }
 
 /* .container {
@@ -31,3 +32,4 @@
   font-size: 25px;
   color: black;
 }
+
