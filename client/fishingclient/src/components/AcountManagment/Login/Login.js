@@ -36,15 +36,15 @@ const Login = () => {
     })
       .then((response) => response.json())
       .then((res) => {
-        if (res.AccessToken) {
-          localStorage.setItem("jwt", res.AccessToken);
-          localStorage.setItem("refresh",res.RefreshToken);
+        if (res.accessToken) {
+          localStorage.setItem("jwt", res.accessToken);
+          localStorage.setItem("refresh",res.refreshToken);
           setRedirect(true);
         }
 
         // remove this
-        localStorage.setItem("userId", res.UserId);
-        setAppUser(res.User);
+        localStorage.setItem("userId", res.userId);
+        setAppUser(res.user);
       });
   };
 

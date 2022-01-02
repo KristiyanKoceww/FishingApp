@@ -1,16 +1,18 @@
 import React from "react";
-import { List, Datagrid, TextField} from 'react-admin'
+import { List, Datagrid, TextField, EditButton, DeleteButton} from 'react-admin'
 
 const CitiesList = (props) => {
-
+console.log(props);
     return(
         <List {...props}>
             <Datagrid>
-                <TextField source="Id"></TextField>
-                <TextField source="Name"></TextField>
-                <TextField source="Description"></TextField>
-                <TextField source="CountryName"></TextField>
-                <TextField source="CountryId"></TextField>
+                <TextField source="id"></TextField>
+                 <TextField source="name"></TextField>
+                <TextField source="description"></TextField>
+                <TextField source="countryName"></TextField>
+                <TextField source="countryId"></TextField>
+                <EditButton  basePath="/Cities/update?cityId="/>
+                <DeleteButton basePath="Cities/delete?cityId="/>
             </Datagrid>
         </List>
     )

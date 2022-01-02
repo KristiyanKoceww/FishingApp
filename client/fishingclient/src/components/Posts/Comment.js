@@ -42,13 +42,13 @@ const Comment = (comment) => {
     return (
         <div>
             <div className="post__bubble">
-                <strong className="post__user">{comment.User.FirstName}:</strong> <div className="post__content">{comment.Content}</div>
+                <strong className="post__user">{comment.user.firstName}:</strong> <div className="post__content">{comment.content}</div>
             </div>
             {Object.keys(appUser ? appUser : {}).length !== 0 ?
                 <div className="post__buttons">
-                    <button type="submit" onClick={(e) => reply(e, comment.Id)} className="button" >Reply</button>
-                    <button type="submit" onClick={(e) => edit(e, comment.Id)} className="button2">Edit</button>
-                    <button type="submit" onClick={(e) => deleteComment(e, comment.Id)} className="button3">Delete</button>
+                    <button type="submit" onClick={(e) => reply(e, comment.id)} className="button" >Reply</button>
+                    <button type="submit" onClick={(e) => edit(e, comment.id)} className="button2">Edit</button>
+                    <button type="submit" onClick={(e) => deleteComment(e, comment.id)} className="button3">Delete</button>
                 </div> : <br />}
         </div>
     )

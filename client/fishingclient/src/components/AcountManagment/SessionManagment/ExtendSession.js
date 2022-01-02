@@ -45,9 +45,9 @@ const IdleMonitor = () => {
         })
             .then((response) => response.json())
             .then((res) => {
-                if (res.AccessToken && res.RefreshToken) {
-                    localStorage.setItem("jwt", res.AccessToken);
-                    localStorage.setItem("refresh", res.RefreshToken);
+                if (res.accessToken && res.refreshToken) {
+                    localStorage.setItem("jwt", res.accessToken);
+                    localStorage.setItem("refresh", res.refreshToken);
                     setIdleModal(false);
                 }
             })

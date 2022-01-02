@@ -4,6 +4,7 @@ using MyFishingApp.Data.Models;
 using MyFishingApp.Services.Data.Cities;
 using MyFishingApp.Services.Data.InputModels;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
-        [HttpPost("delete")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> DeleteCity(string cityId)
         {
             await this.cityService.DeleteAsync(cityId);
@@ -38,7 +39,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
-        [HttpPost("update")]
+        [HttpPost("edit")]
         public async Task<IActionResult> UpdateCity(string cityId, CitiesInputModel citiesInputModel)
         {
             await this.cityService.UpdateAsync(cityId, citiesInputModel);
@@ -46,14 +47,13 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
-        [HttpGet("getCities")]
-        public City[] GetAllCities()
+        [HttpGet("cities")]
+        public City[] GetAllCities(string filter, string range,string sort)
         {
             var cities = this.cityService.GetAllCities();
-            var count = cities.ToList().Count;
-
-            Response.Headers.Add("Access-Control-Expose-Headers", "X-Total-Count");
-            Response.Headers.Add("X-Total-Count", count.ToString());
+            var count = cities.Count();
+            Response.Headers.Add("Access-Control-Expose-Headers", "Content-Range");
+            Response.Headers.Add("Content-Range", count.ToString());
 
             var json = JsonConvert.SerializeObject(cities);
 

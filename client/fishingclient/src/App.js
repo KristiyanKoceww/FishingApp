@@ -45,7 +45,7 @@ import Error from './Error'
 import IdleMonitor from './components/AcountManagment/SessionManagment/ExtendSession'
 
 import { UserContext } from './components/AcountManagment/UserContext';
-import AppAdmin from './components/AdminDashboard/AppAdmin';
+import AppAdmin from './components/AdminDashboard/AppAdmin/AppAdmin';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -147,7 +147,7 @@ function App() {
 
               <ProtectedRoute path="/CreateCountry" component={CreateCountry} auth={isAuthenticated} />
 
-              <Route path='/CreatePost' render={() => <CreatePost onChange={updatePosts} />} />
+              <ProtectedRoute path='/CreatePost' render={() => <CreatePost onChange={updatePosts} auth={isAuthenticated} />} />
 
               <ProtectedRoute path='/CreateReservoir' component={CreateReservoir} auth={isAuthenticated} />
               <ProtectedRoute path='/AllReservoirs' component={AllReservoirs} auth={isAuthenticated} />

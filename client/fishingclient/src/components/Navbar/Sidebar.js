@@ -96,7 +96,7 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <h1 className="hello__msg"><AccountCircleIcon /> Hello, {appUser.FirstName}</h1>
+            <h1 className="hello__msg"><AccountCircleIcon /> Hello, {appUser.firstName}</h1>
             <div className="logout_center">
               <Link to="/">
                 <Button className="home" type="button">Home</Button>

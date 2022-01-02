@@ -43,14 +43,14 @@ const KnotInfoPage = (props) => {
             Back{" "}
           </Link>
           <div className="row m-2">
-            <h1 className="text-center">{knot.Name}</h1>
-            <ImageSlider slides={knot.ImageUrls} />
+            <h1 className="text-center">{knot.name}</h1>
+            <ImageSlider slides={knot.imageUrls} />
             <div className="Description">
               Description:
-              <div className="Description2">{knot.Description}</div>
+              <div className="Description2">{knot.description}</div>
               <hr />
             </div>
-            <div>Type: {knot.Type}</div>
+            <div>Type: {knot.type}</div>
             <div>Video: </div>
             <div><iframe width="1024" height="500" src="https://www.youtube.com/embed/watch?v=8BYhymQptAo&list=RD8BYhymQptAo&start_radio=1?" > </iframe></div>
             <hr />

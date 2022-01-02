@@ -35,6 +35,7 @@ using System.Net;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using MyFishingApp.Services.Data.JwtService;
+using System.Text.Json;
 
 namespace MyFishingApp.Web
 {
@@ -77,7 +78,7 @@ namespace MyFishingApp.Web
             services.AddScoped<JWTAuthService>();
             services.AddScoped<SignInManager>();
 
-            
+
             var jwtTokenConfig = configuration.GetSection("jwt").Get<JwtTokenConfig>();
             services.AddSingleton(jwtTokenConfig);
 
@@ -106,12 +107,12 @@ namespace MyFishingApp.Web
 
                 x.Events = new JwtBearerEvents()
                 {
-                    
+
                     OnTokenValidated = context =>
                     {
                         return Task.CompletedTask;
                     },
-                    
+
                     OnMessageReceived = context =>
                     {
                         if (context.Request.Headers.ContainsKey("authorization"))
@@ -159,10 +160,49 @@ namespace MyFishingApp.Web
 
             services.AddCors();
 
-            services.AddControllersWithViews().AddNewtonsoftJson(options =>
-            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
-                = new DefaultContractResolver());
+            //services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            //options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+            //    .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver
+            //    = new DefaultContractResolver());
+
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+           
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
+
+            //services.AddControllers().AddNewtonsoftJson(opt =>
+            //{
+            //    opt.UseCamelCasing(true);
+            //    opt.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            //    opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            //    opt.SerializerSettings.ContractResolver = new DefaultContractResolver
+            //    {
+            //        NamingStrategy = new CamelCaseNamingStrategy
+            //        {
+            //            OverrideSpecifiedNames = false,
+            //        }
+            //    };
+            //    opt.SerializerSettings.Formatting = Formatting.Indented;
+            //})
+            //    .AddJsonOptions(opt =>
+            //    {
+            //        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            //    });
+
+            //services
+            //.AddControllers()
+            //.AddJsonOptions(opts =>
+            //{
+            //    opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            //});
 
             services.AddControllers();
 

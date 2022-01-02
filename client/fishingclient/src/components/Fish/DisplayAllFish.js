@@ -44,14 +44,14 @@ const DisplayAllFish = () => {
         <tbody>
           {fish.map((d) => (
             <tr key={Math.random()}>
-              <td>{d.Name}</td>
-              <td>{d.Weight}</td>
-              <td>{d.Lengt}</td>
-              <td>{d.Habittat}</td>
-              <td>{d.Tips}</td>
-              <td>{d.Description}</td>
+              <td>{d.name}</td>
+              <td>{d.weight}</td>
+              <td>{d.lengt}</td>
+              <td>{d.habittat}</td>
+              <td>{d.tips}</td>
+              <td>{d.description}</td>
               <td>
-                <img alt="fish" src={d.ImageUrls[0].ImageUrl} width="100px" />
+                <img alt="fish" src={d.imageUrls[0].imageUrl} width="100px" />
               </td>
             </tr>
           ))}

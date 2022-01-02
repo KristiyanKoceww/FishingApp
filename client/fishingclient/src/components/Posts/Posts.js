@@ -6,7 +6,7 @@ import CreatePost from "./CreatePost";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { ScrollToTop } from '../Scroll/ScrollToTop';
 import { UserContext } from '../AcountManagment/UserContext';
-import Spinner from "../Spinners/Spinner";
+import Spinner from "../Helpers/Spinners/Spinner";
 import EndOfPosts from '../Helpers/InfoForEndOfPosts/EndOfPosts'
 
 import "./Posts.css";

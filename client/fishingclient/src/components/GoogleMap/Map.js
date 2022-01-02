@@ -4,7 +4,7 @@ const Map = (props) => {
   const api = process.env.REACT_APP_GOOGLEMAPS;
     const { ref, map, google } = useGoogleMaps(api,
       {
-        center: { lat: props.props.Latitude, lng: props.props.Longitude },
+        center: { lat: props.props.latitude, lng: props.props.longitude },
         zoom: 12,
       },
     );

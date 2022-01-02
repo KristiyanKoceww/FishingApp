@@ -47,36 +47,36 @@ const ReservoirInfoPage = (props) => {
             Back{" "}
           </Link>
           <div className="row m-2">
-            <h1 className="text-center">{reservoir.Name}</h1>
+            <h1 className="text-center">{reservoir.name}</h1>
             <div className="slider">
-              <ImageSlider slides={reservoir.ImageUrls} />
+              <ImageSlider slides={reservoir.imageUrls} />
             </div>
             <div className="Description">
               Description:
-              <div className="Description2">{reservoir.Description}</div>
+              <div className="Description2">{reservoir.description}</div>
               <hr />
               Type:
-              <div className="Description2">{reservoir.Type}</div>
+              <div className="Description2">{reservoir.type}</div>
               <hr />
               Reservoir coordinates:
               <div className="coords">
-                <p>Latitude: {reservoir.Latitude}</p>
-                <p>Longitude: {reservoir.Longitude}</p>
+                <p>Latitude: {reservoir.latitude}</p>
+                <p>Longitude: {reservoir.longitude}</p>
               </div>
             </div>
             <hr />
             <div className="city">
               City:
               <div className="city2">
-                {reservoir.Name} се намира в{" "}
-                {reservoir.City.Name ? reservoir.City.Name : "No name"},
-                {reservoir.City.CountryName}.
-                {reservoir.City.Description}
+                {reservoir.name} се намира в{" "}
+                {reservoir.city.name ? reservoir.city.name : "No name"},
+                {reservoir.city.countryName}.
+                {reservoir.city.description}
               </div>
             </div>
           </div>
           <hr />
-          <h1 className="text-center">{reservoir.Name} location:</h1>
+          <h1 className="text-center">{reservoir.name} location:</h1>
           <div className="d-flex justify-content-center">
             <Map props={reservoir} /> 
           </div>

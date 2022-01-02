@@ -108,19 +108,19 @@ const Post = (post) => {
                 <Avatar
                     className="post__avatar"
                     alt="avatar"
-                    src={post.User.MainImageUrl}
+                    src={post.user.mainImageUrl}
                 />
-                <h3 className="username">{post.User.FirstName}</h3>
+                <h3 className="username">{post.user.firstName}</h3>
 
             </div>
-            <h1 className="title">{post.Title}</h1>
-            <p className="content">{post.Content}</p>
+            <h1 className="title">{post.title}</h1>
+            <p className="content">{post.content}</p>
             <div className="slider">
-                {typeof post.ImageUrls != "undefined" ? <ImageSlider slides={post.ImageUrls} /> : ""}
+                {typeof post.imageUrls != "undefined" ? <ImageSlider slides={post.imageUrls} /> : ""}
             </div>
 
             <div className="likescount">
-                <FavoriteBorderIcon /> {post.Votes.filter(vote => vote.Type === 1).length} likes
+                <FavoriteBorderIcon /> {post.votes.filter(vote => vote.Type === 1).length} likes
             </div>
 
             {Object.keys(appUser ? appUser : {}).length !== 0 ?
@@ -128,12 +128,12 @@ const Post = (post) => {
                     <div className="post__like">
                         <FontAwesomeIcon icon={faThumbsUp} size="2x" />
                         &nbsp;&nbsp;
-                        <button onClick={(e) => Vote(e, post.Id)} value={upVote} className="btn__like">Like</button>
+                        <button onClick={(e) => Vote(e, post.id)} value={upVote} className="btn__like">Like</button>
                     </div>
                     <div className="post__unlike">
                         <FontAwesomeIcon icon={faThumbsDown} size="2x" />
                         &nbsp;&nbsp;
-                        <button onClick={(e) => Vote(e, post.Id)} value={downVote} className="btn__unlike">Dislike</button>
+                        <button onClick={(e) => Vote(e, post.id)} value={downVote} className="btn__unlike">Dislike</button>
                     </div>
                 </div>
                 : null}

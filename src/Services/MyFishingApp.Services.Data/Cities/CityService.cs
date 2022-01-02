@@ -13,10 +13,14 @@
     public class CityService : ICityService
     {
         private readonly IDeletableEntityRepository<City> cityRepository;
+        private readonly IDeletableEntityRepository<Country> countryRepository;
 
-        public CityService(IDeletableEntityRepository<City> cityRepository)
+        public CityService(
+            IDeletableEntityRepository<City> cityRepository,
+            IDeletableEntityRepository<Country> countryRepository)
         {
             this.cityRepository = cityRepository;
+            this.countryRepository = countryRepository;
         }
 
         public async Task CreateAsync(CitiesInputModel citiesInputModel)
@@ -27,13 +31,19 @@
                 throw new Exception("This city already exists");
             }
 
+            var country = this.countryRepository.All().Where(x => x.Id == citiesInputModel.CountryId).FirstOrDefault();
+            if (country is null)
+            {
+                throw new Exception("No country found by this id");
+            }
+
             var city = new City()
             {
                 Name = citiesInputModel.Name,
                 Description = citiesInputModel.Description,
-                Country = citiesInputModel.Country,
-                CountryName = citiesInputModel.Country.Name,
-                CountryId = citiesInputModel.Country.Id,
+                Country = country,
+                CountryName = country.Name,
+                CountryId = country.Id,
             };
 
             await this.cityRepository.AddAsync(city);
@@ -105,6 +115,24 @@
             {
                 throw new Exception("No cities found");
             }
+        }
+
+        public IEnumerable<City> GetCitiesByCount(int count)
+        {
+            var cities = this.cityRepository.AllAsNoTracking().Select(x => new City()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                CountryName = x.CountryName,
+                CountryId = x.CountryId,
+                CreatedOn = x.CreatedOn,
+                Description = x.Description,
+                IsDeleted = x.IsDeleted,
+                DeletedOn = x.DeletedOn,
+                ModifiedOn = x.ModifiedOn,
+            }).Take(count).ToList();
+
+            return cities;
         }
 
         public async Task UpdateAsync(string cityId, CitiesInputModel citiesInputModel)

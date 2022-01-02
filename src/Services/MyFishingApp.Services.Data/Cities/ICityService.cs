@@ -16,6 +16,8 @@
 
         IEnumerable<City> GetAllCities();
 
+        IEnumerable<City> GetCitiesByCount(int count);
+
         City FindCityById(string cityId);
 
         City FindCityByName(string cityName);
