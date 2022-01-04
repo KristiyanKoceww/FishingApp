@@ -4,8 +4,6 @@ import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router
 import { useState, useEffect, useMemo } from 'react';
 
 import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
-
 import Sidebar from './components/Navbar/Sidebar';
 
 import CreateKnot from './components/Knot/CreateKnot'
@@ -38,7 +36,6 @@ import FiveDaysWeatherForecast from './components/WeatherForecast/FiveDaysWeathe
 
 import ProtectedRoute from './components/AcountManagment/ProtectedRoute';
 import Privacy from './components/PrivacyPolicy/Privacy'
-import FacebookLoginUser from './components/Facebooklogin/FacebookLogin'
 
 import Error from './Error'
 
@@ -168,8 +165,6 @@ function App() {
               <Route path='/GetUserById' component={GetUserById} />
               <Route path='/UserDetails' component={UserDetails} />
 
-              <Route path='/FacebookLoginUser' component={FacebookLoginUser} />
-
               <Route path='/Privacy' component={Privacy} />
               <Route path='/Error' component={Error} />
 
@@ -178,7 +173,7 @@ function App() {
             </Switch>
             {isAuthenticated ? <IdleMonitor/> : null}
           </main>
-          <Footer />
+         
         </Router>
       </div>
     </UserContext.Provider >

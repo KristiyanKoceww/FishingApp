@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useMemo } from "react";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { useParams, Link } from "react-router-dom";
-//import './ReservoirInfoPage.css'
+import Footer from '../Footer/Footer'
+
 const KnotInfoPage = (props) => {
   const [knot, setKnot] = useState();
   const [isLoading, setisLoading] = useState(true);
@@ -56,6 +57,7 @@ const KnotInfoPage = (props) => {
             <hr />
           </div>
           <hr />
+          <Footer />
         </div>
       );
     }

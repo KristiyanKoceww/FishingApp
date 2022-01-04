@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
-
+import Footer from '../Footer/Footer'
 import ImageSlider from "../ImageSlider/ImageSlider";
 import Map from "../GoogleMap/Map";
 import "./ReservoirInfoPage.css";
@@ -78,7 +78,10 @@ const ReservoirInfoPage = (props) => {
           <hr />
           <h1 className="text-center">{reservoir.name} location:</h1>
           <div className="d-flex justify-content-center">
-            <Map props={reservoir} /> 
+            <Map props={reservoir} />
+          </div>
+          <div className="footer4">
+            <Footer />
           </div>
         </div>
       );

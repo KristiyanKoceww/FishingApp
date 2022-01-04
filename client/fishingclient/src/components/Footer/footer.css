@@ -1,13 +1,12 @@
 footer {
-  
-  padding: 3px;
   background-color: #087AEA;
   color: white;
-  width: 100%;
-  position: relative;
+  position: fixed;
+  left: 0;
   bottom: 0;
-
-
+  right: 0;
+  width: 100%;
+  
 }
 
 .info {

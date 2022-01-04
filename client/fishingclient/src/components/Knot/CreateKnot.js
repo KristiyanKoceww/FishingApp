@@ -6,6 +6,7 @@ import TitleIcon from "@mui/icons-material/Title";
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import DescriptionIcon from '@mui/icons-material/Description';
+import Footer from '../Footer/Footer'
 import './CreateKnot.css'
 
 const CreateKnot = () => {
@@ -135,6 +136,7 @@ const CreateKnot = () => {
         </label>
         <br />
       </form>
+      <Footer />
     </div>
   );
 };

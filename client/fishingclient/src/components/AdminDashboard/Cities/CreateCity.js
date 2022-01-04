@@ -1,4 +1,4 @@
-import { Create, Edit, SimpleForm, DisabledInput, TextInput, DateInput, LongTextInput, ReferenceManyField, Datagrid, TextField, DateField, EditButton } from 'react-admin';
+import { Create, SimpleForm, TextInput } from 'react-admin';
 
  const CreateCity = (props) => (
     <Create  {...props}>

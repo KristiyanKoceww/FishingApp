@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Reservoir from "./Reservoir";
-
+import Footer from '../Footer/Footer'
+import './AllReservoirs.css'
 const RenderAllReservoirs = () => {
   const [reservoir, setReservoir] = useState([]);
  
@@ -29,6 +30,9 @@ const RenderAllReservoirs = () => {
           {reservoir.map((reservoir, index) => {
             return <Reservoir key={index} index={index} {...reservoir} />;
           })}
+        </div>
+        <div className="footer3">
+          <Footer />
         </div>
       </div>
     );

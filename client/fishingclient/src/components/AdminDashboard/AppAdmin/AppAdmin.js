@@ -23,7 +23,7 @@ const AppAdmin = () => {
 
     return (
         <Admin title='Admin panel' dataProvider={provider}>
-            <Resource name='Cities' list={CitiesList} create={CreateCity} edit={EditCity} /> 
+            <Resource name='Cities/getCities' list={CitiesList} create={CreateCity} edit={EditCity} /> 
         </Admin>
     )
 }

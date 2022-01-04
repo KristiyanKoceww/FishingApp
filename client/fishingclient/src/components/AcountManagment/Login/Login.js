@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 
 import "./Login.css";
+import Footer from '../../Footer/Footer'
 import { UserContext } from "../UserContext";
 
 import Button from "@mui/material/Button";
@@ -104,6 +105,7 @@ const Login = () => {
           </Button>
         </div>
       </form>
+      <Footer />
     </div>
   );
 };

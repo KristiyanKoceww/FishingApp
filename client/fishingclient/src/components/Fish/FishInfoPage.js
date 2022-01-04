@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from "react";
 import ImageSlider from "../ImageSlider/ImageSlider";
 import { useParams, Link } from "react-router-dom";
+import Footer from '../Footer/Footer'
 import "./FishInfoPage.css";
 const FishInfoPage = (props) => {
   const [fish, setFish] = useState();
@@ -76,6 +77,7 @@ const FishInfoPage = (props) => {
               <div className="tips2">{fish.tips}</div>
             </div>
           </div>
+          <Footer />
         </div>
       );
     }

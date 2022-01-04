@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import WeatherDay from './WeatherDay'
 import LocationSearch from './LocationSearch'
 import './FiveDaysWeatherForecast.css'
-
+import Footer from '../../Footer/Footer'
 const FiveDaysWeatherForecast = () => {
     const [weather, setWeather] = useState();
     const [text, setText] = useState('');
@@ -92,6 +92,7 @@ const FiveDaysWeatherForecast = () => {
                     </div>
                 ))}
             </div>
+            <Footer />
         </div>
     )
 }

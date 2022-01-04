@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import "./Register.css";
-
+import Footer from '../../Footer/Footer'
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -286,6 +286,9 @@ const Register = () => {
         </div>
         <br />
       </form>
+      <div className="footer5">
+        <Footer />
+      </div>
     </div>
   );
 };

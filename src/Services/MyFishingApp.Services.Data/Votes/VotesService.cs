@@ -23,8 +23,18 @@
         public int GetVotes(int postId)
         {
             var votes = this.votesRepository.All()
-                .Where(x => x.PostId == postId).Sum(x => (int)x.Type);
-            return votes;
+                .Where(x => x.PostId == postId).Select(x => x.Type).ToList();
+
+            var countOfPositiveVotes = 0;
+            foreach (var vote in votes)
+            {
+                if (vote == VoteType.UpVote)
+                {
+                    countOfPositiveVotes++;
+                }
+            }
+
+            return countOfPositiveVotes;
         }
 
         public async Task VoteAsync(VoteInputModel voteInputModel)

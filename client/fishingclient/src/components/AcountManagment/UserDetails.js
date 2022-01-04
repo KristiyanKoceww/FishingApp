@@ -1,6 +1,6 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom';
-
+import Footer from '../Footer/Footer'
 const UserDetails = (props) => {
 
   const {
@@ -75,6 +75,7 @@ console.log(props);
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

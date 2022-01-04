@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Weather.css";
+import Footer from '../../Footer/Footer'
 const Weather = () => {
   const api = {
     base: "https://api.openweathermap.org/data/2.5/",
@@ -56,7 +57,7 @@ const Weather = () => {
   };
 
   return (
-    <div >
+    <div className="mainWeather" >
       <main className={(typeof weather.city != "undefined") ? ((weather.list[0].main.temp > 16) ? 'warm' : 'cold') : 'warm'}>
         <h1 className="title">Времето</h1>
         <div className="search-box">
@@ -101,6 +102,9 @@ const Weather = () => {
           </div>
 
         )}
+        <div className="footer2">
+          <Footer />
+        </div>
       </main>
     </div>
   );

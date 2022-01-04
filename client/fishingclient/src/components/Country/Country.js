@@ -4,6 +4,7 @@ import { TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import TitleIcon from "@mui/icons-material/Title";
 import "./Country.css";
+import Footer from '../Footer/Footer'
 
 import Button from "@mui/material/Button";
 
@@ -59,6 +60,7 @@ const CreateCountry = () => {
           Create
         </Button>
       </form>
+      <Footer />
     </div>
   );
 };

@@ -8,8 +8,8 @@ const IdleMonitor = () => {
     const [idleModal, setIdleModal] = useState(false);
     const { appUser, setAppUser } = useContext(UserContext);
 
-    let idleTimeout = 20 * 60 * 1000;  //20 minutes
-    let idleLogout = 21 * 60 * 1000; //21 Minutes
+    let idleTimeout = 15 * 60 * 1000;  //20 minutes
+    let idleLogout = 16 * 60 * 1000; //21 Minutes
     let idleEvent;
     let idleLogoutEvent;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import {Link } from "react-router-dom";
-
+import Footer from '../Footer/Footer'
 const Fish = (fish) => {
   return (
     <div className="col-sm-4 my-2">
@@ -14,6 +14,7 @@ const Fish = (fish) => {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

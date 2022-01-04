@@ -47,7 +47,7 @@ namespace MyFishingApp.Web.Controllers
             return Ok();
         }
 
-        [HttpGet("cities")]
+        [HttpGet("getCities")]
         public City[] GetAllCities(string filter, string range,string sort)
         {
             var cities = this.cityService.GetAllCities();

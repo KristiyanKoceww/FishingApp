@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Fish from "./Fish";
-
+import Footer from '../Footer/Footer'
 const RenderAllFish = () => {
   const [fish, setFish] = useState([]);
 
@@ -29,6 +29,7 @@ const RenderAllFish = () => {
             return <Fish key={fish.id} index={index} {...fish} />;
           })}
         </div>
+        <Footer />
       </div>
     );
   }, [fish]);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Knot from './Knot'
-
+import Footer from '../Footer/Footer'
 const RenderAllKnots = () => {
   const [knots, setKnots] = useState([]);
 
@@ -28,6 +28,7 @@ const RenderAllKnots = () => {
             return <Knot key={index} index={index} {...knot} />;
           })}
         </div>
+        <Footer />
       </div>
     )
   }, [knots])

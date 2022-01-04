@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import Footer from '../Footer/Footer'
 const DisplayAllFish = () => {
   const [fish, setFish] = useState([]);
 
@@ -57,6 +57,7 @@ const DisplayAllFish = () => {
           ))}
         </tbody>
       </table>
+      <Footer />
     </div>
   );
 };

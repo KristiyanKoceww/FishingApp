@@ -13,6 +13,9 @@ import { UserContext } from '../AcountManagment/UserContext';
 const Post = (post) => {
     const [postComments, setPostComments] = useState([]);
     const [comment, setComment] = useState('');
+    const [newComment,setNewComment] = useState('');
+    const [votes,setVotes] = useState();
+    const [newVote,setNewVote] = useState();
 
     const { appUser, setAppUser } = useContext(UserContext);
 
@@ -35,7 +38,7 @@ const Post = (post) => {
         const data = {
             Content: comment,
             UserId: userId,
-            PostId: post.Id,
+            PostId: post.id,
         };
 
         fetch("https://localhost:44366/api/Comments/create", {
@@ -49,6 +52,7 @@ const Post = (post) => {
             console.error("Error:", error);
         });
 
+        setNewComment(comment);
         setComment('');
     };
 
@@ -74,12 +78,14 @@ const Post = (post) => {
             .catch((error) => {
                 console.error('Error:', error);
             });
+
+            setNewVote(true);
     }
 
     useEffect(() => {
-        if (post.Id) {
-            const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
-            fetch(url + post.Id,
+        if (post.id) {
+            const url = 'https://localhost:44366/api/Votes/getVotes?postId='
+            fetch(url + post.id,
                 {
                     method: "GET",
                     headers: {
@@ -93,7 +99,92 @@ const Post = (post) => {
                     }
                     return r.json();
                 })
-                .then(result => setPostComments(result))
+                .then(result =>{
+                    setVotes(result)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
+
+    },[post.id]);
+    useEffect(() => {
+        if (newVote) {
+            const url = 'https://localhost:44366/api/Votes/getVotes?postId='
+            fetch(url + post.id,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer ' + jwt
+                    },
+                })
+                .then(r => {
+                    if (!r.ok) {
+                        throw new Error(`HTTP error ${r.status}`);
+                    }
+                    return r.json();
+                })
+                .then(result =>{
+                    setVotes(result)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+                setNewVote(false);
+        };
+
+    },[newVote]);
+
+    useEffect(() => {
+        if (newComment != "") {
+            const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
+            fetch(url + post.id,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer ' + jwt
+                    },
+                })
+                .then(r => {
+                    if (!r.ok) {
+                        throw new Error(`HTTP error ${r.status}`);
+                    }
+                    return r.json();
+                })
+                .then(result =>{
+                    setPostComments(result)
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+                setNewComment("");
+        };
+
+    },[newComment]);
+
+    useEffect(() => {
+        if (post.id) {
+            const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
+            fetch(url + post.id,
+                {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        'Authorization': 'Bearer ' + jwt
+                    },
+                })
+                .then(r => {
+                    if (!r.ok) {
+                        throw new Error(`HTTP error ${r.status}`);
+                    }
+                    return r.json();
+                })
+                .then(result =>{
+                    setPostComments(result)
+                })
                 .catch(error => {
                     console.log(error);
                 });
@@ -120,7 +211,7 @@ const Post = (post) => {
             </div>
 
             <div className="likescount">
-                <FavoriteBorderIcon /> {post.votes.filter(vote => vote.Type === 1).length} likes
+                <FavoriteBorderIcon /> {votes} likes
             </div>
 
             {Object.keys(appUser ? appUser : {}).length !== 0 ?
