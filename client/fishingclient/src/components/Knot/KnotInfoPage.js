@@ -6,13 +6,13 @@ import Footer from '../Footer/Footer'
 const KnotInfoPage = (props) => {
   const [knot, setKnot] = useState();
   const [isLoading, setisLoading] = useState(true);
-  const url = "https://localhost:44366/api/Knots/getKnotByName?knotName=";
+  const getKnotByNameUrl = process.env.REACT_APP_GETKNOTBYNAME;
   const { id } = useParams();
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     const fetchData = () => {
-      const fetchUrl = url + id;
+      const fetchUrl = getKnotByNameUrl + id;
       fetch(fetchUrl, {
         method: "GET",
         headers: {

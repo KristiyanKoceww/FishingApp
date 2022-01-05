@@ -17,7 +17,7 @@ const CreateReservoir = () => {
   const [longitude, setLongitude] = useState(1);
   const [cityId, setCityId] = useState("");
   const [images, setImages] = useState([]);
-
+  const createReservoirUrl = process.env.REACT_APP_CREATERESERVOIR;
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
       const element = e.target.files[index];
@@ -25,7 +25,7 @@ const CreateReservoir = () => {
     }
   };
 
-  const CreateRes= async (e) => {
+  const CreateRes = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -40,9 +40,9 @@ const CreateReservoir = () => {
     formData.append("latitude", latitude);
     formData.append("longitude", longitude);
     formData.append("cityId", cityId);
-    
+
     const jwt = localStorage.getItem("jwt");
-    fetch("https://localhost:44366/api/Reservoir/create", {
+    fetch(createReservoirUrl, {
       method: "POST",
       headers: { Authorization: "Bearer " + jwt },
       body: formData,
@@ -50,8 +50,7 @@ const CreateReservoir = () => {
   };
 
   return (
-
-<div className="CreateReservoir">
+    <div className="CreateReservoir">
       <form onSubmit={(e) => CreateRes(e)}>
         <h1 className="ReservoirTitle">
           <ConnectWithoutContactIcon /> Fill data to create new reservoir

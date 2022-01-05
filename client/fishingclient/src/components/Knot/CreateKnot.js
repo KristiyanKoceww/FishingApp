@@ -14,7 +14,7 @@ const CreateKnot = () => {
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [Images, setImages] = useState([]);
-
+  const createKnotUrl = process.env.REACT_APP_CREATEKNOT;
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
       const element = e.target.files[index];
@@ -35,7 +35,7 @@ const CreateKnot = () => {
     formData.append("Type", type);
     formData.append("Description", description);
     const jwt = localStorage.getItem("jwt");
-    fetch("https://localhost:44366/api/Knots/create", {
+    fetch(createKnotUrl, {
       method: "POST",
       headers: { Authorization: "Bearer " + jwt },
       body: formData,

@@ -7,9 +7,10 @@ import { UserContext } from "../UserContext";
 const IdleMonitor = () => {
     const [idleModal, setIdleModal] = useState(false);
     const { appUser, setAppUser } = useContext(UserContext);
+    const refreshTokenUrl = process.env.REACT_APP_REFRESHTOKEN;
 
-    let idleTimeout = 15 * 60 * 1000;  //20 minutes
-    let idleLogout = 16 * 60 * 1000; //21 Minutes
+    let idleTimeout = 15 * 60 * 1000;  
+    let idleLogout = 16 * 60 * 1000;
     let idleEvent;
     let idleLogoutEvent;
 
@@ -36,7 +37,7 @@ const IdleMonitor = () => {
             accessToken: jwt,
             refreshToken: refresh,
         }
-        fetch("https://localhost:44366/api/AppUsers/refreshtoken", {
+        fetch(refreshTokenUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -53,8 +54,6 @@ const IdleMonitor = () => {
             })
             .catch((error) => {
                 console.log(error);
-                // setIdleModal(false);
-                // history.push("/Login")
             });
     }
 

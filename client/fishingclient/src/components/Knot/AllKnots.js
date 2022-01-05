@@ -3,11 +3,11 @@ import Knot from './Knot'
 import Footer from '../Footer/Footer'
 const RenderAllKnots = () => {
   const [knots, setKnots] = useState([]);
-
+  const getAllKnotsUrl = process.env.REACT_APP_GETALLKNOTS;
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     (async () => {
-      const response = await fetch('https://localhost:44366/api/Knots/getAllKnots',
+      const response = await fetch(getAllKnotsUrl,
       {
         method: "GET",
         headers: {

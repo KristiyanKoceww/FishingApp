@@ -6,13 +6,13 @@ import "./FishInfoPage.css";
 const FishInfoPage = (props) => {
   const [fish, setFish] = useState();
   const [isLoading, setisLoading] = useState(true);
-  const url = "https://localhost:44366/api/Fish/getFishByName?fishName=";
+  const getFishByNameUrl = process.env.REACT_APP_GETFISHBYNAME;
   const { id } = useParams();
 
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     const fetchData = () => {
-      const fetchUrl = url + id;
+      const fetchUrl = getFishByNameUrl + id;
       fetch(fetchUrl, {
         method: "GET",
         headers: {

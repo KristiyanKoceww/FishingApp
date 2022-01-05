@@ -14,11 +14,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
-import FormLabel from "@mui/material/FormLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
@@ -28,13 +24,14 @@ const Register = () => {
   const [lastName, setLastName] = useState("");
   const [age, setAge] = useState(18);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [gender, setGender] = useState(1);
+  const [gender, setGender] = useState('');
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setshowPassword] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [MainImage, setMainImage] = useState();
+  const registerUrl = process.env.REACT_APP_REGISTER;
 
   const saveFile = (e) => {
     setMainImage(e.target.files[0]);
@@ -69,12 +66,12 @@ const Register = () => {
     formData.append("Password", password);
 
     try {
-      await fetch("https://localhost:44366/api/AppUsers/register", {
+      await fetch(registerUrl, {
         method: "POST",
         body: formData,
       });
     } catch (error) {
-      console.error(error);
+      
     }
     setRedirect(true);
   };
@@ -93,6 +90,7 @@ const Register = () => {
             label="First name"
             variant="filled"
             size="large"
+            hintText="Only letters"
             fullWidth
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -129,7 +127,7 @@ const Register = () => {
         <div>
           <TextField
             label="Last name"
-            id="filled-hidden-label-small"
+
             variant="filled"
             size="large"
             fullWidth
@@ -148,9 +146,8 @@ const Register = () => {
         <br />
         <div>
           <TextField
-            typ="number"
+            type="number"
             label="Age"
-            id="filled-hidden-label-small"
             variant="filled"
             size="large"
             fullWidth
@@ -168,7 +165,7 @@ const Register = () => {
         <br />
         <div>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+            <InputLabel>Gender</InputLabel>
             <Select
               required
               labelId="demo-simple-select-label"
@@ -185,8 +182,8 @@ const Register = () => {
         <br />
         <div>
           <TextField
+            type="phone"
             label="Phone number"
-            id="filled-hidden-label-small"
             variant="filled"
             size="large"
             fullWidth
@@ -204,8 +201,8 @@ const Register = () => {
         <br />
         <div>
           <TextField
+            type="email"
             label="Email"
-            id="filled-hidden-label-small"
             variant="filled"
             size="large"
             fullWidth
@@ -225,7 +222,6 @@ const Register = () => {
           <TextField
             className="username"
             label="Username"
-            id="filled-hidden-label-small"
             variant="filled"
             size="large"
             fullWidth
@@ -247,7 +243,6 @@ const Register = () => {
             </InputLabel>
             <OutlinedInput
               className="passwordInput"
-              id="filled-hidden-label-small"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}

@@ -3,6 +3,7 @@
     using System;
     using System.IO;
     using System.Linq;
+    using System.Security.Claims;
     using System.Security.Cryptography;
     using System.Text;
     using System.Threading.Tasks;
@@ -162,7 +163,60 @@
 
         public ApplicationUser GetById(string userId)
         {
-            var user = this.appUserRepository.All().Where(x => x.Id == userId).FirstOrDefault();
+            var user = this.appUserRepository.All().Where(x => x.Id == userId).Select(x => new ApplicationUser
+            {
+                FirstName = x.FirstName,
+                MiddleName = x.MiddleName,
+                LastName = x.MiddleName,
+                Age = x.Age,
+                Id = x.Id,
+                Email = x.Email,
+                Gender = x.Gender,
+                MainImageUrl = x.MainImageUrl,
+                PhoneNumber = x.PhoneNumber,
+                UserName = x.UserName,
+                Roles = x.Roles.Select(x => new IdentityUserRole<string>
+                {
+                    RoleId = x.RoleId,
+                    UserId = x.UserId,
+                }).ToList(),
+                Claims = x.Claims.Select(x => new IdentityUserClaim<string>
+                {
+                    Id = x.Id,
+                    UserId = x.UserId,
+                    ClaimType = x.ClaimType,
+                    ClaimValue = x.ClaimValue,
+
+                }).ToList(),
+                Logins = x.Logins.Select(x => new IdentityUserLogin<string>
+                {
+                    UserId = x.UserId,
+                    LoginProvider = x.LoginProvider,
+                    ProviderDisplayName = x.ProviderDisplayName,
+                    ProviderKey = x.ProviderKey,
+                }).ToList(),
+                Posts = x.Posts.Select(x => new Post
+                {
+                    Id = x.Id,
+                    ImageUrls = x.ImageUrls,
+                    Title = x.Title,
+                    User = x.User,
+                    UserId = x.UserId,
+                    Content = x.Content,
+                    Votes = x.Votes,
+                    Comments = x.Comments.Select(x => new Comment
+                    {
+                        Content = x.Content,
+                        User = x.User,
+                        UserId = x.UserId,
+                        Id = x.Id,
+                        Parent = x.Parent,
+                        ParentId = x.ParentId,
+                        Post = x.Post,
+                        PostId = x.PostId,
+                    }).ToList(),
+                }).ToList(),
+            }).FirstOrDefault();
 
             if (user is not null)
             {

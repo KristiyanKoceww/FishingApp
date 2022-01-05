@@ -18,9 +18,12 @@ const Post = (post) => {
     const [newVote,setNewVote] = useState();
 
     const { appUser, setAppUser } = useContext(UserContext);
-
     const jwt = localStorage.getItem("jwt");
-    const userId = localStorage.getItem("userId");
+
+    const createPostCommentUrl = process.env.REACT_APP_CREATECOMMENT;
+    const getPostCommentsUrl = process.env.REACT_APP_GETPOSTCOMMENTS;
+    const createPostVoteUrl = process.env.REACT_APP_CREATEVOTE;
+    const getPostVotesUrl = process.env.REACT_APP_GETPOSTVOTES;
 
     const upVote = true;
     const downVote = false;
@@ -37,11 +40,11 @@ const Post = (post) => {
         event.preventDefault();
         const data = {
             Content: comment,
-            UserId: userId,
+            UserId: appUser.id,
             PostId: post.id,
         };
 
-        fetch("https://localhost:44366/api/Comments/create", {
+        fetch(createPostCommentUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -67,7 +70,7 @@ const Post = (post) => {
             PostId: id,
         }
 
-        fetch('https://localhost:44366/api/Votes/vote', {
+        fetch(createPostVoteUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -84,7 +87,7 @@ const Post = (post) => {
 
     useEffect(() => {
         if (post.id) {
-            const url = 'https://localhost:44366/api/Votes/getVotes?postId='
+            const url = getPostVotesUrl
             fetch(url + post.id,
                 {
                     method: "GET",
@@ -110,7 +113,7 @@ const Post = (post) => {
     },[post.id]);
     useEffect(() => {
         if (newVote) {
-            const url = 'https://localhost:44366/api/Votes/getVotes?postId='
+            const url = getPostVotesUrl
             fetch(url + post.id,
                 {
                     method: "GET",
@@ -138,7 +141,7 @@ const Post = (post) => {
 
     useEffect(() => {
         if (newComment != "") {
-            const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
+            const url = getPostCommentsUrl
             fetch(url + post.id,
                 {
                     method: "GET",
@@ -167,7 +170,7 @@ const Post = (post) => {
 
     useEffect(() => {
         if (post.id) {
-            const url = 'https://localhost:44366/api/Posts/getPostCommentsByPostId/Id?postId='
+            const url = getPostCommentsUrl
             fetch(url + post.id,
                 {
                     method: "GET",

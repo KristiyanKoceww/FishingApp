@@ -11,13 +11,13 @@ import Button from "@mui/material/Button";
 const CreateCountry = () => {
   const [name, setName] = useState("");
   const jwt = localStorage.getItem("jwt");
-
+  const createCountryUrl = process.env.REACT_APP_CREATECOUNTRY;
   const onSubmit = async (e) => {
     e.preventDefault();
     let newCountry = {
       Name: name,
     };
-    fetch("https://localhost:44366/api/Countries/create", {
+    fetch(createCountryUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

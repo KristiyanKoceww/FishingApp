@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -6,14 +6,16 @@ import TitleIcon from "@mui/icons-material/Title";
 import TextsmsIcon from "@mui/icons-material/Textsms";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import "./CreatePost.css";
+import { UserContext } from '../AcountManagment/UserContext';
 
 const CreatePost = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [FormFiles, setFormFiles] = useState([]);
 
+  const createPostUrl = process.env.REACT_APP_CREATEPOST;
+  const { appUser, setAppUser } = useContext(UserContext);
   const jwt = localStorage.getItem("jwt");
-  const userId = localStorage.getItem("userId");
 
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
@@ -32,10 +34,10 @@ const CreatePost = (props) => {
     }
 
     formData.append("title", title);
-    formData.append("userId", userId);
+    formData.append("userId", appUser.id);
     formData.append("content", content);
 
-    fetch("https://localhost:44366/api/Posts/create", {
+    fetch(createPostUrl, {
       method: "POST",
       headers: { Authorization: "Bearer " + jwt },
       body: formData,

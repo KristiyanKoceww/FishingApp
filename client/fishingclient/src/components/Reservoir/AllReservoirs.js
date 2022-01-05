@@ -4,12 +4,11 @@ import Footer from '../Footer/Footer'
 import './AllReservoirs.css'
 const RenderAllReservoirs = () => {
   const [reservoir, setReservoir] = useState([]);
- 
+  const getAllReservoirsUrl = process.env.REACT_APP_GETALLRESERVOIRS;
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     (async () => {
-      const response = await fetch(
-        "https://localhost:44366/api/Reservoir/getAllReservoirs",
+      const response = await fetch(getAllReservoirsUrl,
         {
           method: "GET",
           headers: {
@@ -22,6 +21,7 @@ const RenderAllReservoirs = () => {
       setReservoir(content);
     })();
   }, []);
+  
   const renderReservoirs = useMemo(() => {
     return (
       <div className="container">

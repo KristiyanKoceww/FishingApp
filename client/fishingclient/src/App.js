@@ -23,8 +23,7 @@ import FishInfo from './components/Fish/FishInfo';
 import DisplayAllFish from './components/Fish/DisplayAllFish';
 import FishInfoPage from './components/Fish/FishInfoPage';
 
-import GetUserById from './components/AcountManagment/GetUserById';
-import DeleteUser from './components/AcountManagment/DeleteUser';
+
 import UserDetails from './components/AcountManagment/UserDetails';
 
 import CreateReservoir from './components/Reservoir/CreateReservoir';
@@ -52,6 +51,8 @@ function App() {
 
   const jwt = localStorage.getItem("jwt");
 
+  const getUserByIdUrl = process.env.REACT_APP_GETUSERBYID;
+  const getPostsUrl = process.env.REACT_APP_GETPOSTS;
   const isAuthenticated = Object.keys(appUser ? appUser : {}).length !== 0;
   const value = useMemo(() => ({ appUser, setAppUser }), [appUser, setAppUser]);
 
@@ -64,17 +65,15 @@ function App() {
 
   useEffect(() => {
     const userId = localStorage.getItem("userId");
-    const jwt = localStorage.getItem("jwt");
     if (userId && jwt) {
-      fetch(
-        `https://localhost:44366/api/AppUsers/getUser/id?userId=${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + jwt
-          },
-        }
+      const url = getUserByIdUrl + userId;
+      fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + jwt
+        },
+      }
       )
         .then(r => r.json())
         .then(result => {
@@ -85,15 +84,13 @@ function App() {
 
   useEffect(() => {
     const getPosts = async () => {
-      const res = await fetch(
-        `https://localhost:44366/api/Posts/GetPosts?id=0`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            'Authorization': 'Bearer ' + jwt
-          },
-        }
+      const res = await fetch(getPostsUrl + "0", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Authorization': 'Bearer ' + appUser.accessToken
+        },
+      }
       );
       const data = await res.json();
       setPosts(data);
@@ -103,15 +100,14 @@ function App() {
   }, []);
 
   const fetchPosts = async () => {
-    const res = await fetch(
-      `https://localhost:44366/api/Posts/GetPosts?id=${page}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + jwt
-        },
-      }
+    const url = getPostsUrl + page;
+    const res = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        'Authorization': 'Bearer ' + jwt
+      },
+    }
     );
     const data = await res.json();
     return data;
@@ -161,8 +157,6 @@ function App() {
               <ProtectedRoute path='/FishInfo' component={FishInfo} auth={isAuthenticated} />
               <ProtectedRoute path='/FishInfoPage/:id' component={FishInfoPage} auth={isAuthenticated} />
 
-              <Route path='/DeleteUser' component={DeleteUser} />
-              <Route path='/GetUserById' component={GetUserById} />
               <Route path='/UserDetails' component={UserDetails} />
 
               <Route path='/Privacy' component={Privacy} />
@@ -171,9 +165,9 @@ function App() {
               <Route path='/AppAdmin' component={AppAdmin} />
 
             </Switch>
-            {isAuthenticated ? <IdleMonitor/> : null}
+            {isAuthenticated ? <IdleMonitor /> : null}
           </main>
-         
+
         </Router>
       </div>
     </UserContext.Provider >

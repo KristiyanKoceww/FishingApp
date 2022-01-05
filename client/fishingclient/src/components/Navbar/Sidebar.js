@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
 import { SidebarData } from './SidebarData';
+import { SidebarDataForUsers, SidebarDataForAdmin } from './SidebarData';
 import SubMenu from './SubMenu';
 import './Sidebar.css'
 import { IconContext } from 'react-icons/lib';
@@ -48,20 +49,16 @@ const SidebarWrap = styled.div`
 const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
   const { appUser, setAppUser } = useContext(UserContext);
-
   const showSidebar = () => setSidebar(!sidebar);
-
+  
   if (Object.keys(appUser ? appUser : {}).length === 0) {
     return (
       <>
         <IconContext.Provider value={{ color: '#fff' }}>
           <Nav>
-            <NavIcon to='#'>
-              <FaIcons.FaBars onClick={showSidebar} />
-            </NavIcon>
             <h1 className="hello__msg"> <AccountCircleIcon /> Hello, guest</h1>
             <div className="login_center">
-            <Link to="/">
+              <Link to="/">
                 <Button className="home" type="button">Home</Button>
               </Link>
               {" "}
@@ -79,9 +76,6 @@ const Sidebar = () => {
               <NavIcon to='#'>
                 <AiIcons.AiOutlineClose onClick={showSidebar} />
               </NavIcon>
-              {SidebarData.map((item, index) => {
-                return <SubMenu item={item} key={index} />;
-              })}
             </SidebarWrap>
           </SidebarNav>
         </IconContext.Provider>
@@ -112,9 +106,17 @@ const Sidebar = () => {
               <NavIcon to='#'>
                 <AiIcons.AiOutlineClose onClick={showSidebar} />
               </NavIcon>
-              {SidebarData.map((item, index) => {
-                return <SubMenu item={item} key={index} />;
-              })}
+              {
+                appUser.userName == 'admin' ?
+                  SidebarDataForAdmin.map((item, index) => {
+                    return <SubMenu item={item} key={index} />;
+                  })
+                  :
+                  SidebarDataForUsers.map((item, index) => {
+                    return <SubMenu item={item} key={index} />;
+                  })
+              }
+
             </SidebarWrap>
           </SidebarNav>
         </IconContext.Provider>

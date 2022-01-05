@@ -18,7 +18,7 @@ const Login = () => {
   const [redirect, setRedirect] = useState(false);
 
   const { appUser, setAppUser } = useContext(UserContext);
-
+  const loginUrl = process.env.REACT_APP_LOGIN;
   const submit = async (e) => {
     e.preventDefault();
 
@@ -27,7 +27,7 @@ const Login = () => {
       password,
     };
 
-    await fetch("https://localhost:44366/api/AppUsers/login", {
+    await fetch(loginUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,9 +42,6 @@ const Login = () => {
           localStorage.setItem("refresh",res.refreshToken);
           setRedirect(true);
         }
-
-        // remove this
-        localStorage.setItem("userId", res.userId);
         setAppUser(res.user);
       });
   };

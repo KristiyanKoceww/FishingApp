@@ -4,13 +4,13 @@ import { UserContext } from '../AcountManagment/UserContext';
 const Comment = (comment) => {
     const { appUser, setAppUser } = useContext(UserContext);
     const jwt = localStorage.getItem("jwt");
+    const deleteCommentUrl = process.env.REACT_APP_DELETECOMMENT;
+    const updateCommentUrl = process.env.REACT_APP_UPDATECOMMENT;
 
     const deleteComment = (e, id) => {
         e.preventDefault();
-
         if (window.confirm("Are you sure you want to remove comment?")) {
-            const url = 'https://localhost:44366/api/Comments/delete?commentId='
-            fetch(url + id,
+            fetch(deleteCommentUrl + id,
                 {
                     method: "POST",
                     headers: {
@@ -29,7 +29,7 @@ const Comment = (comment) => {
 
     const edit = (e, id) => {
         // NEED TO OPEN AGAIN INPUT TEXT FIELD TO INSERT EDITED COMMENT
-        const url = 'https://localhost:44366/api/Comments/update?commentId='
+        const url = updateCommentUrl;
         const data = {
             commentId: id,
             postId: post.Id,

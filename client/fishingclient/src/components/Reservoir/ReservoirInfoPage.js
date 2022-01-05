@@ -11,10 +11,10 @@ const ReservoirInfoPage = (props) => {
 
   const { id } = useParams();
   const jwt = localStorage.getItem("jwt");
-  const url = "https://localhost:44366/api/Reservoir/getByName?reservoirName=";
+  const getReservoirByNameUrl = process.env.REACT_APP_GETRESERVOIRBYNAME;
 
   const fetchData = () => {
-    const fetchUrl = url + id;
+    const fetchUrl = getReservoirByNameUrl + id;
     fetch(fetchUrl, {
       method: "GET",
       headers: {

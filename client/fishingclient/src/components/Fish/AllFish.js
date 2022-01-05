@@ -3,12 +3,12 @@ import Fish from "./Fish";
 import Footer from '../Footer/Footer'
 const RenderAllFish = () => {
   const [fish, setFish] = useState([]);
-
+  const getAllFishUrl = process.env.REACT_APP_GETALLFISH;
   useEffect(() => {
     const jwt = localStorage.getItem("jwt");
     (async () => {
       const response = await fetch(
-        "https://localhost:44366/api/Fish/getAllFish",
+        getAllFishUrl,
         {
           method: "GET",
           headers: {
