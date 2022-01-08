@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useMemo } from "react";
 import Fish from "./Fish";
+import ErrorNotification from '../ErrorsManagment/ErrorNotification'
 import Footer from '../Footer/Footer'
 const RenderAllFish = () => {
   const [fish, setFish] = useState([]);
+  const [error, setError] = useState();
   const getAllFishUrl = process.env.REACT_APP_GETALLFISH;
+  const jwt = localStorage.getItem("jwt");
+
   useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
     (async () => {
-      const response = await fetch(
+      await fetch(
         getAllFishUrl,
         {
           method: "GET",
@@ -16,25 +19,30 @@ const RenderAllFish = () => {
             Authorization: "Bearer " + jwt,
           },
         }
-      );
-      const content = await response.json();
-      setFish(content);
+      ).then(r => {
+        if (!r.ok) {
+          throw new Error('Failed to get the data from server!')
+        }
+        return r.json();
+      }).then(r => {
+        setFish(r);
+      })
+        .catch(err => setError(err.message))
     })();
   }, []);
-  const renderFish = useMemo(() => {
-    return (
-      <div className="container">
-        <div className="row m-2">
-          {fish.map((fish, index) => {
-            return <Fish key={fish.id} index={index} {...fish} />;
-          })}
-        </div>
-        <Footer />
-      </div>
-    );
-  }, [fish]);
 
-  return <div>{renderFish}</div>;
+  return (
+    <div>
+      {error ? <div> <ErrorNotification message={error} /></div> :
+        <div className="container">
+          <div className="row m-2">
+            {fish.map((fish, index) => {
+              return <Fish key={fish.id} index={index} {...fish} />;
+            })}
+          </div>
+          <Footer />
+        </div>}
+    </div>
+  )
 };
-
 export default RenderAllFish;

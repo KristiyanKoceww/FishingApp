@@ -11,12 +11,12 @@ import { TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import TitleIcon from "@mui/icons-material/Title";
 import PasswordIcon from '@mui/icons-material/Password';
-
+import ErrorNotification from '../../ErrorsManagment/ErrorNotification'
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
-
+  const [error, setError] = useState();
   const { appUser, setAppUser } = useContext(UserContext);
   const loginUrl = process.env.REACT_APP_LOGIN;
   const submit = async (e) => {
@@ -35,15 +35,22 @@ const Login = () => {
       credentials: "include",
       body: JSON.stringify(user),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Login failed! Try again.')
+        }
+        return response.json()
+      })
       .then((res) => {
         if (res.accessToken) {
           localStorage.setItem("jwt", res.accessToken);
-          localStorage.setItem("refresh",res.refreshToken);
+          localStorage.setItem("refresh", res.refreshToken);
+          localStorage.setItem("userId", res.userId);
           setRedirect(true);
         }
         setAppUser(res.user);
-      });
+      }).catch(err => setError(err.message))
+      .finally(setError(null));
   };
 
   if (redirect) {
@@ -51,57 +58,59 @@ const Login = () => {
   }
   return (
     <div className="Login">
-      <form onSubmit={submit}>
-        <h1 className="title__login">
-          {" "}
-          <PublicIcon /> Please , fill your data to login.
-        </h1>
-        <div>
-          <TextField
-            className="textFieldTitle"
-            label="Username"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <TitleIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
+      {error ? <div> <ErrorNotification message={error} /></div> :
+        <form onSubmit={submit}>
+          <h1 className="title__login">
+            {" "}
+            <PublicIcon /> Please , fill your data to login.
+          </h1>
+          <div>
+            <TextField
+              className="textFieldTitle"
+              label="Username"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <TitleIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
 
-        <div>
-          <TextField
-            className="textFieldTitle"
-            label="Password"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PasswordIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
+          <div>
+            <TextField
+              className="textFieldTitle"
+              label="Password"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PasswordIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
 
-        <div className="LoginButtonDiv">
-          <Button className="LoginButton" type="submit" variant="outlined">
-            Login
-          </Button>
-        </div>
-      </form>
+          <div className="LoginButtonDiv">
+            <Button className="LoginButton" type="submit" variant="outlined">
+              Login
+            </Button>
+          </div>
+        </form>
+      }
       <Footer />
     </div>
   );

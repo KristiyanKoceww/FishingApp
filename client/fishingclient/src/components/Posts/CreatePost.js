@@ -7,15 +7,18 @@ import TextsmsIcon from "@mui/icons-material/Textsms";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import "./CreatePost.css";
 import { UserContext } from '../AcountManagment/UserContext';
+import ErrorNotification from "../ErrorsManagment/ErrorNotification";
 
 const CreatePost = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [FormFiles, setFormFiles] = useState([]);
+  const [error, setError] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
+  const jwt = localStorage.getItem("jwt");
   const createPostUrl = process.env.REACT_APP_CREATEPOST;
   const { appUser, setAppUser } = useContext(UserContext);
-  const jwt = localStorage.getItem("jwt");
 
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
@@ -26,7 +29,7 @@ const CreatePost = (props) => {
 
   const uploadImage = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const formData = new FormData();
     for (let index = 0; index < FormFiles.length; index++) {
       const element = FormFiles[index];
@@ -42,10 +45,17 @@ const CreatePost = (props) => {
       headers: { Authorization: "Bearer " + jwt },
       body: formData,
     })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) {
+          throw new Error('Creating failed!')
+        }
+        return r.json()
+      })
       .then((result) => {
         props.onCreate(result);
-      });
+      })
+      .catch(err => setError(err.message))
+      .finally(setIsLoading(false));
   };
 
   const handleSubmit = async (e) => {
@@ -57,7 +67,9 @@ const CreatePost = (props) => {
 
   return (
     <div className="createPost">
-      <form onSubmit={(e) => handleSubmit(e)}>
+      {error && <div> <ErrorNotification message={error} /></div>}
+      {!error && isLoading && <h1>Loading...</h1>}
+      {!error && !isLoading && <form onSubmit={(e) => handleSubmit(e)}>
         <h1 className="title__post">
           <ConnectWithoutContactIcon /> Share your thoughts and moments with
           friends
@@ -127,9 +139,9 @@ const CreatePost = (props) => {
           </div>
         </label>
         <br />
-      </form>
+      </form>}
     </div>
-  );
+  )
 };
 
 export default CreatePost;

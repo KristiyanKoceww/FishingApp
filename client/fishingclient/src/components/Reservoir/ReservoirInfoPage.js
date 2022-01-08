@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
+
+import "./ReservoirInfoPage.css";
+import Map from "../GoogleMap/Map";
 import Footer from '../Footer/Footer'
 import ImageSlider from "../ImageSlider/ImageSlider";
-import Map from "../GoogleMap/Map";
-import "./ReservoirInfoPage.css";
+import ErrorNotification from '../ErrorsManagment/ErrorNotification'
 
 const ReservoirInfoPage = (props) => {
   const [reservoir, setReservoir] = useState();
   const [isLoading, setisLoading] = useState(true);
-
+  const [error, setError] = useState();
   const { id } = useParams();
   const jwt = localStorage.getItem("jwt");
   const getReservoirByNameUrl = process.env.REACT_APP_GETRESERVOIRBYNAME;
@@ -22,25 +24,33 @@ const ReservoirInfoPage = (props) => {
         Authorization: "Bearer " + jwt,
       },
     })
-      .then((res) => res.json())
+      .then(res => {
+        console.log(res);
+        if (!res.ok) {
+          throw new Error('Failed to fetch the data from server!');
+        }
+        return res.json()
+      })
       .then((result) => {
-        setReservoir(result)
+        setReservoir(result);
+        setisLoading(false);
       })
       .catch((err) => {
-        console.log(err);
+        setisLoading(false);
+        setError(err.message);
       });
-    setisLoading(false);
+
   };
 
   useEffect(() => {
     fetchData();
   }, [id]);
 
-  const renderReservoir = useMemo(() => {
-    if (isLoading === true) {
-      return <h1>Loading...</h1>;
-    } else {
-      return (
+  return (
+    <div>
+      {error && <div> <ErrorNotification message={error} /></div>}
+      {isLoading && <h1>Loading...</h1>}
+      {reservoir &&
         <div className="container2">
           <Link className="btn btn-primary" to={"/AllReservoirs/"}>
             {" "}
@@ -84,10 +94,8 @@ const ReservoirInfoPage = (props) => {
             <Footer />
           </div>
         </div>
-      );
-    }
-  }, [reservoir]);
-
-  return <div>{renderReservoir}</div>;
+      }
+    </div>
+  )
 };
 export default ReservoirInfoPage;

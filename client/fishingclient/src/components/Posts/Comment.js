@@ -1,9 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { UserContext } from '../AcountManagment/UserContext';
-
+import ErrorNotification from '../ErrorsManagment/ErrorNotification';
 const Comment = (comment) => {
+    const [error, setError] = useState();
     const { appUser, setAppUser } = useContext(UserContext);
     const jwt = localStorage.getItem("jwt");
+
     const deleteCommentUrl = process.env.REACT_APP_DELETECOMMENT;
     const updateCommentUrl = process.env.REACT_APP_UPDATECOMMENT;
 
@@ -18,7 +20,13 @@ const Comment = (comment) => {
                         'Authorization': 'Bearer ' + jwt
                     },
                     body: id,
+                }).then(r => {
+                    if (!r.ok) {
+                        throw new Error('Deleting this comment went wrong!')
+                    }
+                   return r.json();
                 })
+                .catch(err => setError(err.message))
         }
     }
 
@@ -41,6 +49,7 @@ const Comment = (comment) => {
 
     return (
         <div>
+            {error && <ErrorNotification message={error} />}
             <div className="post__bubble">
                 <strong className="post__user">{comment.user.firstName}:</strong> <div className="post__content">{comment.content}</div>
             </div>

@@ -36,8 +36,6 @@ import FiveDaysWeatherForecast from './components/WeatherForecast/FiveDaysWeathe
 import ProtectedRoute from './components/AcountManagment/ProtectedRoute';
 import Privacy from './components/PrivacyPolicy/Privacy'
 
-import Error from './Error'
-
 import IdleMonitor from './components/AcountManagment/SessionManagment/ExtendSession'
 
 import { UserContext } from './components/AcountManagment/UserContext';

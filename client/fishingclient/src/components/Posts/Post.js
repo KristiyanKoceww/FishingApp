@@ -52,7 +52,7 @@ const Post = (post) => {
             },
             body: JSON.stringify(data),
         }).catch((error) => {
-            console.error("Error:", error);
+            
         });
 
         setNewComment(comment);
@@ -189,7 +189,7 @@ const Post = (post) => {
                     setPostComments(result)
                 })
                 .catch(error => {
-                    console.log(error);
+                    
                 });
         };
 

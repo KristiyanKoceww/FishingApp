@@ -7,9 +7,12 @@ import "./Country.css";
 import Footer from '../Footer/Footer'
 
 import Button from "@mui/material/Button";
+import ErrorNotification from '../ErrorsManagment/ErrorNotification'
 
 const CreateCountry = () => {
   const [name, setName] = useState("");
+  const [error, setError] = useState();
+  const [errorText,setErrorText] = useState();
   const jwt = localStorage.getItem("jwt");
   const createCountryUrl = process.env.REACT_APP_CREATECOUNTRY;
   const onSubmit = async (e) => {
@@ -24,42 +27,51 @@ const CreateCountry = () => {
         Authorization: "Bearer " + jwt,
       },
       body: JSON.stringify(newCountry),
+    }).then(res => {
+      const data = res.json();
+      data.then(r=> setErrorText(r.errors.name[0]));
+      if (!res.ok) {
+        throw new Error(errorText)
+      }
+      return res.json();
     }).catch((error) => {
-      console.error("Error:", error);
+      setError(error.message);
     });
   };
 
   return (
     <div className="createCountry">
-      <form onSubmit={onSubmit}>
-        <h1 className="title__country">
-          {" "}
-          <PublicIcon /> Please enter name of country
-        </h1>
-        <div>
-          <TextField
-            className="textFieldTitle"
-            label="Country name"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setName(e.target.value)}
-            required
-            multiline
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <TitleIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <Button className="createCountryButton" type="submit" variant="outlined">
-          Create
-        </Button>
-      </form>
+      {error ? <div> <ErrorNotification message={error} /></div> :
+        <form onSubmit={onSubmit}>
+          <h1 className="title__country">
+            {" "}
+            <PublicIcon /> Please enter name of country
+          </h1>
+          <div>
+            <TextField
+              className="textFieldTitle"
+              label="Country name"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setName(e.target.value)}
+              required
+              multiline
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <TitleIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
+          <Button className="createCountryButton" type="submit" variant="outlined">
+            Create
+          </Button>
+        </form>
+      }
       <Footer />
     </div>
   );

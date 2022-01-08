@@ -18,6 +18,8 @@ import FormControl from "@mui/material/FormControl";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 
+import ErrorNotification from "../../ErrorsManagment/ErrorNotification";
+
 const Register = () => {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
@@ -31,6 +33,7 @@ const Register = () => {
   const [showPassword, setshowPassword] = useState(false);
   const [redirect, setRedirect] = useState(false);
   const [MainImage, setMainImage] = useState();
+  const [error, setError] = useState();
   const registerUrl = process.env.REACT_APP_REGISTER;
 
   const saveFile = (e) => {
@@ -65,222 +68,229 @@ const Register = () => {
     formData.append("UserName", username);
     formData.append("Password", password);
 
-    try {
-      await fetch(registerUrl, {
-        method: "POST",
-        body: formData,
-      });
-    } catch (error) {
-      
-    }
-    setRedirect(true);
+
+    await fetch(registerUrl, {
+      method: "POST",
+      body: formData,
+    }).then(res => {
+      if (!res.ok) {
+        throw new Error('Register failed! Try again.')
+      }
+      setRedirect(true);
+      return r.json();
+    })
+    .catch(err => {
+      setError(err.message);
+    })
   };
   if (redirect) {
     return <Redirect to="/Login" />;
   }
   return (
     <div className="Register">
-      <form onSubmit={(e) => submit(e)}>
-        <h1 className="title__register">
-          <ConnectWithoutContactIcon /> Please , fill your details to register.
-        </h1>
-        <div>
-          <TextField
-            className="textFieldTitle"
-            label="First name"
-            variant="filled"
-            size="large"
-            hintText="Only letters"
-            fullWidth
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-            multiline
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <TitleIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <div>
-          <TextField
-            className="textFieldTitle"
-            label="Middle name"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setMiddleName(e.target.value)}
-            multiline
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <TitleIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <div>
-          <TextField
-            label="Last name"
-
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setLastName(e.target.value)}
-            required
-            multiline
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <DescriptionIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <div>
-          <TextField
-            type="number"
-            label="Age"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setAge(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <ShortTextIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <div>
-          <FormControl fullWidth>
-            <InputLabel>Gender</InputLabel>
-            <Select
+      {error ? <ErrorNotification message={error} /> :
+        <form onSubmit={(e) => submit(e)}>
+          <h1 className="title__register">
+            <ConnectWithoutContactIcon /> Please , fill your details to register.
+          </h1>
+          <div>
+            <TextField
+              className="textFieldTitle"
+              label="First name"
+              variant="filled"
+              size="large"
+              hintText="Only letters"
+              fullWidth
+              onChange={(e) => setFirstName(e.target.value)}
               required
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={gender}
-              label="Gender"
-              onChange={handleChange}
-            >
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-            </Select>
-          </FormControl>
-        </div>
-        <br />
-        <div>
-          <TextField
-            type="phone"
-            label="Phone number"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setPhoneNumber(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <ShortTextIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <div>
-          <TextField
-            type="email"
-            label="Email"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <ShortTextIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <br />
-        <div>
-          <TextField
-            className="username"
-            label="Username"
-            variant="filled"
-            size="large"
-            fullWidth
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            multiline
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <ShortTextIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          <FormControl className="password" variant="filled">
-            <InputLabel htmlFor="outlined-adornment-password">
-              Password
-            </InputLabel>
-            <OutlinedInput
-              className="passwordInput"
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label="Password"
+              multiline
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <TitleIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
-          </FormControl>
-        </div>
-        <br />
-        <div className="UploadProfilePicture">
-          <Button
-            className="ProfilePictureButton"
-            variant="contained"
-            component="label"
-          >
-            Upload profile picture
-            <input type="file" hidden onChange={saveFile} />
-          </Button>
-        </div>
-        <br />
-        <div className="submit">
-          <Button className="submit__button" type="submit" variant="outlined">
-            Register
-          </Button>
-        </div>
-        <br />
-      </form>
+          </div>
+          <br />
+          <div>
+            <TextField
+              className="textFieldTitle"
+              label="Middle name"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setMiddleName(e.target.value)}
+              multiline
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <TitleIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
+          <div>
+            <TextField
+              label="Last name"
+
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              multiline
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <DescriptionIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
+          <div>
+            <TextField
+              type="number"
+              label="Age"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setAge(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ShortTextIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
+          <div>
+            <FormControl fullWidth>
+              <InputLabel>Gender</InputLabel>
+              <Select
+                required
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={gender}
+                label="Gender"
+                onChange={handleChange}
+              >
+                <MenuItem value="Male">Male</MenuItem>
+                <MenuItem value="Female">Female</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <br />
+          <div>
+            <TextField
+              type="phone"
+              label="Phone number"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ShortTextIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
+          <div>
+            <TextField
+              type="email"
+              label="Email"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ShortTextIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <br />
+          <div>
+            <TextField
+              className="username"
+              label="Username"
+              variant="filled"
+              size="large"
+              fullWidth
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              multiline
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <ShortTextIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+
+            <FormControl className="password" variant="filled">
+              <InputLabel htmlFor="outlined-adornment-password">
+                Password
+              </InputLabel>
+              <OutlinedInput
+                className="passwordInput"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                endAdornment={
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                }
+                label="Password"
+              />
+            </FormControl>
+          </div>
+          <br />
+          <div className="UploadProfilePicture">
+            <Button
+              className="ProfilePictureButton"
+              variant="contained"
+              component="label"
+            >
+              Upload profile picture
+              <input type="file" hidden onChange={saveFile} />
+            </Button>
+          </div>
+          <br />
+          <div className="submit">
+            <Button className="submit__button" type="submit" variant="outlined">
+              Register
+            </Button>
+          </div>
+          <br />
+        </form>
+      }
       <div className="footer5">
         <Footer />
       </div>

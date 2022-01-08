@@ -60,3 +60,10 @@
     font-size: 30px;
     font-family: "Times New Roman";
 }
+.FishFooter{
+    padding: 50px;
+}
+.back-button{
+    margin:auto;
+    text-align: center;
+}

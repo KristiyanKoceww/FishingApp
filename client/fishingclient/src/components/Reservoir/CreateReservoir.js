@@ -8,6 +8,7 @@ import TitleIcon from "@mui/icons-material/Title";
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 import DescriptionIcon from '@mui/icons-material/Description';
+import ErrorNotification from '../ErrorsManagment/ErrorNotification'
 import Footer from '../Footer/Footer'
 const CreateReservoir = () => {
   const [name, setName] = useState("");
@@ -17,6 +18,7 @@ const CreateReservoir = () => {
   const [longitude, setLongitude] = useState(1);
   const [cityId, setCityId] = useState("");
   const [images, setImages] = useState([]);
+  const [error, setError] = useState();
   const createReservoirUrl = process.env.REACT_APP_CREATERESERVOIR;
   const saveFile = (e) => {
     for (let index = 0; index < e.target.files.length; index++) {
@@ -46,11 +48,17 @@ const CreateReservoir = () => {
       method: "POST",
       headers: { Authorization: "Bearer " + jwt },
       body: formData,
-    });
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Creating failed!')
+        }
+      }).catch(err => setError(err.message));
   };
 
   return (
     <div className="CreateReservoir">
+      {error ? <div> <ErrorNotification message={error} /></div> :
       <form onSubmit={(e) => CreateRes(e)}>
         <h1 className="ReservoirTitle">
           <ConnectWithoutContactIcon /> Fill data to create new reservoir
@@ -202,6 +210,7 @@ const CreateReservoir = () => {
         </label>
         <br />
       </form>
+      }
       <Footer />
     </div>
   );
