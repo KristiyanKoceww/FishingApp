@@ -55,14 +55,16 @@ const CreatePost = (props) => {
         props.onCreate(result);
       })
       .catch(err => setError(err.message))
-      .finally(setIsLoading(false));
+      .finally(
+        setIsLoading(false),
+      );
   };
 
   const handleSubmit = async (e) => {
     await uploadImage(e);
-    setContent("");
-    setTitle("");
-    setFormFiles([]);
+    setContent(''),
+      setTitle(''),
+      setFormFiles([])
   };
 
   return (

@@ -1,21 +1,23 @@
 import { React, useEffect, useState, useContext } from 'react'
+import './Post.css';
+import Comment from './Comment';
 import Avatar from '@mui/material/Avatar';
 import ImageSlider from '../ImageSlider/ImageSlider';
-import Comment from './Comment';
-import './Post.css';
+import ErrorNotification from "../ErrorsManagment/ErrorNotification";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { UserContext } from '../AcountManagment/UserContext';
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons'
+import { faThumbsDown } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Post = (post) => {
     const [postComments, setPostComments] = useState([]);
     const [comment, setComment] = useState('');
-    const [newComment,setNewComment] = useState('');
-    const [votes,setVotes] = useState();
-    const [newVote,setNewVote] = useState();
+    const [newComment, setNewComment] = useState('');
+    const [votes, setVotes] = useState();
+    const [newVote, setNewVote] = useState();
+    const [error, setError] = useState();
 
     const { appUser, setAppUser } = useContext(UserContext);
     const jwt = localStorage.getItem("jwt");
@@ -51,12 +53,14 @@ const Post = (post) => {
                 Authorization: "Bearer " + jwt,
             },
             body: JSON.stringify(data),
-        }).catch((error) => {
-            
-        });
-
-        setNewComment(comment);
-        setComment('');
+        }).then(r => {
+            if (!r.ok) {
+                // throw new Error('Creating new post comment failed!')
+                window.alert('Creating new post comment failed!')
+            }
+            setNewComment(comment);
+            setComment('');
+        }).catch(err => setError(err.message))
     };
 
     const Vote = (e, postId) => {
@@ -66,7 +70,7 @@ const Post = (post) => {
 
         const data = {
             IsUpVote: vote,
-            UserId: userId,
+            UserId: appUser.id,
             PostId: id,
         }
 
@@ -77,12 +81,13 @@ const Post = (post) => {
                 'Authorization': 'Bearer ' + jwt
             },
             body: JSON.stringify(data)
-        })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-
+        }).then(r => {
+            if (!r.ok) {
+                // throw new Error('Creating new vote failed!')
+                window.alert('Creating new vote failed!')
+            }
             setNewVote(true);
+        }).catch(err => setError(err.message))
     }
 
     useEffect(() => {
@@ -98,19 +103,19 @@ const Post = (post) => {
                 })
                 .then(r => {
                     if (!r.ok) {
-                        throw new Error(`HTTP error ${r.status}`);
+                        // throw new Error('Getting post votes failed!')
+                        window.alert('Getting post votes failed!')
                     }
                     return r.json();
                 })
-                .then(result =>{
+                .then(result => {
                     setVotes(result)
                 })
-                .catch(error => {
-                    console.log(error);
-                });
+                .catch(err => setError(err.message))
         };
 
-    },[post.id]);
+    }, [post.id]);
+
     useEffect(() => {
         if (newVote) {
             const url = getPostVotesUrl
@@ -124,20 +129,19 @@ const Post = (post) => {
                 })
                 .then(r => {
                     if (!r.ok) {
-                        throw new Error(`HTTP error ${r.status}`);
+                        // throw new Error('Getting post votes failed!')
+                        window.alert('Getting post votes failed!')
                     }
                     return r.json();
                 })
-                .then(result =>{
+                .then(result => {
                     setVotes(result)
+                    setNewVote(false);
                 })
-                .catch(error => {
-                    console.log(error);
-                });
-                setNewVote(false);
+                .catch(err => setError(err.message))
         };
 
-    },[newVote]);
+    }, [newVote]);
 
     useEffect(() => {
         if (newComment != "") {
@@ -152,21 +156,18 @@ const Post = (post) => {
                 })
                 .then(r => {
                     if (!r.ok) {
-                        throw new Error(`HTTP error ${r.status}`);
+                        // throw new Error('Getting post comments failed!')
+                        //window.alert('Getting post comments failed!')
                     }
                     return r.json();
                 })
-                .then(result =>{
+                .then(result => {
                     setPostComments(result)
+                    setNewComment("");
                 })
-                .catch(error => {
-                    console.log(error);
-                });
-
-                setNewComment("");
+                .catch(err => setError(err.message))
         };
-
-    },[newComment]);
+    }, [newComment]);
 
     useEffect(() => {
         if (post.id) {
@@ -181,22 +182,19 @@ const Post = (post) => {
                 })
                 .then(r => {
                     if (!r.ok) {
-                        throw new Error(`HTTP error ${r.status}`);
+                        // throw new Error('Getting post comments failed!')
+                        //window.alert('Getting post comments failed!')
                     }
                     return r.json();
                 })
-                .then(result =>{
+                .then(result => {
                     setPostComments(result)
                 })
-                .catch(error => {
-                    
-                });
+                .catch(err => setError(err.message))
         };
-
     }, [post.Id])
 
     return (
-
         <div className="post">
             <div className="post__header">
                 <Avatar

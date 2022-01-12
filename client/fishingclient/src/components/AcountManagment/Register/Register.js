@@ -177,8 +177,6 @@ const Register = () => {
               <InputLabel>Gender</InputLabel>
               <Select
                 required
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
                 value={gender}
                 label="Gender"
                 onChange={handleChange}
@@ -191,7 +189,6 @@ const Register = () => {
           <br />
           <div>
             <TextField
-              type="phone"
               label="Phone number"
               variant="filled"
               size="large"

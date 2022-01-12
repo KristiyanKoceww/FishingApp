@@ -3,10 +3,12 @@ import WeatherDay from './WeatherDay'
 import LocationSearch from './LocationSearch'
 import './FiveDaysWeatherForecast.css'
 import Footer from '../../Footer/Footer'
+import ErrorNotification from "../../ErrorsManagment/ErrorNotification";
 const FiveDaysWeatherForecast = () => {
     const [weather, setWeather] = useState();
     const [text, setText] = useState('');
     const [locationKey, setLocationKey] = useState();
+    const [error, setError] = useState();
 
     const api = process.env.REACT_APP_WEATHERFORFIVEDAYS;
 
@@ -34,9 +36,14 @@ const FiveDaysWeatherForecast = () => {
         ]
         if (locationKey) {
             fetch(`http://dataservice.accuweather.com/forecasts/v1/daily/5day/${locationKey}?apikey=${api}&details=true&metric=true`)
-                .then((res) => res.json())
+                .then((res) => {
+                    if (!res.ok) {
+                        throw new Error('Fetching the data from server failed!')
+                    }
+                    return res.json()
+                })
                 .then((result) => {
-                   
+
                     setWeather(result.DailyForecasts.map(df => {
                         return {
                             max: df.Temperature.Maximum.Value,
@@ -73,26 +80,31 @@ const FiveDaysWeatherForecast = () => {
                         }
                     }));
                     setText(result.Headline.Text)
-                });
+                })
+                .catch(err => setError(err.message));
         }
     }, [locationKey]);
 
     return (
-        <div className="FiveDaysWeatherForecast">
-            <LocationSearch
-                onCityFound={cityKey => {
-                    setLocationKey(cityKey.key)
-                }}
-            />
-            <div className="infoText">{text}</div>
-            <div className="WeatherInfo">
-                {!!weather && weather.map((i, index) => (
-                    <div className="day" key={index}>
-                        <WeatherDay weather={i} />
+        <div>
+            {error ? <div> <ErrorNotification message={error} /></div> :
+                <div className="FiveDaysWeatherForecast">
+                    <LocationSearch
+                        onCityFound={cityKey => {
+                            setLocationKey(cityKey.key)
+                        }}
+                    />
+                    <div className="infoText">{text}</div>
+                    <div className="WeatherInfo">
+                        {!!weather && weather.map((i, index) => (
+                            <div className="day" key={index}>
+                                <WeatherDay weather={i} />
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
-            <Footer />
+                    <Footer />
+                </div>
+            }
         </div>
     )
 }
