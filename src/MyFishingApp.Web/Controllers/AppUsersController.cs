@@ -117,11 +117,16 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [Authorize]
-        [HttpPost("update")]
-        public async Task<IActionResult> UpdateUser([FromForm] UserInputModel userInputModel, string userId)
+        [HttpPost("update/id")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserInfoInputModel userInputModel, string userId)
         {
-            await this.userService.UpdateUserAsync(userInputModel, userId);
-            return Ok();
+           var updateduser =  await this.userService.UpdateUserAsync(userInputModel, userId);
+            return Ok(new UpdateUserResult
+            {
+                User = updateduser,
+                UserId = updateduser.Id,
+                UserName = updateduser.UserName,
+            });
         }
 
         [Authorize]
@@ -144,6 +149,17 @@ namespace MyFishingApp.Web.Controllers
         public string GetUserById(string userId)
         {
             var user = this.userService.GetById(userId);
+
+            var json = JsonConvert.SerializeObject(user);
+
+            return json;
+        }
+
+        [AllowAnonymous]
+        [HttpGet("getUserInfo/id")]
+        public string GetUserInfoById(string userId)
+        {
+            var user = this.userService.GetUserInfo(userId);
 
             var json = JsonConvert.SerializeObject(user);
 

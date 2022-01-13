@@ -1,0 +1,77 @@
+.userprofile{
+    padding: 50px;
+    margin:auto;
+    text-align: center;
+}
+
+.usercard{
+    width: 100%;
+    position: relative;
+    text-align: center;
+  
+}
+.user2{
+    
+    margin:auto;
+}
+.user3{
+    
+    margin:auto;
+}
+
+.user {
+    position: relative;
+    text-align: center;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #087AEA;
+    background-clip: border-box;
+    border: 0 solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
+
+.userDetails {
+    position: relative;
+    text-align: center;
+    min-width: 0;
+    background-color: #087AEA;
+    width: 50%;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    color: whitesmoke;
+}
+
+.userInfo{
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+    color:whitesmoke;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    min-height: 1px;
+    padding: 1rem;
+}
+
+.editform{
+    position: relative;
+    text-align: center;
+    min-width: 0;
+    width: 50%;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 20px;
+   
+}
+.edit{
+    background-color: #087AEA;
+    color:  whitesmoke;
+}
+
+.savebutton{
+    background-color: black;
+}
+
+

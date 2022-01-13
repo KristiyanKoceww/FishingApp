@@ -23,6 +23,8 @@ const LocationSearch = ({ onCityFound }) => {
 
     return (
         <div className="LocationSearch">
+            <h1>Look for weather forecast and prepare for fish trip</h1>
+            <h4>You can look for 5 days weather forecast</h4>
             <div className="inputandbutton">
                 <TextField
                     label="Enter city name"

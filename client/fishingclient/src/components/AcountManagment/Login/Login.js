@@ -49,6 +49,7 @@ const Login = () => {
           setRedirect(true);
         }
         setAppUser(res.user);
+        console.log(res.user);
       }).catch(err => setError(err.message))
       .finally(setError(null));
   };
@@ -87,6 +88,7 @@ const Login = () => {
           <div>
             <TextField
               className="textFieldTitle"
+              type="password"
               label="Password"
               variant="filled"
               size="large"

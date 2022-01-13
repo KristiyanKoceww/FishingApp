@@ -50,7 +50,7 @@ const Sidebar = () => {
   const [sidebar, setSidebar] = useState(false);
   const { appUser, setAppUser } = useContext(UserContext);
   const showSidebar = () => setSidebar(!sidebar);
-  
+
   if (Object.keys(appUser ? appUser : {}).length === 0) {
     return (
       <>
@@ -90,8 +90,14 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <h1 className="hello__msg"><AccountCircleIcon /> Hello, {appUser.firstName}</h1>
+            <div>
+              <h1 className="hello__msg"><AccountCircleIcon /> Hello, {appUser.firstName}</h1>
+              <Link to="/UserProfile">
+                <img className="imagecircle" src={appUser.mainImageUrl ? appUser.mainImageUrl : null} />
+              </Link>
+            </div>
             <div className="logout_center">
+
               <Link to="/">
                 <Button className="home" type="button">Home</Button>
               </Link>

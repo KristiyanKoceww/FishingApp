@@ -12,13 +12,15 @@
 
         Task DeleteAsync(string userId);
 
-        Task UpdateUserAsync(UserInputModel userInputModel, string userId);
+        Task<ApplicationUser> UpdateUserAsync(UpdateUserInfoInputModel userInputModel, string userId);
 
         Task ChangeUserProfilePicture(ChangePictureInputModel changePictureInputModel);
 
         ApplicationUser GetById(string userId);
 
         ApplicationUser GetByUsername(string username);
+
+        UserInfo GetUserInfo(string userId);
 
         ApplicationUser Authenticate(string username, string password);
     }

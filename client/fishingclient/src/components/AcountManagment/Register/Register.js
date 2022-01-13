@@ -99,7 +99,6 @@ const Register = () => {
               label="First name"
               variant="filled"
               size="large"
-              hintText="Only letters"
               fullWidth
               onChange={(e) => setFirstName(e.target.value)}
               required

@@ -2,6 +2,7 @@ import './App.css';
 
 import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom';
 import { useState, useEffect, useMemo } from 'react';
+import { createBrowserHistory } from "history";
 
 import Header from './components/Header/Header';
 import Sidebar from './components/Navbar/Sidebar';
@@ -23,9 +24,6 @@ import FishInfo from './components/Fish/FishInfo';
 import DisplayAllFish from './components/Fish/DisplayAllFish';
 import FishInfoPage from './components/Fish/FishInfoPage';
 
-
-import UserDetails from './components/AcountManagment/UserDetails';
-
 import CreateReservoir from './components/Reservoir/CreateReservoir';
 import AllReservoirs from './components/Reservoir/AllReservoirs'
 import ReservoirInfoPage from './components/Reservoir/ReservoirInfoPage';
@@ -40,6 +38,7 @@ import IdleMonitor from './components/AcountManagment/SessionManagment/ExtendSes
 
 import { UserContext } from './components/AcountManagment/UserContext';
 import AppAdmin from './components/AdminDashboard/AppAdmin/AppAdmin';
+import UserProfile from './components/AcountManagment/UserDetails/UserProfile';
 
 function App() {
   const [posts, setPosts] = useState([]);
@@ -48,6 +47,8 @@ function App() {
   const [hasMore, sethasMore] = useState(true);
 
   const jwt = localStorage.getItem("jwt");
+  const history = useHistory();
+  const browserHistory = createBrowserHistory();
 
   const getUserByIdUrl = process.env.REACT_APP_GETUSERBYID;
   const getPostsUrl = process.env.REACT_APP_GETPOSTS;
@@ -72,8 +73,13 @@ function App() {
           'Authorization': 'Bearer ' + jwt
         },
       }
-      )
-        .then(r => r.json())
+      ).then(r => {
+        if (!r.ok) {
+          localStorage.clear();
+          // history.push('/Login');
+        }
+        return r.json()
+      })
         .then(result => {
           setAppUser(result)
         });
@@ -86,7 +92,6 @@ function App() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': 'Bearer ' + appUser.accessToken
         },
       }
       );
@@ -125,7 +130,7 @@ function App() {
   return (
     <UserContext.Provider value={value}>
       <div >
-        <Router>
+        <Router history={browserHistory}>
           <Header />
           <main className="App">
             <Switch>
@@ -155,7 +160,7 @@ function App() {
               <ProtectedRoute path='/FishInfo' component={FishInfo} auth={isAuthenticated} />
               <ProtectedRoute path='/FishInfoPage/:id' component={FishInfoPage} auth={isAuthenticated} />
 
-              <Route path='/UserDetails' component={UserDetails} />
+              <ProtectedRoute path='/UserProfile' component={UserProfile} auth={isAuthenticated} />
 
               <Route path='/Privacy' component={Privacy} />
               <Route path='/Error' component={Error} />
@@ -165,7 +170,6 @@ function App() {
             </Switch>
             {isAuthenticated ? <IdleMonitor /> : null}
           </main>
-
         </Router>
       </div>
     </UserContext.Provider >

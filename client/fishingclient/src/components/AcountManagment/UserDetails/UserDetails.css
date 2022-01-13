@@ -1,0 +1,53 @@
+.user {
+    display: flex;
+}
+
+.card {
+    color: #fff;
+    width: 350px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #087AEA, #1c0bbb);
+    border: none
+}
+
+.neo-button {
+    width: 40px;
+    height: 40px;
+    outline: 0 !important;
+    cursor: pointer;
+    color: #fff;
+    font-size: 15px;
+    border: none;
+    margin-right: 10px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #dfe0e2, #8daddd);
+}
+
+.neo-button:active {
+    border-radius: 50%;
+    background: #087AEA;
+
+}
+
+.fa-facebook {
+    color: #087AEA
+}
+
+.fa-google {
+    color: #dc4e41
+}
+
+.profile_button {
+    color: #fff;
+    padding: 10px;
+    border: none;
+    outline: 0 !important;
+    border-radius: 50px;
+    background: #087AEA;
+}
+
+.profileimage {
+    padding: 5px;
+    width: 100px;
+    border-radius: 50px;
+}

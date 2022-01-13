@@ -163,7 +163,36 @@
 
         public ApplicationUser GetById(string userId)
         {
-            var user = this.appUserRepository.All().Where(x => x.Id == userId).FirstOrDefault();
+            var user = this.appUserRepository.All().Where(x => x.Id == userId).Select(x => new ApplicationUser
+            {
+                FirstName = x.FirstName,
+                MiddleName = x.MiddleName,
+                LastName = x.LastName,
+                Age = x.Age,
+                Id = x.Id,
+                Email = x.Email,
+                Gender = x.Gender,
+                MainImageUrl = x.MainImageUrl,
+                PhoneNumber = x.PhoneNumber,
+                UserName = x.UserName,
+                Posts = x.Posts.Select(x => new Post
+                {
+                    Id = x.Id,
+                    ImageUrls = x.ImageUrls,
+                    Title = x.Title,
+                    UserId = x.UserId,
+                    Content = x.Content,
+                    Votes = x.Votes,
+                    Comments = x.Comments.Select(x => new Comment
+                    {
+                        Content = x.Content,
+                        Id = x.Id,
+                        Parent = x.Parent,
+                        ParentId = x.ParentId,
+                        PostId = x.PostId,
+                    }).ToList(),
+                }).ToList(),
+            }).FirstOrDefault();
 
             if (user is not null)
             {
@@ -232,9 +261,9 @@
             }
         }
 
-        public async Task UpdateUserAsync(UserInputModel userInputModel, string userId)
+        public async Task<ApplicationUser> UpdateUserAsync(UpdateUserInfoInputModel userInputModel, string userId)
         {
-            var user = this.GetById(userId);
+            var user = this.appUserRepository.All().Where(x => x.Id == userId).FirstOrDefault();
 
             if (user is not null)
             {
@@ -243,10 +272,7 @@
                 user.LastName = userInputModel.LastName;
                 user.Email = userInputModel.Email;
                 user.PhoneNumber = userInputModel.PhoneNumber;
-                user.UserName = userInputModel.UserName;
-                user.PasswordHash = ComputeSha256Hash(userInputModel.Password);
                 user.Age = userInputModel.Age;
-                user.Gender = userInputModel.Gender;
 
                 this.appUserRepository.Update(user);
                 await this.appUserRepository.SaveChangesAsync();
@@ -255,6 +281,8 @@
             {
                 throw new Exception("No user found  by this id");
             }
+
+            return user;
         }
 
         public ApplicationUser GetByUsername(string username)
@@ -263,7 +291,7 @@
             {
                 FirstName = x.FirstName,
                 MiddleName = x.MiddleName,
-                LastName = x.MiddleName,
+                LastName = x.LastName,
                 Age = x.Age,
                 Id = x.Id,
                 Email = x.Email,
@@ -302,6 +330,25 @@
             {
                 throw new Exception("No user found  by this username");
             }
+        }
+
+        public UserInfo GetUserInfo(string userId)
+        {
+            var userinfo = this.appUserRepository.All().Where(x => x.Id == userId).Select(x => new UserInfo
+            {
+                FirstName = x.FirstName,
+                MiddleName = x.MiddleName,
+                LastName = x.LastName,
+                Age = x.Age,
+                Email = x.Email,
+                Gender = x.Gender,
+                MainImageUrl = x.MainImageUrl,
+                PhoneNumber = x.PhoneNumber,
+                UserName = x.UserName,
+                PostsCount = x.Posts.Count(),
+            }).FirstOrDefault();
+
+            return userinfo;
         }
     }
 }

@@ -1,3 +1,8 @@
+/* .container {
+  display: flex;
+  width: 100%;
+} */
+
 .toggleDiv {
   padding: 10px;
   padding-bottom: 70px;
@@ -35,4 +40,24 @@
   margin: auto;
   font-weight: 600;
   padding: 50px;
+}
+
+.firstcol {
+  position: fixed;
+  margin-top: 20px;
+  width: 15%;
+  left: 10%;
+}
+
+.secondcol {
+  position: relative;
+  width: 70%;
+  margin: auto;
+}
+
+.thirtcol {
+  position: fixed;
+  margin-top: 20px;
+  width: 15%;
+  right: 10%;
 }
