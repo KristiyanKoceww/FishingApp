@@ -70,14 +70,14 @@ const FishInfoPage = (props) => {
           <div className="habbitat">
             Habbitat:
             <div className="habbitat2">
-              This kind of fish are in {fish.habbitat} habbitat.
+               {fish.habittat}
             </div>
           </div>
           <hr />
           <div className="nutrition">
             Nutrition:
             <div className="nutrition2">
-              This kind of fish are in {fish.nutrition}.
+             {fish.nutrition}
             </div>
           </div>
           <hr />

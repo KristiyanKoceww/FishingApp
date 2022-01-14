@@ -1,7 +1,7 @@
 const Privacy = () => {
 
     return (
-        <div>
+        <div className="container">
             <h3>Privacy</h3>
             <p class="text-justify">FishApp respects the privacy of our users . This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website, including any other media form, media channel, mobile website, or mobile application related or connected there to (collectively, the “Site”). Please read this privacy policy carefully.  If you do not agree with the terms of this privacy policy, please do not access the site. </p>
             <p class="text-justify"><b>We reserve the right to make changes to this Privacy Policy at any time and for any reason.  We will alert you about any changes by updating the “Last Updated” date of this Privacy Policy.  Any changes or modifications will be effective immediately upon posting the updated Privacy Policy on the Site, and you waive the right to receive specific notice of each such change or modification. </b></p>

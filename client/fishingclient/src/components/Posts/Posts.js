@@ -181,7 +181,7 @@ const Posts = (props) => {
                       src={fish.imageUrls[0].imageUrl}
                       alt="fish"
                       width="200px"
-                      height="70px"
+                      height="60px"
                     />{" "}
                   </div>
                 </div>

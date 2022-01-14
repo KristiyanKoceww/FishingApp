@@ -1,8 +1,8 @@
 import React, { useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 
 import "./Login.css";
-import Footer from '../../Footer/Footer'
+import Footer from "../../Footer/Footer";
 import { UserContext } from "../UserContext";
 
 import Button from "@mui/material/Button";
@@ -10,8 +10,8 @@ import PublicIcon from "@mui/icons-material/Public";
 import { TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import TitleIcon from "@mui/icons-material/Title";
-import PasswordIcon from '@mui/icons-material/Password';
-import ErrorNotification from '../../ErrorsManagment/ErrorNotification'
+import PasswordIcon from "@mui/icons-material/Password";
+import ErrorNotification from "../../ErrorsManagment/ErrorNotification";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -37,9 +37,9 @@ const Login = () => {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error('Login failed! Try again.')
+          throw new Error("Login failed! Try again.");
         }
-        return response.json()
+        return response.json();
       })
       .then((res) => {
         if (res.accessToken) {
@@ -50,7 +50,8 @@ const Login = () => {
         }
         setAppUser(res.user);
         console.log(res.user);
-      }).catch(err => setError(err.message))
+      })
+      .catch((err) => setError(err.message))
       .finally(setError(null));
   };
 
@@ -59,7 +60,12 @@ const Login = () => {
   }
   return (
     <div className="Login">
-      {error ? <div> <ErrorNotification message={error} /></div> :
+      {error ? (
+        <div>
+          {" "}
+          <ErrorNotification message={error} />
+        </div>
+      ) : (
         <form onSubmit={submit}>
           <h1 className="title__login">
             {" "}
@@ -111,8 +117,18 @@ const Login = () => {
               Login
             </Button>
           </div>
+          <hr />
+          <div className="row">
+            <Link className="col" to="/register">
+              <div>Forgotten password?</div>
+            </Link>
+            <Link className="col-2" to="/register">
+              <div>Register</div>
+            </Link>
+          </div>
         </form>
-      }
+      )}
+
       <Footer />
     </div>
   );

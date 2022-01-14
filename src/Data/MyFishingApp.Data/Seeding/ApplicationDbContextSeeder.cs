@@ -31,6 +31,7 @@
                               new CountriesSeeder(),
                               new KnotsSeeder(),
                               new ReservoirSeeder(),
+                              new FishSeeder(),
                           };
 
             foreach (var seeder in seeders)
