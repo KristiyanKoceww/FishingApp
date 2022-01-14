@@ -201,6 +201,27 @@
             }
         }
 
+        public IEnumerable<Reservoir> GetRandomFourReservoirs()
+        {
+            var reservoirs = this.reservoirRepository
+                .AllAsNoTracking()
+                .Select(x => new Reservoir
+                {
+                    Name = x.Name,
+                    Description = x.Description,
+                    ImageUrls = x.ImageUrls,
+                }).OrderBy(arg => Guid.NewGuid()).Take(4).ToList();
+
+            if (reservoirs.Count > 0)
+            {
+                return reservoirs;
+            }
+            else
+            {
+                throw new Exception("No reservoirs found");
+            }
+        }
+
         public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel)
         {
             var reservoir = this.GetById(updateReservoirInputModel.ReservoirId);

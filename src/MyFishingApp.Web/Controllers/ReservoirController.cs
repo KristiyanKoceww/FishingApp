@@ -26,8 +26,16 @@ namespace MyFishingAppReact.Controllers
             var reservoirs = this.reservoirService.GetAllReservoirs();
             var json = JsonConvert.SerializeObject(reservoirs);
             return json;
-
         }
+
+        [HttpGet("getFourPopularReservoirs")]
+        public string GetRandomFourReservoirs()
+        {
+            var reservoirs = this.reservoirService.GetRandomFourReservoirs();
+            var json = JsonConvert.SerializeObject(reservoirs);
+            return json;
+        }
+
 
         [HttpPost("create")]
         public async Task<IActionResult> CreateReservoir([FromForm] CreateReservoirInputModel createReservoirInputModel)

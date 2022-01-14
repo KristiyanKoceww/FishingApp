@@ -181,6 +181,24 @@
             }
         }
 
+        public IEnumerable<Fish> GetFourRandomFish()
+        {
+            var fish = this.fishRepository.AllAsNoTracking().Select(x => new Fish
+            {
+                Name = x.Name,
+                ImageUrls = x.ImageUrls,
+            }).OrderBy(arg => Guid.NewGuid()).Take(4).ToList();
+
+            if (fish.Count > 0)
+            {
+                return fish;
+            }
+            else
+            {
+                throw new Exception("There is no fish found");
+            }
+        }
+
         public async Task UpdateFish(UpdateFishInputModel updateFishInputModel)
         {
             var fish = this.fishRepository.All().Where(x => x.Id == updateFishInputModel.FishId).FirstOrDefault();

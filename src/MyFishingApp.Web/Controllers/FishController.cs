@@ -90,5 +90,16 @@ namespace MyFishingApp.Web.Controllers
 
             return json;
         }
+
+
+        [HttpGet("getFourPopularFish")]
+        public string GetFourRandomFish()
+        {
+            var fish = this.fishService.GetFourRandomFish();
+
+            var json = JsonConvert.SerializeObject(fish);
+
+            return json;
+        }
     }
 }

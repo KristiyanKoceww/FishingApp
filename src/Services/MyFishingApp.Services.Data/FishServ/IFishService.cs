@@ -21,5 +21,7 @@
         Fish GetByName(string fishName);
 
         IEnumerable<Fish> GetAllFish();
+
+        IEnumerable<Fish> GetFourRandomFish();
     }
 }

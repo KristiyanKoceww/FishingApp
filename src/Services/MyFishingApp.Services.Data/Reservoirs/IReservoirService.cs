@@ -19,5 +19,7 @@
         Reservoir GetByName(string reservoirName);
 
         IEnumerable<Reservoir> GetAllReservoirs();
+
+        IEnumerable<Reservoir> GetRandomFourReservoirs();
     }
 }
