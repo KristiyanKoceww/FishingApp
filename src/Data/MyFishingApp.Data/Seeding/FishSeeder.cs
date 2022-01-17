@@ -21,7 +21,7 @@
 
             var fish = new List<Fish>();
 
-            using (StreamReader r = File.OpenText(@"C:\Users\Skyshop\Desktop\Kris\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Fish.json"))
+            using (StreamReader r = File.OpenText(@"C:\Users\User\Desktop\FishingApp\src\Data\MyFishingApp.Data\SeedingData\Fish.json"))
             {
                 string json = r.ReadToEnd();
                 fish = JsonConvert.DeserializeObject<List<Fish>>(json);

@@ -35,6 +35,7 @@ const RenderAllReservoirs = () => {
 
   return (
     <div className="container">
+      <h1 className="text-center">Bulgarian reservoirs</h1>
       {error && <div> <ErrorNotification message={error} /></div>}
       {!error &&
         <div>

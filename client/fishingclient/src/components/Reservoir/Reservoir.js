@@ -10,7 +10,7 @@ const Reservoir = (reservoir) => {
           <img src={reservoir.imageUrls[0].imageUrl} alt='reservoir' height='150px' width='370px'/>
           <hr/>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-          <Link className='btn btn-primary' to={"/reservoirInfoPage/" + reservoir.name }> Learn more about {reservoir.name}</Link>
+          <Link className='btn btn-primary' to={"/reservoirInfoPage/" + reservoir.name }> {reservoir.name}</Link>
           </div>
         </div>
       </div>

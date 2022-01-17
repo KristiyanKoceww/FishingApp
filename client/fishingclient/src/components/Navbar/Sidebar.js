@@ -56,7 +56,9 @@ const Sidebar = () => {
       <>
         <IconContext.Provider value={{ color: '#fff' }}>
           <Nav>
-            <h1 className="hello__msg"> <AccountCircleIcon /> Hello, guest</h1>
+            <div className='greetings_user'>
+              <h1 className="hello__msg"> <AccountCircleIcon /> Hello, guest</h1>
+            </div>
             <div className="login_center">
               <Link to="/">
                 <Button className="home" type="button">Home</Button>
@@ -90,7 +92,7 @@ const Sidebar = () => {
             <NavIcon to='#'>
               <FaIcons.FaBars onClick={showSidebar} />
             </NavIcon>
-            <div>
+            <div className="greetings_user">
               <h1 className="hello__msg"><AccountCircleIcon /> Hello, {appUser.firstName}</h1>
               <Link to="/UserProfile">
                 <img className="imagecircle" src={appUser.mainImageUrl ? appUser.mainImageUrl : null} />

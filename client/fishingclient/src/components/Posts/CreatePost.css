@@ -1,38 +1,44 @@
-.createPost{
-    /* background-color:rgb(62, 136, 247);  */
+.createPost {
     width: 50%;
     margin: auto;
-    margin-top:100px;
-    top:15%;
+    margin-top: 100px;
+    top: 15%;
 }
-.title__post{
+
+.title__post {
     font-weight: 600;
     color: black;
     font-size: 29px;
     font-family: 'Times New Roman', Times, serif;
     padding: 10px;
     justify-content: center;
-   
+
 }
 
-.choose__files{
-    margin: auto;
-    /* background-color: rgb(16, 240, 54);  */
+.choose__files {
+    width: 100%;
     padding: 10px;
 }
 
-.choose__button{
+.choose__button {
     background-color: whitesmoke !important;
-    color:black !important;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    color: black !important;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-.submit__button{
+
+.submit__button {
     background-color: rgb(16, 240, 54) !important;
-    color:black !important;
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    color: black !important;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 100%;
 }
-.submit__form{
+
+.submit__form {
     margin: auto;
     padding: 10px;
     background-color: rgb(16, 240, 54);
+}
+.post__createbuttons{
+   width: 100%;
+   text-align: center;
 }

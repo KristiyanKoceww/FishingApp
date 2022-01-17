@@ -1,9 +1,6 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+.mainWeather{
+  height: 100%;
 }
-
 
 body {
   font-family: "Montserrat", sans-serif;
@@ -19,6 +16,7 @@ body {
   background-image: url("./assets/warm.jpg");
   background-size:cover;
   background-position: 100%;
+  height:800px;
 }
 .title {
   margin-bottom: 1.5em;
@@ -156,8 +154,7 @@ body {
 }
 
 .fivedays{
-  color: red;
-  text-decoration: black;
+  color: rgb(11, 155, 11);
 }
 
 .footer2{

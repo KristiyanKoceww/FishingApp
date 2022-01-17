@@ -4,7 +4,7 @@ import './UserDetails.css'
 const UserDetails = (props) => {
 
   return (
-    <div className="user">
+    <div className="user__details">
       <div className="card">
         <div className="text-center">
           <img className="profileimage" src={props.user.mainImageUrl ? props.user.mainImageUrl : null} />

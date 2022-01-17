@@ -70,9 +70,8 @@
   color: 	rgb(245, 245, 245);
   font-weight: 600;
   font-size: 37px;
-  right: 15%;
   top: 5%;
-  position: absolute;
+  right: 100px;
 }
 
 .imagecircle{
@@ -80,6 +79,11 @@
   width: 60px;
   border-radius: 50px;
   top: 4%;
-  right:10%;
-  position: absolute;
+  right:8.5%;
+  position: fixed;
+}
+
+.greetings_user{
+  position:relative;
+  left: 76%;
 }

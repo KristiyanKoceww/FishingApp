@@ -129,7 +129,7 @@ function App() {
 
   return (
     <UserContext.Provider value={value}>
-      <div >
+      <div>
         <Router history={browserHistory}>
           <Header />
           <main className="App">

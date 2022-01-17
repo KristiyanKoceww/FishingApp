@@ -1,4 +1,4 @@
-.user {
+.user__details {
     display: flex;
 }
 
@@ -6,7 +6,7 @@
     color: #fff;
     width: 350px;
     border-radius: 10px;
-    background: linear-gradient(145deg, #087AEA, #1c0bbb);
+    background: linear-gradient(145deg, #087AEA, #3927db);
     border: none
 }
 

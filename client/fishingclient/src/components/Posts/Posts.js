@@ -43,7 +43,16 @@ const Posts = (props) => {
           Authorization: "Bearer " + jwt,
         },
       }
-    ).then((r) => r.json().then((r) => setUserInfo(r)));
+    ).then((r) => {
+      if (!r.ok) {
+        throw new Error('Error occurred!')
+      }
+     return r.json()
+    })
+    .then((r) => setUserInfo(r))
+    .catch(err => {
+      setError(err.message);
+    });
   }, []);
 
   useEffect(() => {
@@ -147,7 +156,7 @@ const Posts = (props) => {
         </div>
 
         <div className="thirtcol">
-          <h5>Some popular reservoirs:</h5>
+          {reservoirs &&  <h5>Some popular reservoirs:</h5>}
           {reservoirs &&
             reservoirs.map((reservoir, index) => {
               return (
@@ -167,7 +176,8 @@ const Posts = (props) => {
                 </div>
               );
             })}
-            <h5>Some popular fish:</h5>
+
+            {fish && <h5>Some popular fish:</h5> }
             {fish &&
             fish.map((fish, index) => {
               return (

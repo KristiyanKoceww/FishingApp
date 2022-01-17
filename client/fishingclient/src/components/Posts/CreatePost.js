@@ -8,7 +8,7 @@ import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact
 import "./CreatePost.css";
 import { UserContext } from '../AcountManagment/UserContext';
 import ErrorNotification from "../ErrorsManagment/ErrorNotification";
-
+import Grid from '@mui/material/Grid';
 const CreatePost = (props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -116,33 +116,37 @@ const CreatePost = (props) => {
             }}
           />
         </div>
-        <br />
+        <div className="post__createbuttons">
+          <label htmlFor="btn-upload">
+            <input
+              id="btn-upload"
+              name="btn-upload"
+              style={{ display: "none" }}
+              multiple
+              type="file"
+              onChange={saveFile}
+              label="upload"
+            />
+            <div className="choose__files">
+              <Button
+                className="choose__button"
+                variant="outlined"
+                component="span"
+              >
+                Choose Files
+              </Button>
 
-        <label htmlFor="btn-upload">
-          <input
-            id="btn-upload"
-            name="btn-upload"
-            style={{ display: "none" }}
-            multiple
-            type="file"
-            onChange={saveFile}
-          />
-          <div className="choose__files">
-            <Button
-              className="choose__button"
-              variant="outlined"
-              component="span"
-            >
-              Choose Files
-            </Button>{" "}
-            <Button className="submit__button" type="submit" variant="outlined">
-              Submit
-            </Button>
-          </div>
-        </label>
-        <br />
+            </div>
+            <div>
+              <Button className="submit__button" type="submit" variant="outlined">
+                Submit
+              </Button>
+            </div>
+          </label>
+        </div>
       </form>}
     </div>
+
   )
 };
 

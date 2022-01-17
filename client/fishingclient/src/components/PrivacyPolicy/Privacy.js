@@ -1,3 +1,5 @@
+import Footer from "../Footer/Footer"
+import './PrivacyPolicy.css'
 const Privacy = () => {
 
     return (
@@ -46,6 +48,10 @@ const Privacy = () => {
             <p class="text-justify">Sofia,Mladost 4</p>
             <p class="text-justify">+359 252 252 252</p>
             <p class="text-justify">koceww@gmail.com</p>
+
+            <div className="privacy_footer">
+                <Footer/>
+            </div>
         </div>
     )
 }

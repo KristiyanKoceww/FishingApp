@@ -1,11 +1,5 @@
-/* .container {
-  display: flex;
-  width: 100%;
-} */
-
 .toggleDiv {
   padding: 10px;
-  padding-bottom: 70px;
   margin: auto;
 }
 
@@ -20,7 +14,7 @@
 }
 
 .infiniteScroll {
-  padding: 50px;
+  padding: 20px;
 }
 
 .logintocreatepost {
