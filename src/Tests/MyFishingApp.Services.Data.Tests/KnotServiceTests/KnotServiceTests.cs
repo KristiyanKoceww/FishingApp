@@ -1,9 +1,7 @@
 ﻿namespace MyFishingApp.Services.Data.Tests.KnotServiceTests
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
@@ -11,8 +9,8 @@
     using MyFishingApp.Data.Models;
     using MyFishingApp.Data.Repositories;
     using MyFishingApp.Services.Data.InputModels;
-    using MyFishingApp.Services.Data.Knots;
     using MyFishingApp.Services.Data.InputModels.KnotInputModels;
+    using MyFishingApp.Services.Data.Knots;
     using Xunit;
 
     public class KnotServiceTests
@@ -31,6 +29,8 @@
                 Name = "8",
                 Type = "Simple",
                 Description = "Simple knot",
+                Images = null,
+                VideoUrl = null,
             };
 
             await knotService.CreateKnotAsync(model);
@@ -199,7 +199,7 @@
         }
 
         [Fact]
-        public async Task TestUpdateReservoir()
+        public async Task TestUpdateKnot()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                  .UseInMemoryDatabase(Guid.NewGuid().ToString());
@@ -219,6 +219,7 @@
 
             var model = new UpdateKnotInputModel
             {
+                KnotId = "1",
                 Name = "Simple Knot",
             };
 
@@ -230,7 +231,7 @@
         }
 
         [Fact]
-        public async Task TestUpdateReservoirShouldDoNothingWhenItsNotFound()
+        public async Task TestUpdateKnotShouldDoNothingWhenItsNotFound()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                  .UseInMemoryDatabase(Guid.NewGuid().ToString());

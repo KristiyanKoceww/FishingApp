@@ -16,24 +16,40 @@
     public class PostServiceTests
     {
         [Fact]
-        public void TestGetPostById()
+        public async Task TestGetPostById()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
-
+            var options2 = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
             var postsRepository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
-            var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
-
-
-            postsRepository.AddAsync(new Post { Id = 1, Title = "test" }).GetAwaiter().GetResult();
-            postsRepository.SaveChangesAsync().GetAwaiter().GetResult();
+            var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options2.Options));
 
             var postService = new PostsService(postsRepository, appUsersRepository);
-            AutoMapperConfig.RegisterMappings(typeof(MyTestPost).Assembly);
-            var post = postService.GetById(1);
+
+            await appUsersRepository.AddAsync(new ApplicationUser()
+            {
+                Id = "1",
+                FirstName = "user",
+                LastName = "user",
+                Age = 20,
+                Email = "user@gmail.com",
+                Gender = Gender.Female,
+                UserName = "user",
+            });
+
+            await appUsersRepository.SaveChangesAsync();
+            var user = appUsersRepository.All().FirstOrDefault();
+
+            await postsRepository.AddAsync(new Post { Id = 50, Title = "test", User = user, UserId = user.Id, });
+
+            await postsRepository.SaveChangesAsync();
+
+            var post = postService.GetById(50);
 
             Assert.Equal("test", post.Title);
-            Assert.Equal(1, post.Id);
+            Assert.Equal("user", post.User.FirstName);
+            Assert.Equal(50, post.Id);
         }
 
         [Fact]
@@ -55,9 +71,27 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
+            var options2 = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
+
             var postsRepository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
-            var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
+            var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options2.Options));
+
             var postService = new PostsService(postsRepository, appUsersRepository);
+
+            await appUsersRepository.AddAsync(new ApplicationUser()
+            {
+                Id = "1",
+                FirstName = "user",
+                LastName = "user",
+                Age = 20,
+                Email = "user@gmail.com",
+                Gender = Gender.Female,
+                UserName = "user",
+            });
+
+            await appUsersRepository.SaveChangesAsync();
             var post1 = new CreatePostInputModel()
             {
                 Title = "test",
@@ -77,10 +111,24 @@
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
+            var options2 = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
             var postsRepository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
-            var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
+            var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options2.Options));
             var postService = new PostsService(postsRepository, appUsersRepository);
+
+            await appUsersRepository.AddAsync(new ApplicationUser()
+            {
+                Id = "1",
+                FirstName = "user",
+                LastName = "user",
+                Age = 20,
+                Email = "user@gmail.com",
+                Gender = Gender.Female,
+                UserName = "user",
+            });
+
             var post1 = new CreatePostInputModel()
             {
                 Title = "test",
@@ -94,6 +142,7 @@
                 UserId = "1",
             };
 
+            await appUsersRepository.SaveChangesAsync();
             await postService.CreateAsync(post1);
             await postService.CreateAsync(post2);
 
@@ -111,8 +160,8 @@
             var postsRepository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
             var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
 
-            postsRepository.AddAsync(new Post { Id = 1, Title = "test" }).GetAwaiter().GetResult();
-            postsRepository.AddAsync(new Post { Id = 2, Title = "test2" }).GetAwaiter().GetResult();
+            await postsRepository.AddAsync(new Post { Id = 1, Title = "test" });
+            await postsRepository.AddAsync(new Post { Id = 2, Title = "test2" });
             await postsRepository.SaveChangesAsync();
             var postService = new PostsService(postsRepository, appUsersRepository);
 
@@ -145,7 +194,7 @@
             var postsRepository = new EfDeletableEntityRepository<Post>(new ApplicationDbContext(options.Options));
             var appUsersRepository = new EfDeletableEntityRepository<ApplicationUser>(new ApplicationDbContext(options.Options));
 
-            postsRepository.AddAsync(new Post { Id = 1, Title = "test" }).GetAwaiter().GetResult();
+            await postsRepository.AddAsync(new Post { Id = 1, Title = "test" });
             await postsRepository.SaveChangesAsync();
             var postService = new PostsService(postsRepository, appUsersRepository);
 
@@ -153,6 +202,7 @@
             {
                 Content = "test",
                 Title = "new test",
+                PostId = 1,
             };
 
             await postService.UpdateAsync(model);

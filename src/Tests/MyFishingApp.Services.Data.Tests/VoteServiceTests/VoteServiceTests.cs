@@ -19,6 +19,7 @@
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
+
             var voteRepository = new EfRepository<Vote>(new ApplicationDbContext(options.Options));
             var postRepository = new EfRepository<Post>(new ApplicationDbContext(options.Options));
             var service = new VotesService(voteRepository, postRepository);
@@ -37,18 +38,18 @@
                 IsUpVote = false,
             };
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 2; i++)
             {
                 await service.VoteAsync(input);
             }
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 2; i++)
             {
                 await service.VoteAsync(input2);
             }
 
             var votes = service.GetVotes(1);
-            Assert.Equal(-2, votes);
+            Assert.Equal(0, votes);
         }
 
         [Fact]

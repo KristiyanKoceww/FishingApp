@@ -50,7 +50,7 @@
                 Tips = fishInputModel.Tips,
             };
 
-            if (fishInputModel.Images.Count > 0)
+            if (fishInputModel.Images != null)
             {
                 var cloudinary = Cloudinary();
 
@@ -98,7 +98,7 @@
 
         public async Task DeleteFish(string fishId)
         {
-            var fish = this.GetById(fishId);
+            var fish = this.fishRepository.All().Where(x => x.Id == fishId).FirstOrDefault();
             if (fish is not null)
             {
                 this.fishRepository.Delete(fish);
@@ -257,10 +257,10 @@
                     this.fishRepository.Update(fish);
                     await this.fishRepository.SaveChangesAsync();
                 }
-                else
-                {
-                    throw new Exception("There is no fish found by this id");
-                }
+            }
+            else
+            {
+                throw new Exception("There is no fish found by this id");
             }
         }
     }

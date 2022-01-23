@@ -22,39 +22,48 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var options2 = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var cityService = new CityService(repository);
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options2.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
 
             var country = new Country()
             {
-                Id = "1",
+                Id = Guid.NewGuid().ToString(),
                 Name = "Bulgaria",
             };
+
+            await countryRepository.AddAsync(country);
+            await countryRepository.SaveChangesAsync();
 
             var model = new CitiesInputModel
             {
                 Name = "Sofia",
-                Description = "Sofia is a city in Bulgarian",
+                Description = "Sofia is a city in Bulgaria",
                 Country = country,
+                CountryId = country.Id,
             };
 
             await cityService.CreateAsync(model);
 
-            var result = repository.All().FirstOrDefault();
+            var result = cityRepository.All().FirstOrDefault();
 
             Assert.Equal("Sofia", result.Name);
         }
 
         [Fact]
-        public async Task TestCreateCountryWithSameShouldThrowsException()
+        public async Task TestCreateCityWithSameNameShouldThrowsException()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
 
-            var cityService = new CityService(repository);
+            var cityService = new CityService(cityRepository, countryRepository);
 
             var country = new Country()
             {
@@ -68,8 +77,8 @@
                 Country = country,
             };
 
-            await cityService.CreateAsync(model);
-
+            await cityRepository.AddAsync(new City() { Name = "Sofia", Country = country, Description = " " });
+            await cityRepository.SaveChangesAsync();
             await Assert.ThrowsAsync<Exception>(() => cityService.CreateAsync(model));
         }
 
@@ -79,35 +88,27 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
 
-            var cityService = new CityService(repository);
+            var cityService = new CityService(cityRepository, countryRepository);
 
-            var country = new Country()
+            await cityRepository.AddAsync(new City()
             {
                 Id = "1",
-                Name = "Bulgaria",
-            };
-
-            var model = new CitiesInputModel
-            {
                 Name = "Sofia",
-                Description = "Sofia is a city in Bulgarian",
-                Country = country,
-            };
-            var model2 = new CitiesInputModel
+            });
+            await cityRepository.AddAsync(new City()
             {
+                Id = "2",
                 Name = "Burgas",
-                Description = "Burgas is a city in Bulgarian",
-                Country = country,
-            };
+            });
 
-            await cityService.CreateAsync(model);
-            await cityService.CreateAsync(model2);
+            await cityRepository.SaveChangesAsync();
 
-            var city = repository.All().Where(x => x.Name == "Sofia").FirstOrDefault();
+            var city = cityRepository.All().Where(x => x.Name == "Sofia").FirstOrDefault();
             await cityService.DeleteAsync(city.Id);
-            var result = repository.All().Count();
+            var result = cityRepository.All().Count();
 
             Assert.Equal("Sofia", city.Name);
             Assert.Equal(1, result);
@@ -119,28 +120,27 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
 
-            var cityService = new CityService(repository);
+            var cityService = new CityService(cityRepository, countryRepository);
 
-            var country = new Country()
+            await cityRepository.AddAsync(new City()
             {
                 Id = "1",
-                Name = "Bulgaria",
-            };
-
-            var model = new CitiesInputModel
-            {
                 Name = "Sofia",
-                Description = "Sofia is a city in Bulgarian",
-                Country = country,
-            };
+            });
+            await cityRepository.AddAsync(new City()
+            {
+                Id = "2",
+                Name = "Burgas",
+            });
 
-            await cityService.CreateAsync(model);
-            var result = repository.All().Count();
+            await cityRepository.SaveChangesAsync();
+            var result = cityRepository.All().Count();
 
-            await Assert.ThrowsAsync<Exception>(() => cityService.DeleteAsync("myCity"));
-            Assert.Equal(1, result);
+            await Assert.ThrowsAsync<Exception>(() => cityService.DeleteAsync(Guid.NewGuid().ToString()));
+            Assert.Equal(2, result);
         }
 
         [Fact]
@@ -149,19 +149,21 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
-            await repository.AddAsync(new City()
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
+            await cityRepository.AddAsync(new City()
             {
                 Id = "1",
                 Name = "Sofia",
             });
-            await repository.AddAsync(new City()
+            await cityRepository.AddAsync(new City()
             {
                 Id = "2",
                 Name = "Burgas",
             });
-            await repository.SaveChangesAsync();
-            var cityService = new CityService(repository);
+            await cityRepository.SaveChangesAsync();
 
             var city1 = cityService.FindCityById("1");
             var city2 = cityService.FindCityById("2");
@@ -176,14 +178,17 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
-            await repository.AddAsync(new City()
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
+
+            await cityRepository.AddAsync(new City()
             {
                 Id = "2",
                 Name = "Sofia",
             });
-            await repository.SaveChangesAsync();
-            var cityService = new CityService(repository);
+            await cityRepository.SaveChangesAsync();
 
             Assert.Throws<Exception>(() => cityService.FindCityById("3"));
         }
@@ -194,19 +199,21 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
-            await repository.AddAsync(new City()
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
+            await cityRepository.AddAsync(new City()
             {
                 Id = "1",
                 Name = "Sofia",
             });
-            await repository.AddAsync(new City()
+            await cityRepository.AddAsync(new City()
             {
                 Id = "2",
                 Name = "Burgas",
             });
-            await repository.SaveChangesAsync();
-            var cityService = new CityService(repository);
+            await cityRepository.SaveChangesAsync();
 
             var city1 = cityService.FindCityByName("Sofia");
             var city2 = cityService.FindCityByName("Burgas");
@@ -221,14 +228,16 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
-            await repository.AddAsync(new City()
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
+            await cityRepository.AddAsync(new City()
             {
                 Id = "2",
                 Name = "Sofia",
             });
-            await repository.SaveChangesAsync();
-            var cityService = new CityService(repository);
+            await cityRepository.SaveChangesAsync();
 
             Assert.Throws<Exception>(() => cityService.FindCityByName("Burgas"));
         }
@@ -239,19 +248,22 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
-            await repository.AddAsync(new City()
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
+
+            await cityRepository.AddAsync(new City()
             {
                 Id = "1",
                 Name = "Sofia",
             });
-            await repository.AddAsync(new City()
+            await cityRepository.AddAsync(new City()
             {
                 Id = "2",
                 Name = "Burgas",
             });
-            await repository.SaveChangesAsync();
-            var cityService = new CityService(repository);
+            await cityRepository.SaveChangesAsync();
 
             var cities = cityService.GetAllCities();
 
@@ -264,9 +276,10 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
 
-            var cityService = new CityService(repository);
+            var cityService = new CityService(cityRepository, countryRepository);
 
             Assert.Throws<Exception>(() => cityService.GetAllCities());
         }
@@ -277,34 +290,42 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var options2 = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var cityService = new CityService(repository);
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options2.Options));
+
+            var cityService = new CityService(cityRepository, countryRepository);
 
             var country = new Country()
             {
-                Id = "1",
+                Id = Guid.NewGuid().ToString(),
                 Name = "Bulgaria",
             };
 
-            var model = new CitiesInputModel
+            await countryRepository.AddAsync(country);
+
+            await cityRepository.AddAsync(new City()
             {
+                Id = Guid.NewGuid().ToString(),
                 Name = "Sofia",
-                Description = "Sofia is a city in Bulgarian",
-                Country = country,
-            };
+                Description = "null",
+            });
 
-            await cityService.CreateAsync(model);
+            await cityRepository.SaveChangesAsync();
+            await countryRepository.SaveChangesAsync();
 
-            var city = repository.All().FirstOrDefault();
+            var city = cityRepository.All().FirstOrDefault();
 
-            var model2 = new CitiesInputModel
+            var model = new CitiesInputModel
             {
                 Name = "Sofia2",
                 Description = "city",
                 Country = country,
             };
-            await cityService.UpdateAsync(city.Id, model2);
+
+            await cityService.UpdateAsync(city.Id, model);
 
             Assert.NotNull(city);
             Assert.Equal("city", city.Description);
@@ -317,9 +338,10 @@
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString());
 
-            var repository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var cityRepository = new EfDeletableEntityRepository<City>(new ApplicationDbContext(options.Options));
+            var countryRepository = new EfDeletableEntityRepository<Country>(new ApplicationDbContext(options.Options));
 
-            var cityService = new CityService(repository);
+            var cityService = new CityService(cityRepository, countryRepository);
 
             var country = new Country()
             {
@@ -327,25 +349,25 @@
                 Name = "Bulgaria",
             };
 
-            var model = new CitiesInputModel
+            await countryRepository.AddAsync(country);
+            await cityRepository.AddAsync(new City()
             {
+                Id = "1",
                 Name = "Sofia",
-                Description = "Sofia is a city in Bulgarian",
-                Country = country,
-            };
+            });
 
-            await cityService.CreateAsync(model);
+            await cityRepository.SaveChangesAsync();
+            await countryRepository.SaveChangesAsync();
+            var city = cityRepository.All().FirstOrDefault();
 
-            var city = repository.All().FirstOrDefault();
-
-            var model2 = new CitiesInputModel
+            var model = new CitiesInputModel
             {
                 Name = "Sofia2",
                 Description = "city",
                 Country = country,
             };
 
-            await Assert.ThrowsAsync<Exception>(() => cityService.UpdateAsync("myCity", model2));
+            await Assert.ThrowsAsync<Exception>(() => cityService.UpdateAsync("myCity", model));
         }
     }
 }

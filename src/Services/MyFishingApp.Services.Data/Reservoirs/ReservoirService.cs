@@ -73,9 +73,10 @@
             if (city is not null)
             {
                 reservoir.City = city;
+                reservoir.CityId = city.Id;
             }
 
-            if (createReservoirInputModel.Images.Count > 0)
+            if (createReservoirInputModel.Images != null)
             {
                 var cloudinary = Cloudinary();
                 foreach (var image in createReservoirInputModel.Images)
@@ -114,10 +115,9 @@
 
                     reservoir.ImageUrls.Add(imageUrl);
                 }
-
-                await this.reservoirRepository.AddAsync(reservoir);
-                await this.reservoirRepository.SaveChangesAsync();
             }
+            await this.reservoirRepository.AddAsync(reservoir);
+            await this.reservoirRepository.SaveChangesAsync();
         }
 
         public async Task DeleteReservoir(string reservoirId)
@@ -137,8 +137,8 @@
         public IEnumerable<Reservoir> GetAllReservoirs()
         {
             var reservoirs = this.reservoirRepository
-                .AllAsNoTracking()
-                .Select(x => new Reservoir
+                .All()
+                .Select(x => new Reservoir()
                 {
                     Name = x.Name,
                     Type = x.Type,
@@ -146,9 +146,10 @@
                     ImageUrls = x.ImageUrls,
                     Latitude = x.Latitude,
                     Longitude = x.Longitude,
-                    City = x.City,
+                    //City = x.City.,
                     Fish = x.Fish,
                     Id = x.Id,
+                    CityId = x.CityId,
                 }).ToList();
 
             if (reservoirs.Count > 0)
@@ -176,21 +177,26 @@
 
         public Reservoir GetByName(string reservoirName)
         {
+            var res = this.reservoirRepository.All()
+                .Where(x => x.Name == reservoirName).FirstOrDefault();
+
             var reservoir = this.reservoirRepository.All()
                 .Where(x => x.Name == reservoirName)
-                .Select(x => new Reservoir()
+                .Select(x => new Reservoir
                 {
+                    Id = x.Id,
                     Name = x.Name,
                     Type = x.Type,
                     Description = x.Description,
                     ImageUrls = x.ImageUrls,
                     Longitude = x.Longitude,
                     Latitude = x.Latitude,
-                    City = x.City,
+                    //City = x.City,
+                    CityId = x.CityId,
                     Fish = x.Fish,
-                    Id = x.Id,
                 })
                 .FirstOrDefault();
+
             if (reservoir is not null)
             {
                 return reservoir;
@@ -224,7 +230,7 @@
 
         public async Task UpdateReservoir(UpdateReservoirInputModel updateReservoirInputModel)
         {
-            var reservoir = this.GetById(updateReservoirInputModel.ReservoirId);
+            var reservoir = this.reservoirRepository.All().Where(x => x.Id == updateReservoirInputModel.ReservoirId).FirstOrDefault();
             NumberFormatInfo provider = new NumberFormatInfo();
             provider.NumberDecimalSeparator = ".";
             provider.NumberGroupSeparator = ",";
@@ -238,42 +244,45 @@
                 reservoir.Latitude = latitude;
                 reservoir.Longitude = longitude;
 
-                var cloudinary = Cloudinary();
-                foreach (var image in updateReservoirInputModel.FormFiles)
+                if (updateReservoirInputModel.FormFiles != null)
                 {
-                    byte[] bytes;
-                    using (var memoryStream = new MemoryStream())
+                    var cloudinary = Cloudinary();
+                    foreach (var image in updateReservoirInputModel.FormFiles)
                     {
-                        image.CopyTo(memoryStream);
-                        bytes = memoryStream.ToArray();
+                        byte[] bytes;
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            image.CopyTo(memoryStream);
+                            bytes = memoryStream.ToArray();
+                        }
+
+                        string base64 = Convert.ToBase64String(bytes);
+
+                        var prefix = @"data:image/png;base64,";
+                        var imagePath = prefix + base64;
+
+                        var uploadParams = new ImageUploadParams()
+                        {
+                            File = new FileDescription(imagePath),
+                            Folder = "FishApp/ReservoirImages/",
+                        };
+
+                        var uploadResult = await cloudinary.UploadAsync(@uploadParams);
+
+                        var error = uploadResult.Error;
+
+                        if (error != null)
+                        {
+                            throw new Exception($"Error: {error.Message}");
+                        }
+
+                        var imageUrl = new ImageUrls()
+                        {
+                            ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
+                        };
+
+                        reservoir.ImageUrls.Add(imageUrl);
                     }
-
-                    string base64 = Convert.ToBase64String(bytes);
-
-                    var prefix = @"data:image/png;base64,";
-                    var imagePath = prefix + base64;
-
-                    var uploadParams = new ImageUploadParams()
-                    {
-                        File = new FileDescription(imagePath),
-                        Folder = "FishApp/ReservoirImages/",
-                    };
-
-                    var uploadResult = await cloudinary.UploadAsync(@uploadParams);
-
-                    var error = uploadResult.Error;
-
-                    if (error != null)
-                    {
-                        throw new Exception($"Error: {error.Message}");
-                    }
-
-                    var imageUrl = new ImageUrls()
-                    {
-                        ImageUrl = uploadResult.SecureUrl.AbsoluteUri,
-                    };
-
-                    reservoir.ImageUrls.Add(imageUrl);
                 }
 
                 this.reservoirRepository.Update(reservoir);

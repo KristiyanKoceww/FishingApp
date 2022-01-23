@@ -57,7 +57,7 @@
           => MyController<AppUsersController>
           .Instance()
            .WithData(new ApplicationUser() { Id = "2", Age = 17, FirstName = "User" })
-          .Calling(c => c.UpdateUser(new UserInputModel() { Age = 17, FirstName = "User", MiddleName = "user", LastName = "user", Email = "user@gmail.com", Gender = Gender.Female, Password = "1234", UserName = "userName", PhoneNumber = "3598534421" }, "2"))
+          .Calling(c => c.UpdateUser(new UpdateUserInfoInputModel() { Age = 17, FirstName = "User", MiddleName = "user", LastName = "user", Email = "user@gmail.com", PhoneNumber = "3598534421" }, "2"))
           .ShouldReturn()
           .Ok();
 
@@ -66,7 +66,7 @@
            => MyController<AppUsersController>
            .Instance()
             .WithData(new ApplicationUser() { Id = "2", Age = 17, FirstName = "User" })
-          .Calling(c => c.UpdateUser(new UserInputModel() { Age = 17, FirstName = "User" }, "3"))
+          .Calling(c => c.UpdateUser(new UpdateUserInfoInputModel() { Age = 17, FirstName = "User" }, "3"))
            .ShouldThrow()
             .Exception();
 

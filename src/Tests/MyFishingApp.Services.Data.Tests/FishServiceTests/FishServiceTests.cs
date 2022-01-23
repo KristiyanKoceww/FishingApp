@@ -28,7 +28,7 @@
             {
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -55,7 +55,7 @@
             {
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -66,7 +66,7 @@
             {
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -87,24 +87,24 @@
             var repository = new EfDeletableEntityRepository<Fish>(new ApplicationDbContext(options.Options));
             var fishService = new FishService(repository);
 
-            var model = new FishInputModel
+            var fish = new Fish()
             {
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
                 Tips = "Very hard to catch",
+                IsDeleted = false,
             };
 
-            await fishService.CreateAsync(model);
-
-            var fish = repository.All().FirstOrDefault();
+            await repository.AddAsync(fish);
+            await repository.SaveChangesAsync();
 
             await fishService.DeleteFish(fish.Id);
 
-            Assert.Equal(0, repository.All().Count());
+            Assert.Equal(1, repository.AllWithDeleted().Count());
         }
 
         [Fact]
@@ -121,7 +121,7 @@
             {
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -147,7 +147,7 @@
             {
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -158,7 +158,7 @@
             {
                 Name = "Ton",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -198,7 +198,7 @@
                 Id = "1",
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -210,7 +210,7 @@
                 Id = "2",
                 Name = "Ton",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -240,7 +240,7 @@
                 Id = "1",
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -252,7 +252,7 @@
                 Id = "2",
                 Name = "Ton",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
@@ -277,20 +277,23 @@
                 Id = "1",
                 Name = "Carp",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 100,
                 Weight = 10,
                 Nutrition = "null",
                 Tips = "Very hard to catch",
+                IsDeleted = false,
+                ImageUrls = null,
             });
 
             await repository.SaveChangesAsync();
 
             var model = new UpdateFishInputModel
             {
+                FishId = "1",
                 Name = "Ton",
                 Habittat = "Natural",
-                Description = "Simple knot",
+                Description = "Simple fish",
                 Lenght = 200,
                 Weight = 100,
                 Nutrition = "null",

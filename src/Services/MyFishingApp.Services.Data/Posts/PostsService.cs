@@ -213,32 +213,35 @@
 
         public Post GetById(int id)
         {
-            var post = this.postsRepository.All().Where(x => x.Id == id).Select(x => new Post
-            {
-                Title = x.Title,
-                Content = x.Content,
-                Comments = x.Comments.Select(x => new Comment
-                {
-                    Id = x.Id,
-                    Content = x.Content,
-                    User = x.User,
-                    UserId = x.UserId,
-                    PostId = x.PostId,
-                    CreatedOn = x.CreatedOn,
-                    Parent = x.Parent,
-                    ParentId = x.ParentId,
-                }).ToList(),
-                ImageUrls = x.ImageUrls.Select(x => new ImageUrls
-                {
-                    ImageUrl = x.ImageUrl,
-                }).ToList(),
-                Votes = x.Votes.Select(x => new Vote
-                {
-                    Type = x.Type,
-                }).ToList(),
-                UserId = x.UserId,
-                User = x.User,
-            }).FirstOrDefault();
+            var post = this.postsRepository.All().Where(x => x.Id == id)
+           .Select(x => new Post
+           {
+               Id = x.Id,
+               Title = x.Title,
+               Content = x.Content,
+               Comments = x.Comments.Select(x => new Comment
+               {
+                   Id = x.Id,
+                   Content = x.Content,
+                   User = x.User,
+                   UserId = x.UserId,
+                   PostId = x.PostId,
+                   CreatedOn = x.CreatedOn,
+                   Parent = x.Parent,
+                   ParentId = x.ParentId,
+               }).ToList(),
+               ImageUrls = x.ImageUrls.Select(x => new ImageUrls
+               {
+                   ImageUrl = x.ImageUrl,
+               }).ToList(),
+               Votes = x.Votes.Select(x => new Vote
+               {
+                   Type = x.Type,
+               }).ToList(),
+               UserId = x.UserId,
+               User = x.User,
+           }).FirstOrDefault();
+
             if (post is not null)
             {
                 return post;
@@ -257,7 +260,7 @@
                 post.Content = updatePostInputModel.Content;
                 post.Title = updatePostInputModel.Title;
 
-                if (updatePostInputModel.FormFiles.Count > 0)
+                if (updatePostInputModel.FormFiles != null)
                 {
                     var cloudinary = Cloudinary();
                     foreach (var image in updatePostInputModel.FormFiles)

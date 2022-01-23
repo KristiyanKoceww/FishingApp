@@ -48,7 +48,7 @@ namespace MyFishingApp.Web.Controllers
         }
 
         [HttpGet("getCities")]
-        public City[] GetAllCities(string filter, string range,string sort)
+        public string GetAllCities()
         {
             var cities = this.cityService.GetAllCities();
             var count = cities.Count();
@@ -57,7 +57,7 @@ namespace MyFishingApp.Web.Controllers
 
             var json = JsonConvert.SerializeObject(cities);
 
-            return cities.ToArray();
+            return json;
         }
 
         [HttpGet("getCityById/id")]

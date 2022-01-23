@@ -52,7 +52,7 @@
                 knot.VideoUrl = knotInputModel.VideoUrl;
             }
 
-            if (knotInputModel.Images.Count > 0)
+            if (knotInputModel.Images != null)
             {
                 var cloudinary = Cloudinary();
 
@@ -172,7 +172,7 @@
         public async Task UpdateKnotAsync(UpdateKnotInputModel updateKnotInputModel)
         {
             // Update videos
-            var knot = this.GetById(updateKnotInputModel.KnotId);
+            var knot = this.knotRepository.All().Where(x => x.Id == updateKnotInputModel.KnotId).FirstOrDefault();
 
             if (updateKnotInputModel.VideoUrl is not null)
             {
@@ -229,10 +229,10 @@
                     this.knotRepository.Update(knot);
                     await this.knotRepository.SaveChangesAsync();
                 }
-                else
-                {
-                    throw new Exception("No knot found by this id");
-                }
+            }
+            else
+            {
+                throw new Exception("No knot found by this id");
             }
         }
     }
