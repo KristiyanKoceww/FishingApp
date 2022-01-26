@@ -99,8 +99,8 @@ namespace MyFishingApp.Web.Controllers
 
             return Ok(new LoginResult
             {
-                User= result.User,
-                UserId= result.User.Id,
+                User = result.User,
+                UserId = result.User.Id,
                 UserName = result.User.Email,
                 AccessToken = result.AccessToken,
                 RefreshToken = result.RefreshToken,
@@ -111,16 +111,24 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("delete")]
         public async Task<IActionResult> DeleteUser(string userId)
         {
-            await this.userService.DeleteAsync(userId);
+            try
+            {
+                await this.userService.DeleteAsync(userId);
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest( new { message = ex.Message });
+            }
+
         }
 
         [Authorize]
         [HttpPost("update/id")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserInfoInputModel userInputModel, string userId)
         {
-           var updateduser =  await this.userService.UpdateUserAsync(userInputModel, userId);
+            var updateduser = await this.userService.UpdateUserAsync(userInputModel, userId);
             return Ok(new UpdateUserResult
             {
                 User = updateduser,

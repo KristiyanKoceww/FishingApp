@@ -38,8 +38,8 @@
         public void DeleteUserShouldReturnOk()
             => MyController<AppUsersController>
             .Instance()
-              .WithData(new ApplicationUser() { Id = "2", Age = 17, FirstName = "User" })
-            .Calling(c => c.DeleteUser("2"))
+              .WithData(new ApplicationUser() { Id = "3", Age = 17, FirstName = "User" })
+            .Calling(c => c.DeleteUser("3"))
             .ShouldReturn()
             .Ok();
 

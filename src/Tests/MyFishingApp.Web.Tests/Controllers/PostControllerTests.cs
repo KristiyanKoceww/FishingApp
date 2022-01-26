@@ -23,14 +23,14 @@
           .Instance()
           .WithData(new Post() { Id = 1, Content = "my content", Title = "my title" })
           .Calling(c => c.GetPostById(0316262))
-          .ShouldThrow()
-           .Exception();
+          .ShouldReturn().ResultOfType<string>();
 
         [Fact]
         public void CreatePostShouldReturnOk()
             => MyController<PostsController>
             .Instance()
-            .Calling(c => c.CreatePost(new CreatePostInputModel() { Content = "my content", Title = "my title" }))
+            .WithData(new ApplicationUser() { Id = "1" })
+            .Calling(c => c.CreatePost(new CreatePostInputModel() { UserId = "1", Content = "my content", Title = "my title" }))
             .ShouldReturn()
             .Ok();
 
@@ -57,7 +57,7 @@
           => MyController<PostsController>
           .Instance()
           .WithData(new Post() { Id = 1, Content = "my content", Title = "my title" })
-          .Calling(c => c.UpdatePost(new UpdatePostInputModel() { Content = "my content222", Title = "my title222" }))
+          .Calling(c => c.UpdatePost(new UpdatePostInputModel() { PostId = 1, Content = "my content222", Title = "my title222" }))
           .ShouldReturn()
           .Ok();
 
@@ -67,14 +67,13 @@
            .Instance()
             .WithData(new Post() { Id = 1, Content = "my content", Title = "my title" })
           .Calling(c => c.UpdatePost(new UpdatePostInputModel() { Content = "my content222", Title = "my title222" }))
-           .ShouldThrow()
-            .Exception();
+           .ShouldReturn().BadRequest();
 
         [Fact]
         public void GetPostByIdShouldHaveValidModelState()
             => MyController<PostsController>
             .Instance()
-             .WithData(new Post() { Id = 1, Content = "my content", Title = "my title" })
+             .WithData(new Post() { Id = 1, Content = "my content", Title = "my title", Comments = null, ImageUrls = null, UserId = "1", })
             .Calling(c => c.GetPostById(1))
             .ShouldHave()
             .ValidModelState();

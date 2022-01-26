@@ -74,7 +74,7 @@
           => MyController<ReservoirController>
           .Instance()
            .WithData(new Reservoir() { Id = "2151", Name = "Iskar" })
-          .Calling(c => c.UpdateReservoir(new UpdateReservoirInputModel() { Name = "new Iskar", Description = "gaga", Latitude = "124", Longitude = "122", Type = "big" }))
+          .Calling(c => c.UpdateReservoir(new UpdateReservoirInputModel() {ReservoirId= "2151", Name = "new Iskar", Description = "gaga", Latitude = "124", Longitude = "122", Type = "big" }))
           .ShouldReturn()
           .Ok();
 
@@ -84,8 +84,7 @@
            .Instance()
            .WithData(new Reservoir() { Id = "2151", Name = "Iskar" })
           .Calling(c => c.UpdateReservoir(new UpdateReservoirInputModel() { Name = "new Iskar" }))
-           .ShouldThrow()
-            .Exception();
+           .ShouldReturn().BadRequest();
 
         [Fact]
         public void GetAllReservoirsShouldHaveValidModelState()

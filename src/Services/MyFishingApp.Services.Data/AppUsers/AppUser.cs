@@ -149,7 +149,7 @@
 
         public async Task DeleteAsync(string userId)
         {
-            var user = this.GetById(userId);
+            var user = this.appUserRepository.All().Where(x => x.Id == userId).FirstOrDefault();
             if (user is not null)
             {
                 this.appUserRepository.Delete(user);

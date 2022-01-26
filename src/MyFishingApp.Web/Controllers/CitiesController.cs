@@ -5,6 +5,7 @@ using MyFishingApp.Services.Data.Cities;
 using MyFishingApp.Services.Data.InputModels;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,9 +27,15 @@ namespace MyFishingApp.Web.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> CreateCity(CitiesInputModel citiesInputModel)
         {
-            await this.cityService.CreateAsync(citiesInputModel);
-
-            return Ok();
+            try
+            {
+                await this.cityService.CreateAsync(citiesInputModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpDelete("delete")]

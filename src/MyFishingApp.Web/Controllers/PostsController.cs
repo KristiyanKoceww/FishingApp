@@ -26,7 +26,7 @@ namespace MyFishingApp.Web.Controllers
         {
             try
             {
-               var post =  await this.postsService.CreateAsync(createPostInputModel);
+                var post = await this.postsService.CreateAsync(createPostInputModel);
                 return Ok(post);
             }
             catch (Exception ex)
@@ -62,16 +62,21 @@ namespace MyFishingApp.Web.Controllers
 
         [Authorize]
         [HttpGet("getPostById/Id")]
-        public string GetPostById(int postId)
+        public async Task<string> GetPostById(int postId)
         {
-            var post = this.postsService.GetById(postId);
-
-            var json = JsonConvert.SerializeObject(post);
-
-            return json;
+            try
+            {
+                var post = this.postsService.GetById(postId);
+                var json = JsonConvert.SerializeObject(post);
+                return json;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
-        
+
         [HttpGet("getPostCommentsByPostId/Id")]
         public string GetPostCommentsByPostId(int postId)
         {
@@ -97,7 +102,7 @@ namespace MyFishingApp.Web.Controllers
         [HttpGet("GetPosts")]
         public string GetPosts(int id)
         {
-            var post = this.postsService.GetPosts(id,2);
+            var post = this.postsService.GetPosts(id, 2);
 
             var json = JsonConvert.SerializeObject(post);
 

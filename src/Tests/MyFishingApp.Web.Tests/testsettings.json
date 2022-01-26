@@ -2,5 +2,12 @@
   "ConnectionStrings": {
     "DefaultConnection": "My Fake Connection String"
   },
-  "AllowedHosts": "*"
+  "AllowedHosts": "*",
+  "jwt": {
+    "Secret": "ahsfjhjkstrjeragdfWEGWEG",
+    "Issuer": "https://localhost:44366/",
+    "Audience": "http://localhost:3000/",
+    "AccessTokenExpiration": 20,
+    "RefreshTokenExpiration": 20
+  }
 }

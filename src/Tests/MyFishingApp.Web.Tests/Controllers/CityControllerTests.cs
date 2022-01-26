@@ -68,7 +68,8 @@
         public void CreateCityShouldReturnOk()
             => MyController<CitiesController>
             .Instance()
-            .Calling(c => c.CreateCity(new CitiesInputModel() { Name = "Varna", Description = "Varna", Country = new Country() { Id = "1", Name = "BG" } }))
+            .WithData(new Country { Id = "1", Name = "BG" })
+            .Calling(c => c.CreateCity(new CitiesInputModel() { Name = "Varna", Description = "Varna", Country = new Country() { Id = "1", Name = "BG" }, CountryId = "1" }))
             .ShouldReturn()
             .Ok();
 
@@ -77,8 +78,7 @@
             => MyController<CitiesController>
             .Instance()
             .Calling(c => c.CreateCity(new CitiesInputModel() { Name = "Varna", Description = "Varna" }))
-            .ShouldThrow()
-            .Exception();
+            .ShouldReturn().BadRequest();
 
         [Fact]
         public void DeleteCityShouldReturnOk()

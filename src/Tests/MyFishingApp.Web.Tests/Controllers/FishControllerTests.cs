@@ -74,7 +74,7 @@
           => MyController<FishController>
           .Instance()
           .WithData(new Fish() { Id = "2151", Name = "White fish" })
-          .Calling(c => c.UpdateFish(new UpdateFishInputModel() { Name = "Grey fish" }))
+          .Calling(c => c.UpdateFish(new UpdateFishInputModel() { Name = "Grey fish", Description = "Big fish", FishId = "2151", Habittat = "natural", Lenght = 100, Nutrition = "small fish", Weight = 20, Tips = null }))
           .ShouldReturn()
           .Ok();
 
@@ -82,10 +82,8 @@
         public void UpdateFishShouldThrowExceptionWhenFishIsNotFound()
            => MyController<FishController>
            .Instance()
-           .WithData(new Fish() { Id = "2151", Name = "White fish" })
-          .Calling(c => c.UpdateFish(new UpdateFishInputModel() { Name = "Grey fish" }))
-           .ShouldThrow()
-            .Exception();
+          .Calling(c => c.UpdateFish(new UpdateFishInputModel() { FishId = null, Name = "Grey fish" }))
+           .ShouldReturn().BadRequest();
 
         [Fact]
         public void GetAllFishShouldHaveValidModelState()

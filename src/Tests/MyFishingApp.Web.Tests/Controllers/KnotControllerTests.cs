@@ -75,7 +75,7 @@
           => MyController<KnotsController>
           .Instance()
           .WithData(new Knot() { Id = "2151", Name = "Knot" })
-          .Calling(c => c.UpdateKnot(new UpdateKnotInputModel() { Name = "new Knot" }))
+          .Calling(c => c.UpdateKnot(new UpdateKnotInputModel() { KnotId = "2151", Name = "new Knot" }))
           .ShouldReturn()
           .Ok();
 
@@ -85,8 +85,7 @@
            .Instance()
            .WithData(new Knot() { Id = "2151", Name = "White fish" })
           .Calling(c => c.UpdateKnot(new UpdateKnotInputModel() { Name = "New Knot" }))
-           .ShouldThrow()
-            .Exception();
+          .ShouldReturn().BadRequest();
 
         [Fact]
         public void GetAllKnotsShouldHaveValidModelState()
